@@ -91,7 +91,7 @@ var PASS_PCT = 80;
 /* ------------ Language packs ------------ */
 var STR = {
 en: {
-  basedOn: "Based on the WKO Inc. PPE Program v2.1 (WAC 296-800-160). Questions? Contact the Environmental Compliance and Safety Lead.",
+  basedOn: "Based on the WKO Inc. PPE Program (WAC 296-800-160). Questions? Contact the Safety Manager.",
   introH: "Welcome — Personal Protective Equipment at WKO Inc.",
   introP1: "PPE is your last line of defense against workplace injuries — eye, head, hand, foot, and visibility protection that stands between you and the hazard when nothing else can remove it. This training covers the PPE rules for every WKO Inc. work area, what the company provides, and how to care for your equipment.",
   introP2: "The training takes about 15–20 minutes. You must score 80% or better on the final quiz to receive credit. You may retake the quiz if needed.",
@@ -119,12 +119,12 @@ en: {
     { h:"2. Your Area Rules — What to Wear Where", body:
       "<p>These are the <b>area defaults</b> at WKO Inc. They apply because of where you are, before any task even begins:</p>"+
       "<table class='mini'><tr><th>Where</th><th>Required PPE</th></tr>"+
-      "<tr><td><b>All production areas</b> — sawmill, planer mill, barker facility, v-drum whole log chipper facility</td><td>Safety glasses with side shields (Z87+ impact-rated)</td></tr>"+
+      "<tr><td><b>All production areas</b></td><td>Safety glasses with side shields (Z87+ impact-rated)</td></tr>"+
       "<tr><td><b>Anywhere overhead hazards or falling objects exist</b> (identified by the Hazard Assessment)</td><td>Hard hat</td></tr>"+
       "<tr><td><b>Around rolling stock and vehicle traffic</b>, including the log yard</td><td>High-visibility garment, Class 2 or better</td></tr>"+
       "<tr><td><b>All production, maintenance, and yard work</b></td><td>Sturdy work boots, ankle height or higher</td></tr></table>"+
       "<p>In shops, the log yard, and other areas, eye protection is <b>task-driven</b> — the Hazard Assessment for your job tells you when it is required.</p>",
-      kc:{ q:"Where are safety glasses required as an area rule?", opts:["Only in the maintenance shop","In all production areas — sawmill, planer mill, barker, and v-drum chipper facilities","Only when your supervisor says so","Only in the log yard"], a:1 } },
+      kc:{ q:"Where are safety glasses required as an area rule?", opts:["Only in the maintenance shop","In all production areas","Only when your supervisor says so","Only in the log yard"], a:1 } },
 
     { h:"3. Eyes and Face", body:
       "<p><b>Safety glasses</b> must have side shields and impact-rated lenses marked <b>Z87+</b>. Ordinary glasses and sunglasses do not qualify.</p>"+
@@ -157,14 +157,14 @@ en: {
     { h:"7. What the Company Provides (and What You Provide)", body:
       "<p><b>Provided free, and replaced free:</b> all required PPE — safety glasses (including OTG styles), hard hats, gloves required for green lumber handling, high-visibility garments, hearing protection, face shields, and goggles.</p>"+
       "<p><b>You provide:</b> your everyday work boots — the sturdy ankle-height-or-higher boots required in Section 4. They are ordinary work footwear you can wear anywhere.</p>"+
-      "<p><b>Voluntary PPE:</b> you may choose to wear PPE that is not required for your job, as long as it does not create a new hazard. Wearing a <b>dust mask (N95)</b> voluntarily is fine. Any <b>other</b> respirator — like a half-face or full-face elastomeric — is different: it requires the Respiratory Protection Program, including a medical evaluation, even for voluntary use. Talk to the Safety Lead first.</p>" },
+      "<p><b>Voluntary PPE:</b> you may choose to wear PPE that is not required for your job, as long as it does not create a new hazard. Wearing a <b>dust mask (N95)</b> voluntarily is fine. Any <b>other</b> respirator — like a half-face or full-face elastomeric — is different: it requires the Respiratory Protection Program, including a medical evaluation, even for voluntary use. Talk to the Safety Manager first.</p>" },
 
     { h:"8. Hearing, Respirators, Falls — and the Bottom Line", body:
       "<p>Three kinds of PPE have their own dedicated programs:</p>"+
       "<ul><li><b>Hearing protection</b> — must be worn whenever noise exposure reaches <b>85 dBA</b> (8-hour average). See the Hearing Conservation Program.</li>"+
       "<li><b>Respirators</b> — selection, fit testing, and medical evaluation per the Respiratory Protection Program.</li>"+
       "<li><b>Fall protection</b> — required when working at heights of <b>4 feet or more</b>. See the Fall Protection Program.</li></ul>"+
-      "<p><b>The bottom line:</b> wearing required PPE is a condition of working here. Skipping it, altering it, or defeating it leads to discipline — but more importantly, it leaves you as the only thing standing between the hazard and the injury. The written PPE Program v2.1 is available in the Safety Office, and the Environmental Compliance and Safety Lead will answer any question about it.</p>" }
+      "<p><b>The bottom line:</b> wearing required PPE is a condition of working here. Skipping it, altering it, or defeating it leads to discipline — but more importantly, it leaves you as the only thing standing between the hazard and the injury. The written PPE Program is available in the Safety Office, and the Safety Manager will answer any question about it.</p>" }
   ],
   quizH: "Final Quiz",
   quizIntro: "Answer all 10 questions. You need 8 correct (80%) to pass. Take your time — you can review your answers before submitting.",
@@ -172,10 +172,10 @@ en: {
   answerAll: "Please answer every question before submitting.",
   quiz: [
     { q:"In the hierarchy of controls, PPE is used…", opts:["Before engineering controls","As the first choice because it is cheapest","Only after other controls cannot adequately reduce the hazard","Instead of machine guards"], a:2 },
-    { q:"Safety glasses with side shields are required in…", opts:["The log yard only","All production areas, including the sawmill, planer mill, barker, and v-drum chipper facilities","Offices and lunchrooms","Only areas with chemical hazards"], a:1 },
+    { q:"Safety glasses with side shields are required in…", opts:["The log yard only","All production areas","Offices and lunchrooms","Only areas with chemical hazards"], a:1 },
     { q:"You wear prescription glasses. In a production area you must…", opts:["Wear your prescription glasses alone — they count","Wear company-provided over-the-glasses (OTG) safety eyewear","Remove your glasses while working","Buy your own prescription safety glasses"], a:1 },
     { q:"Hard hats are required…", opts:["Everywhere on site at all times","Only in winter","Where overhead hazards or falling-object dangers exist, as identified by the Hazard Assessment","Never — they are optional"], a:2 },
-    { q:"Which is TRUE about work boots at WKO Inc.?", opts:["Steel toes are required for everyone","Sneakers are fine in the planer mill","Sturdy boots, ankle height or higher, are required — and you provide them","The company buys everyone's everyday boots"], a:2 },
+    { q:"Which is TRUE about work boots at WKO Inc.?", opts:["Steel toes are required for everyone","Sneakers are fine inside the sawmill","Sturdy boots, ankle height or higher, are required — and you provide them","The company buys everyone's everyday boots"], a:2 },
     { q:"Leather work gloves are required when…", opts:["Handling green lumber","Driving a forklift","Eating lunch","Walking through the parking lot"], a:0 },
     { q:"A Class 2 high-visibility garment is required…", opts:["Only for supervisors","Around rolling stock and vehicle traffic, including the log yard","Inside enclosed operator cabs","In the office"], a:1 },
     { q:"Your task today includes grinding. The exact PPE required comes from…", opts:["Whatever feels comfortable","The certified Hazard Assessment for the job","A co-worker's opinion","The parking rules"], a:1 },
@@ -197,7 +197,7 @@ en: {
   yourScore:"Your score"
 },
 es: {
-  basedOn: "Basado en el Programa de EPP de WKO Inc. v2.1 (WAC 296-800-160). ¿Preguntas? Contacte al Líder de Cumplimiento Ambiental y Seguridad.",
+  basedOn: "Basado en el Programa de EPP de WKO Inc. (WAC 296-800-160). ¿Preguntas? Contacte al Gerente de Seguridad.",
   introH: "Bienvenido — Equipo de Protección Personal en WKO Inc.",
   introP1: "El EPP es su última línea de defensa contra las lesiones en el trabajo — protección para los ojos, la cabeza, las manos, los pies y la visibilidad que se interpone entre usted y el peligro cuando nada más puede eliminarlo. Esta capacitación cubre las reglas de EPP para cada área de trabajo de WKO Inc., lo que la compañía proporciona y cómo cuidar su equipo.",
   introP2: "La capacitación toma de 15 a 20 minutos. Debe obtener 80% o más en el examen final para recibir crédito. Puede repetir el examen si es necesario.",
@@ -225,12 +225,12 @@ es: {
     { h:"2. Sus Reglas de Área — Qué Usar y Dónde", body:
       "<p>Estas son las <b>reglas de área</b> en WKO Inc. Aplican por el lugar donde usted está, antes de que comience cualquier tarea:</p>"+
       "<table class='mini'><tr><th>Dónde</th><th>EPP Requerido</th></tr>"+
-      "<tr><td><b>Todas las áreas de producción</b> — aserradero, cepilladora, descortezadora, astilladora de troncos v-drum</td><td>Lentes de seguridad con protectores laterales (Z87+ resistentes a impacto)</td></tr>"+
+      "<tr><td><b>Todas las áreas de producción</b></td><td>Lentes de seguridad con protectores laterales (Z87+ resistentes a impacto)</td></tr>"+
       "<tr><td><b>Donde existan peligros elevados u objetos que puedan caer</b> (identificados por la Evaluación de Peligros)</td><td>Casco</td></tr>"+
       "<tr><td><b>Cerca de equipo móvil y tráfico de vehículos</b>, incluyendo el patio de troncos</td><td>Prenda de alta visibilidad, Clase 2 o mejor</td></tr>"+
       "<tr><td><b>Todo trabajo de producción, mantenimiento y patio</b></td><td>Botas de trabajo resistentes, a la altura del tobillo o más altas</td></tr></table>"+
       "<p>En los talleres, el patio de troncos y otras áreas, la protección ocular <b>depende de la tarea</b> — la Evaluación de Peligros de su trabajo le dice cuándo se requiere.</p>",
-      kc:{ q:"¿Dónde se requieren lentes de seguridad como regla de área?", opts:["Solo en el taller de mantenimiento","En todas las áreas de producción — aserradero, cepilladora, descortezadora y astilladora v-drum","Solo cuando su supervisor lo diga","Solo en el patio de troncos"], a:1 } },
+      kc:{ q:"¿Dónde se requieren lentes de seguridad como regla de área?", opts:["Solo en el taller de mantenimiento","En todas las áreas de producción","Solo cuando su supervisor lo diga","Solo en el patio de troncos"], a:1 } },
 
     { h:"3. Ojos y Cara", body:
       "<p>Los <b>lentes de seguridad</b> deben tener protectores laterales y lentes resistentes a impacto marcados <b>Z87+</b>. Los lentes comunes y los lentes de sol no califican.</p>"+
@@ -263,14 +263,14 @@ es: {
     { h:"7. Qué Proporciona la Compañía (y Qué Proporciona Usted)", body:
       "<p><b>Proporcionado gratis, y reemplazado gratis:</b> todo el EPP requerido — lentes de seguridad (incluyendo estilos OTG), cascos, guantes requeridos para el manejo de madera verde, prendas de alta visibilidad, protección auditiva, caretas y goggles.</p>"+
       "<p><b>Usted proporciona:</b> sus botas de trabajo de uso diario — las botas resistentes a la altura del tobillo o más altas requeridas en la Sección 4. Son calzado de trabajo común que puede usar en cualquier lugar.</p>"+
-      "<p><b>EPP voluntario:</b> usted puede elegir usar EPP que no es requerido para su trabajo, siempre que no cree un nuevo peligro. Usar una <b>mascarilla contra polvo (N95)</b> voluntariamente está bien. Cualquier <b>otro</b> respirador — como un respirador elastomérico de media cara o cara completa — es diferente: requiere el Programa de Protección Respiratoria, incluyendo una evaluación médica, incluso para uso voluntario. Hable primero con el Líder de Seguridad.</p>" },
+      "<p><b>EPP voluntario:</b> usted puede elegir usar EPP que no es requerido para su trabajo, siempre que no cree un nuevo peligro. Usar una <b>mascarilla contra polvo (N95)</b> voluntariamente está bien. Cualquier <b>otro</b> respirador — como un respirador elastomérico de media cara o cara completa — es diferente: requiere el Programa de Protección Respiratoria, incluyendo una evaluación médica, incluso para uso voluntario. Hable primero con el Gerente de Seguridad.</p>" },
 
     { h:"8. Oídos, Respiradores, Caídas — y Lo Esencial", body:
       "<p>Tres tipos de EPP tienen sus propios programas dedicados:</p>"+
       "<ul><li><b>Protección auditiva</b> — debe usarse siempre que la exposición al ruido alcance <b>85 dBA</b> (promedio de 8 horas). Vea el Programa de Conservación Auditiva.</li>"+
       "<li><b>Respiradores</b> — selección, prueba de ajuste y evaluación médica según el Programa de Protección Respiratoria.</li>"+
       "<li><b>Protección contra caídas</b> — requerida al trabajar a alturas de <b>4 pies o más</b>. Vea el Programa de Protección contra Caídas.</li></ul>"+
-      "<p><b>Lo esencial:</b> usar el EPP requerido es una condición para trabajar aquí. Omitirlo, alterarlo o anularlo lleva a medidas disciplinarias — pero más importante, lo deja a usted como lo único entre el peligro y la lesión. El Programa de EPP v2.1 escrito está disponible en la Oficina de Seguridad, y el Líder de Cumplimiento Ambiental y Seguridad responderá cualquier pregunta.</p>" }
+      "<p><b>Lo esencial:</b> usar el EPP requerido es una condición para trabajar aquí. Omitirlo, alterarlo o anularlo lleva a medidas disciplinarias — pero más importante, lo deja a usted como lo único entre el peligro y la lesión. El Programa de EPP escrito está disponible en la Oficina de Seguridad, y el Gerente de Seguridad responderá cualquier pregunta.</p>" }
   ],
   quizH: "Examen Final",
   quizIntro: "Responda las 10 preguntas. Necesita 8 correctas (80%) para aprobar. Tómese su tiempo — puede revisar sus respuestas antes de enviar.",
@@ -278,10 +278,10 @@ es: {
   answerAll: "Por favor responda todas las preguntas antes de enviar.",
   quiz: [
     { q:"En la jerarquía de controles, el EPP se usa…", opts:["Antes de los controles de ingeniería","Como primera opción porque es más barato","Solo después de que otros controles no pueden reducir adecuadamente el peligro","En lugar de las guardas de máquinas"], a:2 },
-    { q:"Los lentes de seguridad con protectores laterales se requieren en…", opts:["Solo el patio de troncos","Todas las áreas de producción, incluyendo el aserradero, la cepilladora, la descortezadora y la astilladora v-drum","Oficinas y comedores","Solo áreas con peligros químicos"], a:1 },
+    { q:"Los lentes de seguridad con protectores laterales se requieren en…", opts:["Solo el patio de troncos","Todas las áreas de producción","Oficinas y comedores","Solo áreas con peligros químicos"], a:1 },
     { q:"Usted usa lentes de receta. En un área de producción debe…", opts:["Usar solo sus lentes de receta — cuentan","Usar los lentes de seguridad sobre-lentes (OTG) que proporciona la compañía","Quitarse los lentes mientras trabaja","Comprar sus propios lentes de seguridad de receta"], a:1 },
     { q:"Los cascos se requieren…", opts:["En todo el sitio en todo momento","Solo en invierno","Donde existan peligros elevados o de objetos que caen, según la Evaluación de Peligros","Nunca — son opcionales"], a:2 },
-    { q:"¿Cuál es VERDADERO sobre las botas de trabajo en WKO Inc.?", opts:["Se requiere punta de acero para todos","Los tenis están bien en la cepilladora","Se requieren botas resistentes, a la altura del tobillo o más altas — y usted las proporciona","La compañía compra las botas diarias de todos"], a:2 },
+    { q:"¿Cuál es VERDADERO sobre las botas de trabajo en WKO Inc.?", opts:["Se requiere punta de acero para todos","Los tenis están bien dentro del aserradero","Se requieren botas resistentes, a la altura del tobillo o más altas — y usted las proporciona","La compañía compra las botas diarias de todos"], a:2 },
     { q:"Los guantes de trabajo de cuero se requieren cuando…", opts:["Maneja madera verde","Maneja un montacargas","Almuerza","Camina por el estacionamiento"], a:0 },
     { q:"Una prenda de alta visibilidad Clase 2 se requiere…", opts:["Solo para supervisores","Cerca de equipo móvil y tráfico de vehículos, incluyendo el patio de troncos","Dentro de cabinas cerradas de operador","En la oficina"], a:1 },
     { q:"Su tarea de hoy incluye esmerilar. El EPP exacto requerido viene de…", opts:["Lo que se sienta cómodo","La Evaluación de Peligros certificada del trabajo","La opinión de un compañero","Las reglas del estacionamiento"], a:1 },

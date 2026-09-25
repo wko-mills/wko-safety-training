@@ -152,12 +152,12 @@ const slides = [
 
 { t:'content', eyebrow:'Section 8 of 9', title:'Chemicals, Signs, and Monitoring', html:
   `<p><b>Ototoxic chemicals</b> damage hearing on their own and worsen noise damage. At WKO that means <b>solvents</b> (toluene, xylene, styrene, trichloroethylene, n-hexane in some paints, thinners, degreasers, adhesives), <b>carbon monoxide</b> from engine exhaust in enclosed spaces, and <b>certain metals</b> including welding fume. A crew working with solvents in a noisy area carries more risk than the decibel reading alone suggests — be firmer about protection on those jobs and keep ventilation working.</p>
-  <p><b>Warning signs</b> are required at entrances or boundaries of well-defined areas where employees may be exposed to <b>115 dBA or more</b> (slow response). Based on monitoring to date, no WKO area reaches that. If new equipment or a process change makes an area noticeably louder, that is a report to the Safety Lead, not a judgment call for you.</p>
+  <p><b>Warning signs</b> are required at entrances or boundaries of well-defined areas where employees may be exposed to <b>115 dBA or more</b> (slow response). Based on monitoring to date, no WKO area reaches that. If new equipment or a process change makes an area noticeably louder, that is a report to the Safety Manager, not a judgment call for you.</p>
   <p><b>Noise monitoring</b> carries two employee rights you should know: employees may <b>observe</b> monitoring being conducted, and anyone measured at or above 85 dBA TWA8 must be <b>notified of their results within five working days</b>. If your crew asks to watch a survey, the answer is yes.</p>` },
 
 { t:'content', eyebrow:'Section 9 of 9', title:'Records, Retraining, and What to Escalate', html:
   `<p><b>Training is annual</b> for every employee at or above 85 dBA TWA8, plus initial training on assignment, plus updated training whenever controls, protectors, or work processes change. Training records are kept a minimum of three years; audiometric records for the duration of employment.</p>
-  <p><b>Escalate to the Environmental Compliance and Safety Lead:</b></p>
+  <p><b>Escalate to the Safety Manager:</b></p>
   <ul><li>An employee reporting ringing in the ears, muffled hearing after shift, or difficulty hearing</li>
   <li>Any fit problem you cannot solve with a different type or size</li>
   <li>Equipment that has gotten noticeably louder</li>
@@ -166,7 +166,7 @@ const slides = [
   <li>Employees working with ototoxic chemicals in noise</li>
   <li>Anyone with an STS who has not been refitted and retrained</li></ul>
   <h2 style="color:#2E75B6;font-size:18px;margin-top:14px">The bottom line</h2>
-  <p>You cannot give hearing back. Every other injury you supervise against has a repair path; this one has only prevention. The written Hearing Conservation Program v2.1 is in the Safety Office — when you are unsure, ask.</p>` }
+  <p>You cannot give hearing back. Every other injury you supervise against has a repair path; this one has only prevention. The written Hearing Conservation Program is in the Safety Office — when you are unsure, ask.</p>` }
 ];
 
 const quiz = [
@@ -203,7 +203,7 @@ function showStart(){
   main.innerHTML = `
     <div class="eyebrow">WKO Inc. · Safety Department</div>
     <h1>Hearing Conservation — Supervisor Training</h1>
-    <p>Required supervisor training under chapter 296-817 WAC and the SDS Hearing Conservation Program v2.1. About 15 minutes.</p>
+    <p>Required supervisor training under chapter 296-817 WAC and the WKO Inc. Hearing Conservation Program. About 15 minutes.</p>
     <div class="card warn"><b>Complete the employee Hearing Conservation module first.</b> This module covers your additional duties as a supervisor — it does not replace the employee training, and both are required of you.</div>
     <div class="card">Pass the 10-question quiz with <b>80% or better</b> to finish. You'll get a completion code and a button to record it.</div>
     <label for="nm">Enter your full name to begin</label>
@@ -301,7 +301,7 @@ function showResult(){
         <div class="code">${completionCode()}</div>
         <p style="font-size:13px;color:var(--gray)">WKO Inc. · Carson, WA</p>
       </div>
-      <div class="card"><b>Final step — record your completion:</b> Tap the button below to open the SDS Training Completion form. Select the module <b>Hearing Conservation — Supervisor / Conservación de la Audición — Supervisor</b>, enter today's date, your score, and the completion code above, then submit. Screenshot this screen for your own records. Your training is not documented until the form is submitted.</div>
+      <div class="card"><b>Final step — record your completion:</b> Tap the button below to open the WKO Training Completion Record form. Select the module <b>Hearing Conservation — Supervisor / Conservación de la Audición — Supervisor</b>, enter today's date, your score, and the completion code above, then submit. Screenshot this screen for your own records. Your training is not documented until the form is submitted.</div>
       <a class="btn" href="${FORM_URL}" target="_blank" rel="noopener">Record My Completion</a>`;
   } else {
     main.innerHTML = `<div class="eyebrow">Quiz Result</div><h1>Not Quite — Let's Try Again</h1>

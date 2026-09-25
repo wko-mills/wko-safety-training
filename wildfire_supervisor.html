@@ -115,7 +115,7 @@ const slides = [
     <div class="rung"><div class="lvl" style="background:var(--red)">Level 3<small>55.5 µg/m³</small></div><div class="act">Implement feasible exposure controls: move work indoors, reschedule, rotate tasks, add breaks, use filtered-cab equipment.</div></div>
     <div class="rung"><div class="lvl" style="background:var(--red)">Level 4<small>150.5 µg/m³</small></div><div class="act">Additional controls. Watch your people closely for symptoms.</div></div>
     <div class="rung"><div class="lvl" style="background:var(--maroon)">Level 5<small>250.5 µg/m³</small></div><div class="act">HAND a respirator directly to each exposed employee — personally. Anyone with symptoms needing medical attention goes to clean air.</div></div>
-    <div class="rung"><div class="lvl" style="background:#4A1010">Level 6<small>500.4 µg/m³+</small></div><div class="act">Respirator use is MANDATORY — stop work until the Respiratory Protection Program requirements are met. Contact the Safety Lead.</div></div>
+    <div class="rung"><div class="lvl" style="background:#4A1010">Level 6<small>500.4 µg/m³+</small></div><div class="act">Respirator use is MANDATORY — stop work until the Respiratory Protection Program requirements are met. Contact the Safety Manager.</div></div>
   </div>
   <div class="card warn"><b>Only trained employees work outdoors when the rule is in effect.</b> If someone hasn't completed wildfire smoke training, they don't work in it until they have.</div>
 `},
@@ -130,7 +130,7 @@ const slides = [
     <li><b>Let them rest and monitor them.</b> Don't leave them alone to "shake it off."</li>
     <li><b>Ask whether they need medical attention</b>, and let them follow any medical advice they've already been given for a condition like asthma.</li>
     <li><b>If symptoms persist or worsen — get them medical care.</b> Don't wait it out.</li>
-    <li><b>Report it</b> to the Environmental Compliance and Safety Lead and document what happened.</li>
+    <li><b>Report it</b> to the Safety Manager and document what happened.</li>
   </ol>
   <div class="card warn"><b>Never retaliate, and never let it look like retaliation.</b> No discipline, no lost hours, no grief for reporting symptoms or seeking medical attention. That is a protected right under the rule — and the fastest way to make a small problem into a serious one is to make a worker afraid to speak up.</div>
 `},
@@ -139,26 +139,25 @@ const slides = [
   <div class="card warn"><b>Call 911 immediately.</b> Do not drive someone who is in serious distress yourself.</div>
   <p><b>Non-emergency medical evaluation:</b></p>
   <ul>
-    <li><b>your nearest hospital</b> — see posted emergency contact sheet, WA · <b>see posted emergency contact sheet</b></li>
-    <li>Roughly <b>3–4 minutes</b> from the mill</li>
+    <li><b>Nearest hospital</b> — see the posted emergency contact sheet</li>
   </ul>
-  <p><b>Transporting an employee:</b> arrange a ride — do not have a symptomatic employee drive themselves. Notify the Safety Lead, and make sure someone knows where they went and follows up.</p>
+  <p><b>Transporting an employee:</b> arrange a ride — do not have a symptomatic employee drive themselves. Notify the Safety Manager, and make sure someone knows where they went and follows up.</p>
   <div class="card">At <b>250.5 µg/m³ and above</b>, if an employee has symptoms requiring immediate medical attention, moving them to a clean-air location is <b>required</b>, not optional.</div>
 `},
 { t:'check', q:'An employee on the log deck is struggling to breathe and seems confused. What do you do first?',
   opts:['Drive them to the nearest hospital yourself','Call 911','Have them sit down and finish the shift','Send them home to rest'], a:1,
-  why:'Correct. Severe difficulty breathing or confusion is an emergency — call 911. your nearest hospital is for evaluation of non-emergency symptoms.' },
+  why:'Correct. Severe difficulty breathing or confusion is an emergency — call 911. The nearest hospital is for evaluation of non-emergency symptoms.' },
 { t:'content', eyebrow:'Section 7 of 8', title:'Duty 6 — Paperwork That Protects You', html:`
   <p>If it isn't written down, it didn't happen. Three things you document:</p>
   <p><b>1. Your monitoring checks.</b> Time, reading, and action taken. This is the record that shows protections were in place when they were required.</p>
-  <p><b>2. Symptom reports and what you did.</b> Who, when, symptoms, action taken, outcome. Give it to the Safety Lead.</p>
+  <p><b>2. Symptom reports and what you did.</b> Who, when, symptoms, action taken, outcome. Give it to the Safety Manager.</p>
   <p><b>3. Paper training completions.</b> When you grade an employee's written test:</p>
   <ul>
     <li>Grade it against the <b>Supervisor Answer Key</b> — 8 of 10 correct passes</li>
     <li>Below 8? They review the handout and retake it. Don't record a failing attempt.</li>
     <li>Sign and date the "Graded By" line</li>
-    <li><b>Submit the SDS Training Completion form on their behalf</b> — scan the supervisor QR notice or use your bookmark. Set Format to "Paper handout" and leave the completion code blank.</li>
-    <li>File or scan the graded test — it goes to the Safety Lead or into the Graded Paper Tests folder</li>
+    <li><b>Submit the WKO Training Completion Record form on their behalf</b> — scan the supervisor QR notice or use your bookmark. Set Format to "Paper handout" and leave the completion code blank.</li>
+    <li>File or scan the graded test — it goes to the Safety Manager or into the Graded Paper Tests folder</li>
   </ul>
   <div class="card warn"><b>Never hand the answer key to an employee.</b> Employees who take the online module record their own completion — the module gives them a button after they pass. You only submit the form for paper tests.</div>
 `},
@@ -170,7 +169,7 @@ const slides = [
     <li>Know which of your work areas can move indoors or to filtered cabs, and which can't</li>
     <li>Know where your clean-air break locations are</li>
   </ul>
-  <p><b>Where to get answers:</b> the written <b>WKO Inc. Wildfire Smoke Response Program</b> is the controlling document — your supervisor copy or the Environmental Compliance and Safety Lead. When you're not sure whether a level has been reached or what's required, ask before the shift starts, not after.</p>
+  <p><b>Where to get answers:</b> the written <b>WKO Inc. Wildfire Smoke Response Program</b> is the controlling document — your supervisor copy or the Safety Manager. When you're not sure whether a level has been reached or what's required, ask before the shift starts, not after.</p>
   <div class="card do">You are the part of this program the crew actually sees. The reading on a website doesn't protect anybody — you checking it, calling it, and acting on it does.</div>
   <p>That's the material. Ten questions next, 80% to pass.</p>
 `},
@@ -196,7 +195,7 @@ const quiz = [
  { q:'If an employee reports symptoms or seeks medical attention, you may:',
    opts:['Dock their hours','Discipline them for leaving','Never retaliate — it is a protected right','Require a doctor\u2019s note before they report anything'], a:2 },
  { q:'After you grade an employee\u2019s paper test and they pass, you must:',
-   opts:['Give them the answer key','Submit the SDS Training Completion form on their behalf and file the graded test','Nothing — it records itself','Wait until the end of the year'], a:1 },
+   opts:['Give them the answer key','Submit the WKO Training Completion Record form on their behalf and file the graded test','Nothing — it records itself','Wait until the end of the year'], a:1 },
 ];
 
 const main = document.getElementById('main');
@@ -308,7 +307,7 @@ function showResult(){
         <div class="code">${completionCode()}</div>
         <p style="font-size:13px;color:var(--gray)">WKO Inc. · Carson, WA</p>
       </div>
-      <div class="card"><b>Final step — record your completion:</b> Tap the button below to open the SDS Training Completion form. Select the module <b>Wildfire Smoke — Supervisor</b>, enter today's date, your score, and the completion code above, then submit. Screenshot this screen for your own records. Your training is not documented until the form is submitted.</div>
+      <div class="card"><b>Final step — record your completion:</b> Tap the button below to open the WKO Training Completion Record form. Select the module <b>Wildfire Smoke — Supervisor</b>, enter today's date, your score, and the completion code above, then submit. Screenshot this screen for your own records. Your training is not documented until the form is submitted.</div>
       <a class="btn" href="${FORM_URL}" target="_blank" rel="noopener">Record My Completion</a>`;
   } else {
     main.innerHTML = `<div class="eyebrow">Quiz Result</div><h1>Not Quite — Let's Try Again</h1>

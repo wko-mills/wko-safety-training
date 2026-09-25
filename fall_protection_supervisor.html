@@ -71,7 +71,7 @@ let empName = "", slideIdx = 0, quizIdx = 0, quizScore = 0;
 const slides = [
 { t:'content', eyebrow:'Section 1 of 6', title:'What This Module Covers', html:
   `<p>This module carries the <b>supervisor-specific knowledge</b> for fall protection at WKO Inc. It does not replace the employee fall protection module (which you must also complete) or the annual hands-on training provided by the company's contracted fall-protection and rescue trainer.</p>
-  <div class="notice"><b>WAC 296-880-10015 requires fall protection training by a competent person.</b> This module covers knowledge. The competent person demonstration — showing that an employee can actually use fall protection properly — is satisfied through your annual the company's contracted fall-protection and rescue trainer training and on-the-job verification.</div>
+  <div class="notice"><b>WAC 296-880-10015 requires fall protection training by a competent person.</b> This module covers knowledge. The competent person demonstration — showing that an employee can actually use fall protection properly — is satisfied through annual hands-on training with the company's contracted fall-protection and rescue trainer and on-the-job verification.</div>
   <p><b>What you owe as a supervisor:</b></p>
   <table class="mini">
   <tr><th>Duty</th><th>Source</th></tr>
@@ -84,7 +84,7 @@ const slides = [
   </table>` },
 
 { t:'content', eyebrow:'Section 2 of 6', title:'Competent Person Responsibilities', html:
-  `<p>A <b>competent person</b> under WAC 296-880-095 can identify existing and predictable fall hazards and has the authority to take prompt corrective action. At WKO Inc., competent persons for fall protection include the Safety Lead and designated supervisors who have completed competent person training.</p>
+  `<p>A <b>competent person</b> under WAC 296-880-095 can identify existing and predictable fall hazards and has the authority to take prompt corrective action. At WKO Inc., competent persons for fall protection include the Safety Manager and designated supervisors who have completed competent person training.</p>
   <p><b>As a competent person, you are responsible for:</b></p>
   <ul>
   <li>Inspecting fall protection systems and equipment</li>
@@ -110,8 +110,8 @@ const slides = [
   <table class="mini">
   <tr><th>Tier</th><th>Method</th><th>Who</th></tr>
   <tr><td>1 — Self-rescue</td><td>Suspension relief straps, reach a surface</td><td>The suspended worker</td></tr>
-  <tr><td>2 — Assisted rescue</td><td>Boom lift rescue (primary), ladder, retrieval devices</td><td>Trained co-workers (the company's contracted fall-protection and rescue trainer trained)</td></tr>
-  <tr><td>3 — EMS</td><td>911 / the local fire department (911)</td><td>Emergency services (backup, not primary)</td></tr>
+  <tr><td>2 — Assisted rescue</td><td>Boom lift rescue (primary), ladder, retrieval devices</td><td>Trained co-workers (trained by the company's contracted fall-protection and rescue trainer)</td></tr>
+  <tr><td>3 — EMS</td><td>911 (local fire department / EMS)</td><td>Emergency services (backup, not primary)</td></tr>
   </table>
   <div class="notice"><b>EMS is Tier 3, not Tier 1.</b> Response times may exceed the 15-minute suspension trauma window. That is why WKO Inc. trains its own people for Tier 2 assisted rescue — you cannot rely solely on calling 911.</div>
   <p>Use the <b>Fall Hazard Assessment Form (Appendix B)</b> in the program to document the rescue plan for each work area where fall arrest systems are used.</p>` },
@@ -152,7 +152,7 @@ const slides = [
   <li><b>Secure the area</b> — barricade the fall zone. Do not disturb the fall protection equipment or the fall area until the investigation is complete</li>
   <li><b>Retire all involved equipment</b> — tag everything "OUT OF SERVICE — INVOLVED IN FALL EVENT." No exceptions, no inspecting and returning to service. It is permanently retired</li>
   </ol>
-  <div class="card warn"><b>Investigation:</b> The Safety Lead investigates every fall event and significant near-miss. Your role is to preserve the scene, secure the equipment, and provide a detailed account of the work plan, the rescue plan, and what happened. Root cause analysis and corrective actions follow.</div>
+  <div class="card warn"><b>Investigation:</b> The Safety Manager investigates every fall event and significant near-miss. Your role is to preserve the scene, secure the equipment, and provide a detailed account of the work plan, the rescue plan, and what happened. Root cause analysis and corrective actions follow.</div>
   <h1 style="font-size:20px;margin-top:20px">Retraining Triggers</h1>
   <p>WAC 296-880-10015(4) requires retraining when you have reason to believe an employee's understanding or skills are inadequate. Watch for:</p>
   <ul>
@@ -165,7 +165,7 @@ const slides = [
   </ul>` },
 
 { t:'content', eyebrow:'Section 6 of 6', title:'Equipment Management', html:
-  `<p>As a supervisor, you share responsibility with the Safety Lead for the condition and readiness of fall protection equipment.</p>
+  `<p>As a supervisor, you share responsibility with the Safety Manager for the condition and readiness of fall protection equipment.</p>
   <h1 style="font-size:20px">Pre-Use Inspection Oversight</h1>
   <p>Every employee must inspect their own equipment before each use. Your job is to <b>verify this is happening</b> — not to do the inspections for them. If you see an employee skip a pre-use inspection, stop the work and retrain.</p>
   <h1 style="font-size:20px;margin-top:16px">Equipment Retirement</h1>
@@ -179,12 +179,12 @@ const slides = [
   </ul>
   <div class="card do"><b>Hole and opening covers</b> are part of your area's fall protection. Covers must be secured against displacement, marked "HOLE" or "COVER," and capable of supporting twice the maximum load. If a cover must be removed for work, you must provide an alternate form of fall protection or station an employee at the opening until the cover is replaced.</div>
   <h1 style="font-size:20px;margin-top:16px">Fixed Ladder Phase-In</h1>
-  <p>Under the OSHA 2017 Walking-Working Surfaces rule, all existing fixed ladder cages and wells must be replaced with ladder safety systems or personal fall arrest systems by <b>November 18, 2036</b>. New ladders and replacement sections installed after November 2018 must already have these systems. The Safety Lead maintains the fixed ladder inventory — if you identify a ladder that needs attention, report it.</p>` }
+  <p>Under the OSHA 2017 Walking-Working Surfaces rule, all existing fixed ladder cages and wells must be replaced with ladder safety systems or personal fall arrest systems by <b>November 18, 2036</b>. New ladders and replacement sections installed after November 2018 must already have these systems. The Safety Manager maintains the fixed ladder inventory — if you identify a ladder that needs attention, report it.</p>` }
 ];
 
 const quiz = [
 { q:'Before any employee works in a personal fall arrest system, what must you as the supervisor have in place?',
-  opts:['A signed work order from maintenance','A documented rescue plan specific to the work area','Verbal approval from the Safety Lead','A minimum of two other employees in the area'], a:1 },
+  opts:['A signed work order from maintenance','A documented rescue plan specific to the work area','Verbal approval from the Safety Manager','A minimum of two other employees in the area'], a:1 },
 { q:'In a boom lift, what fall protection is required?',
   opts:['None — the guardrails are sufficient','A hard hat and safety glasses only','A personal fall arrest or restraint system attached to the manufacturer-designated anchorage','Fall protection is optional if the lift is under 10 feet'], a:2 },
 { q:'The rescue plan must ensure rescue can be completed within what timeframe?',

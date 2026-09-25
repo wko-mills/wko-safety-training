@@ -104,7 +104,7 @@ var PICTO_SVG = {
 /* ------------ Language packs ------------ */
 var STR = {
 en: {
-  basedOn: "Based on the WKO Inc. Hazard Communication Program v2.1 (WAC 296-901 / 29 CFR 1910.1200). Questions? Contact the Environmental Compliance and Safety Lead.",
+  basedOn: "Based on the WKO Inc. Hazard Communication Program (WAC 296-901 / 29 CFR 1910.1200). Questions? Contact the Safety Manager.",
   introH: "Welcome — Your Right to Know",
   introP1: "Every employee at WKO Inc. has the right to know about the hazardous chemicals in their work area and how to protect themselves. This training covers chemical labels, Safety Data Sheets (SDS), and what to do in a chemical emergency.",
   introP2: "The training takes about 15–20 minutes. You must score 80% or better on the final quiz to receive credit. You may retake the quiz if needed.",
@@ -119,11 +119,11 @@ en: {
   ofLabel: "of",
   sections: [
     { h:"1. Why Hazard Communication Matters", body:
-      "<p>WKO Inc. uses hazardous chemicals every day: lubricants and hydraulic fluids in the sawmill and planer mill, anti-sapstain products at the dry kilns, water treatment chemicals at the boiler, solvents, paints and welding materials in the shops, cleaning products, and fuels in the yard.</p>"+
+      "<p>WKO Inc. uses hazardous chemicals every day: lubricants and hydraulic fluids in production equipment, solvents, paints and welding materials in the shops, cleaning products, fuels in the yard, and — where used — wood-treatment and boiler water-treatment chemicals.</p>"+
       "<p>Washington's Hazard Communication rule (WAC 296-901) — the <b>\"Right to Know\"</b> law — requires WKO Inc. to tell you what these chemicals are, what their hazards are, and how to protect yourself. Our written <b>Hazard Communication Program</b> explains how we do that. It is kept in the <b>Safety Office</b> and you may read it at any time.</p>" },
     { h:"2. The Chemical Inventory", body:
       "<p>WKO Inc. keeps a <b>chemical inventory list</b> — one line for every hazardous chemical product on site, organized by work area. The list uses the same product name that appears on the label and the SDS, so you can always match them up.</p>"+
-      "<p>The inventory is maintained by the Environmental Compliance and Safety Lead and is kept in the <b>Safety Office</b>. You may ask to see it at any time.</p>"+
+      "<p>The inventory is maintained by the Safety Manager and is kept in the <b>Safety Office</b>. You may ask to see it at any time.</p>"+
       "<div class='notice'><b>Important:</b> Before any <u>new</u> chemical is used at WKO Inc., its Safety Data Sheet must be received and put on file. If you want to bring a new product on site, talk to your supervisor first.</div>" },
     { h:"3. Reading a GHS Label", body:
       "<p>Every container of hazardous chemical shipped to us must have a <b>GHS label</b> with six parts:</p>"+
@@ -148,7 +148,7 @@ en: {
       "<tr><td><b>4 – First aid</b></td><td>What to do if exposed (skin, eyes, breathing, swallowed)</td></tr>"+
       "<tr><td><b>8 – Exposure controls / PPE</b></td><td>What protective equipment to wear</td></tr></table>"+
       "<p><b>Where to find an SDS:</b> the master SDS file and the chemical inventory are kept in the <b>Safety Office</b>, and they are available to you during every work shift. Your supervisor can also help you get the SDS for any chemical in your area. If an SDS is missing, report it — the chemical should not be used until the SDS is on file.</p>",
-      kc:{ q:"Which WKO section tells you what to do if a chemical gets on your skin or in your eyes?", opts:["Section 1 – Identification","Section 4 – First-aid measures","Section 9 – Physical properties","Section 14 – Transport"], a:1 } },
+      kc:{ q:"Which SDS section tells you what to do if a chemical gets on your skin or in your eyes?", opts:["Section 1 – Identification","Section 4 – First-aid measures","Section 9 – Physical properties","Section 14 – Transport"], a:1 } },
     { h:"6. Secondary Containers", body:
       "<p>If you transfer a chemical from its original container into another container (a spray bottle, a pail, a squeeze bottle), that <b>secondary container must be labeled</b> with:</p>"+
       "<ul><li>The <b>product identifier</b> (same name as the SDS), and</li><li><b>Hazard information</b> — words, symbols, or pictures showing the hazards</li></ul>"+
@@ -165,11 +165,11 @@ en: {
       "<li>Check the <b>SDS</b> before any cleanup — it tells you the right PPE and method</li>"+
       "<li>Small, routine spills may be cleaned up only by <b>trained</b> employees with proper PPE</li>"+
       "<li><b>Large spills, unknown chemicals, or anything creating a fire or breathing hazard: evacuate and notify your supervisor — the supervisor will call 911 if outside help is needed</b></li>"+
-      "<li>Report every spill to the Environmental Compliance and Safety Lead</li></ul>"+
+      "<li>Report every spill to the Safety Manager</li></ul>"+
       "<h2>Emergency Numbers</h2>"+
       "<p>Report emergencies to your supervisor first — the supervisor calls 911 and coordinates outside responders as needed.</p>"+
       "<p>Emergency (fire / medical / hazmat): <span class='phone'>911</span><br>"+
-      "Nearest hospital ER: <span class='phone'>see posted emergency contact sheet</span><br>"+
+      "Nearest hospital ER: <span class='phone'>see the posted emergency contact sheet</span><br>"+
       "Poison Control: <span class='phone'>1-800-222-1222</span><br>"+
       "CHEMTREC (chemical emergency info): <span class='phone'>1-800-424-9300</span></p>",
       kc:{ q:"A drum is leaking an unknown chemical and there are strong fumes. What do you do first?", opts:["Find rags and start cleaning it up","Alert others, leave the area, and notify your supervisor","Call 911 yourself without telling anyone","Move the drum outside yourself"], a:1 } }
@@ -210,13 +210,13 @@ en: {
   passInstr:"<b>Final step — record your completion:</b> tap the button below and submit the completion form. Enter your name, select <b>\"Hazard Communication / Comunicación de Peligros\"</b> from the module list, and enter the completion code shown above. Your training is not recorded until the form is submitted.",
   recordBtn:"Record My Completion",
   failH:"Not Quite — Keep Going",
-  failMsg:"You scored below 80%. Review the material — especially labels, WKO sections, and emergency steps — and try again. There is no limit on retakes.",
+  failMsg:"You scored below 80%. Review the material — especially labels, SDS sections, and emergency steps — and try again. There is no limit on retakes.",
   reviewBtn:"Review the Material",
   retakeBtn:"Retake the Quiz",
   yourScore:"Your score"
 },
 es: {
-  basedOn: "Basado en el Programa de Comunicación de Peligros de WKO Inc. v2.1 (WAC 296-901 / 29 CFR 1910.1200). ¿Preguntas? Comuníquese con el Líder de Cumplimiento Ambiental y Seguridad.",
+  basedOn: "Basado en el Programa de Comunicación de Peligros de WKO Inc. (WAC 296-901 / 29 CFR 1910.1200). ¿Preguntas? Comuníquese con el Gerente de Seguridad.",
   introH: "Bienvenido — Su Derecho a Saber",
   introP1: "Todo empleado de WKO Inc. tiene derecho a saber qué productos químicos peligrosos hay en su área de trabajo y cómo protegerse. Esta capacitación cubre las etiquetas químicas, las Hojas de Datos de Seguridad (SDS) y qué hacer en una emergencia química.",
   introP2: "La capacitación toma de 15 a 20 minutos. Debe obtener 80% o más en el examen final para recibir crédito. Puede repetir el examen si es necesario.",
@@ -231,11 +231,11 @@ es: {
   ofLabel: "de",
   sections: [
     { h:"1. Por Qué Importa la Comunicación de Peligros", body:
-      "<p>WKO Inc. usa productos químicos peligrosos todos los días: lubricantes y fluidos hidráulicos en el aserradero y el cepillo, productos anti-mancha en los hornos de secado, químicos de tratamiento de agua en la caldera, solventes, pinturas y materiales de soldadura en los talleres, productos de limpieza y combustibles en el patio.</p>"+
+      "<p>WKO Inc. usa productos químicos peligrosos todos los días: lubricantes y fluidos hidráulicos en el equipo de producción, solventes, pinturas y materiales de soldadura en los talleres, productos de limpieza, combustibles en el patio y — donde se usen — productos para tratar la madera y químicos de tratamiento de agua de la caldera.</p>"+
       "<p>La regla de Comunicación de Peligros de Washington (WAC 296-901) — la ley del <b>\"Derecho a Saber\"</b> — exige que WKO Inc. le informe qué son estos químicos, cuáles son sus peligros y cómo protegerse. Nuestro <b>Programa de Comunicación de Peligros</b> escrito explica cómo lo hacemos. Se guarda en la <b>Oficina de Seguridad</b> y usted puede leerlo en cualquier momento.</p>" },
     { h:"2. El Inventario de Productos Químicos", body:
-      "<p>WKO Inc. mantiene una <b>lista de inventario químico</b> — una línea por cada producto químico peligroso en el sitio, organizada por área de trabajo. La lista usa el mismo nombre de producto que aparece en la etiqueta y en la WKO, para que siempre pueda relacionarlos.</p>"+
-      "<p>El inventario lo mantiene el Líder de Cumplimiento Ambiental y Seguridad y se guarda en la <b>Oficina de Seguridad</b>. Puede pedir verlo en cualquier momento.</p>"+
+      "<p>WKO Inc. mantiene una <b>lista de inventario químico</b> — una línea por cada producto químico peligroso en el sitio, organizada por área de trabajo. La lista usa el mismo nombre de producto que aparece en la etiqueta y en la SDS, para que siempre pueda relacionarlos.</p>"+
+      "<p>El inventario lo mantiene el Gerente de Seguridad y se guarda en la <b>Oficina de Seguridad</b>. Puede pedir verlo en cualquier momento.</p>"+
       "<div class='notice'><b>Importante:</b> Antes de usar cualquier químico <u>nuevo</u> en WKO Inc., su Hoja de Datos de Seguridad debe recibirse y archivarse. Si desea traer un producto nuevo al sitio, hable primero con su supervisor.</div>" },
     { h:"3. Cómo Leer una Etiqueta GHS", body:
       "<p>Todo recipiente de químico peligroso que nos llega debe tener una <b>etiqueta GHS</b> con seis partes:</p>"+
@@ -259,8 +259,8 @@ es: {
       "<tr><td><b>2 – Peligros</b></td><td>Los peligros, pictogramas y palabra de advertencia</td></tr>"+
       "<tr><td><b>4 – Primeros auxilios</b></td><td>Qué hacer en caso de exposición (piel, ojos, respiración, ingestión)</td></tr>"+
       "<tr><td><b>8 – Controles de exposición / EPP</b></td><td>Qué equipo de protección usar</td></tr></table>"+
-      "<p><b>Dónde encontrar una SDS:</b> el archivo maestro de WKO y el inventario químico se guardan en la <b>Oficina de Seguridad</b>, y están disponibles para usted durante cada turno de trabajo. Su supervisor también puede ayudarle a obtener la WKO de cualquier químico en su área. Si falta una WKO, repórtelo — el químico no debe usarse hasta que la WKO esté archivada.</p>",
-      kc:{ q:"¿Cuál sección de la WKO le dice qué hacer si un químico le cae en la piel o en los ojos?", opts:["Sección 1 – Identificación","Sección 4 – Primeros auxilios","Sección 9 – Propiedades físicas","Sección 14 – Transporte"], a:1 } },
+      "<p><b>Dónde encontrar una SDS:</b> el archivo maestro de SDS y el inventario químico se guardan en la <b>Oficina de Seguridad</b>, y están disponibles para usted durante cada turno de trabajo. Su supervisor también puede ayudarle a obtener la SDS de cualquier químico en su área. Si falta una SDS, repórtelo — el químico no debe usarse hasta que la SDS esté archivada.</p>",
+      kc:{ q:"¿Cuál sección de la SDS le dice qué hacer si un químico le cae en la piel o en los ojos?", opts:["Sección 1 – Identificación","Sección 4 – Primeros auxilios","Sección 9 – Propiedades físicas","Sección 14 – Transporte"], a:1 } },
     { h:"6. Recipientes Secundarios", body:
       "<p>Si transfiere un químico de su recipiente original a otro recipiente (una botella rociadora, una cubeta, una botella exprimible), ese <b>recipiente secundario debe etiquetarse</b> con:</p>"+
       "<ul><li>El <b>identificador del producto</b> (el mismo nombre que la SDS), y</li><li><b>Información de peligros</b> — palabras, símbolos o imágenes que muestren los peligros</li></ul>"+
@@ -277,11 +277,11 @@ es: {
       "<li>Consulte la <b>SDS</b> antes de cualquier limpieza — le indica el EPP y el método correctos</li>"+
       "<li>Los derrames pequeños y rutinarios solo pueden limpiarlos empleados <b>capacitados</b> con el EPP adecuado</li>"+
       "<li><b>Derrames grandes, químicos desconocidos o cualquier cosa que cree peligro de incendio o para respirar: evacúe y avise a su supervisor — el supervisor llamará al 911 si se necesita ayuda externa</b></li>"+
-      "<li>Reporte todo derrame al Líder de Cumplimiento Ambiental y Seguridad</li></ul>"+
+      "<li>Reporte todo derrame al Gerente de Seguridad</li></ul>"+
       "<h2>Números de Emergencia</h2>"+
       "<p>Reporte las emergencias primero a su supervisor — el supervisor llama al 911 y coordina a los servicios de emergencia según sea necesario.</p>"+
       "<p>Emergencia (incendio / médica / materiales peligrosos): <span class='phone'>911</span><br>"+
-      "Sala de Emergencias del su hospital más cercano: <span class='phone'>see posted emergency contact sheet</span><br>"+
+      "Sala de Emergencias del hospital más cercano: <span class='phone'>vea la hoja de contactos de emergencia publicada</span><br>"+
       "Control de Envenenamientos: <span class='phone'>1-800-222-1222</span><br>"+
       "CHEMTREC (información de emergencias químicas): <span class='phone'>1-800-424-9300</span></p>",
       kc:{ q:"Un tambor está goteando un químico desconocido y hay vapores fuertes. ¿Qué hace primero?", opts:["Buscar trapos y empezar a limpiarlo","Alertar a los demás, salir del área y avisar a su supervisor","Llamar al 911 usted mismo sin avisar a nadie","Mover el tambor afuera usted mismo"], a:1 } }
@@ -303,7 +303,7 @@ es: {
   answerAll: "Por favor responda todas las preguntas antes de enviar.",
   quiz: [
     { q:"¿Cuál palabra de advertencia aparece en las etiquetas para los peligros MÁS severos?", opts:["ATENCIÓN (WARNING)","PELIGRO (DANGER)","CUIDADO (CAUTION)","ALERTA (ALERT)"], a:1 },
-    { q:"¿Dónde se guardan el archivo maestro de WKO y el inventario químico en WKO Inc.?", opts:["El comedor","La Oficina de Seguridad","La caseta de la entrada principal","La sala de control de los hornos"], a:1 },
+    { q:"¿Dónde se guardan el archivo maestro de SDS y el inventario químico en WKO Inc.?", opts:["El comedor","La Oficina de Seguridad","La caseta de la entrada principal","La sala de control de los hornos"], a:1 },
     { q:"¿Cuántas secciones tiene toda Hoja de Datos de Seguridad?", opts:["8","12","16","20"], a:2 },
     { q:"Un rombo rojo con el símbolo de una llama significa que el químico…", opts:["es corrosivo para la piel","puede incendiarse (inflamable)","es un gas bajo presión","daña la vida acuática"], a:1 },
     { q:"Usted vierte desengrasante en una botella rociadora que quedará en su estación de trabajo toda la semana. La botella debe tener…", opts:["ninguna etiqueta — vino de un tambor etiquetado","el identificador del producto e información de peligros","solo su nombre","una calcomanía verde"], a:1 },
@@ -322,7 +322,7 @@ es: {
   passInstr:"<b>Último paso — registre su finalización:</b> toque el botón de abajo y envíe el formulario de finalización. Escriba su nombre, seleccione <b>\"Hazard Communication / Comunicación de Peligros\"</b> en la lista de módulos e ingrese el código de finalización que aparece arriba. Su capacitación no queda registrada hasta que envíe el formulario.",
   recordBtn:"Registrar Mi Finalización",
   failH:"Todavía No — Siga Adelante",
-  failMsg:"Obtuvo menos del 80%. Revise el material — especialmente las etiquetas, las secciones de la WKO y los pasos de emergencia — e intente de nuevo. No hay límite de intentos.",
+  failMsg:"Obtuvo menos del 80%. Revise el material — especialmente las etiquetas, las secciones de la SDS y los pasos de emergencia — e intente de nuevo. No hay límite de intentos.",
   reviewBtn:"Revisar el Material",
   retakeBtn:"Repetir el Examen",
   yourScore:"Su puntaje"
