@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WKO Inc. — Fire Extinguisher Safety</title>
+<style>
+  :root { --blue:#2E75B6; --dark:#1F4E79; --light:#F2F2F2; --gray:#666666; --red:#C00000; --green:#2E7D32; --amber:#E07B00; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { font-family: Arial, Helvetica, sans-serif; background:#f7f9fb; color:#222; line-height:1.5; }
+  .wrap { max-width:760px; margin:0 auto; padding:16px; }
+  header.bar { background:var(--dark); color:#fff; padding:14px 20px; }
+  header.bar .co { font-weight:bold; font-size:1.05em; letter-spacing:.5px; }
+  header.bar .sub { font-size:.85em; margin-top:2px; opacity:.9; }
+  .splash { text-align:center; padding:34px 22px; }
+  .splash .co { color:var(--gray); font-size:.85em; letter-spacing:2px; font-weight:bold; }
+  .splash .ti-en { color:var(--dark); font-size:1.6em; font-weight:bold; margin:10px 0 4px; }
+  .splash .ti-es { color:var(--blue); font-size:1.4em; font-weight:bold; margin-bottom:18px; }
+  .splash .choose { margin-bottom:16px; }
+  .splash .langbtns { display:flex; gap:14px; justify-content:center; flex-wrap:wrap; }
+  .splash .langbtns button { font-family:Arial; background:var(--blue); color:#fff; border:none; border-radius:6px; padding:14px 0; width:240px; max-width:45%; font-size:1.05em; font-weight:bold; cursor:pointer; }
+  .langbar { text-align:right; padding:10px 16px 0; }
+  .langbar button { font-family:Arial; border:2px solid var(--blue); background:#fff; color:var(--blue); padding:6px 14px; font-weight:bold; cursor:pointer; border-radius:4px; margin-left:6px; font-size:.95em; }
+  .langbar button.active { background:var(--blue); color:#fff; }
+  .card { background:#fff; border:1px solid #d9e2ec; border-radius:8px; padding:22px; margin:16px 0; box-shadow:0 1px 3px rgba(0,0,0,.06); }
+  h1 { color:var(--dark); font-size:1.35em; margin-bottom:12px; }
+  h2 { color:var(--blue); font-size:1.1em; margin:16px 0 8px; }
+  p, li { margin-bottom:10px; }
+  ul { padding-left:22px; }
+  .progress { background:#e1e8f0; border-radius:6px; height:10px; overflow:hidden; margin:4px 0 14px; }
+  .progress > div { background:var(--blue); height:100%; width:0; transition:width .3s; }
+  .btn { font-family:Arial; display:inline-block; background:var(--blue); color:#fff; border:none; padding:12px 26px; font-size:1em; font-weight:bold; border-radius:6px; cursor:pointer; margin-top:14px; }
+  .btn:disabled { background:#9db8d2; cursor:not-allowed; }
+  .btn.secondary { background:#fff; color:var(--blue); border:2px solid var(--blue); }
+  input[type=text] { font-family:Arial; width:100%; padding:12px; font-size:1em; border:2px solid #b8c7d9; border-radius:6px; margin-top:6px; }
+  input[type=text]:focus { border-color:var(--blue); outline:none; }
+  .kc { background:var(--light); border-left:4px solid var(--blue); padding:16px; border-radius:0 6px 6px 0; margin-top:16px; }
+  .kc .kct { font-weight:bold; color:var(--dark); margin-bottom:8px; }
+  .opt { display:block; background:#fff; border:2px solid #c9d6e4; border-radius:6px; padding:10px 12px; margin:8px 0; cursor:pointer; }
+  .opt input { margin-right:10px; }
+  .opt.correct { border-color:var(--green); background:#eef7ee; }
+  .opt.wrong { border-color:var(--red); background:#fdecec; }
+  .fb { font-weight:bold; margin-top:8px; display:none; }
+  .fb.ok { color:var(--green); display:block; }
+  .fb.bad { color:var(--red); display:block; }
+  .qnum { color:var(--gray); font-size:.85em; }
+  .quizq { border-bottom:1px solid #e4eaf1; padding:14px 0; }
+  .quizq .qt { font-weight:bold; margin-bottom:6px; }
+  .cert { border:3px solid var(--dark); border-radius:10px; padding:26px; text-align:center; background:#fff; }
+  .cert .big { font-size:1.5em; color:var(--dark); font-weight:bold; margin:10px 0; }
+  .cert .code { font-size:1.6em; letter-spacing:2px; font-weight:bold; color:var(--blue); background:var(--light); display:inline-block; padding:8px 20px; border-radius:6px; margin:10px 0; }
+  .passmsg { color:var(--green); font-weight:bold; font-size:1.2em; }
+  .failmsg { color:var(--red); font-weight:bold; font-size:1.2em; }
+  .notice { background:#fff8e1; border-left:4px solid #f0a500; padding:12px; border-radius:0 6px 6px 0; margin:12px 0; font-size:.95em; }
+  .danger { background:#fdecec; border-left:4px solid var(--red); padding:12px; border-radius:0 6px 6px 0; margin:12px 0; }
+  .phone { font-weight:bold; color:var(--dark); }
+  table.mini { border-collapse:collapse; width:100%; margin:10px 0; font-size:.95em; }
+  table.mini th { background:var(--blue); color:#fff; padding:8px; text-align:left; }
+  table.mini td { border:1px solid #d9e2ec; padding:8px; vertical-align:top; }
+  table.mini tr:nth-child(even) td { background:var(--light); }
+  .tier { border-radius:8px; padding:14px; margin:10px 0; border:1px solid #d9e2ec; }
+  .tier .tt { font-weight:bold; font-size:1.05em; margin-bottom:4px; }
+  .tier.t1 { border-left:6px solid var(--blue); }
+  .tier.t2 { border-left:6px solid var(--amber); }
+  .tier.t3 { border-left:6px solid var(--red); }
+  footer { text-align:center; color:var(--gray); font-size:.8em; padding:20px 0 30px; }
+  .hidden { display:none !important; }
+</style>
+</head>
+<body>
+<header class="bar">
+  <div class="co">WKO INC.</div>
+  <div class="sub">Fire Extinguisher Safety — Employee Training / Seguridad con Extintores — Capacitación del Empleado</div>
+</header>
+<div class="langbar hidden" id="langBar">
+  <button id="btnEN" onclick="setLang('en')">English</button>
+  <button id="btnES" onclick="setLang('es')">Español</button>
+</div>
+<div class="wrap">
+  <div class="progress" id="progWrap"><div id="progBar"></div></div>
+  <div id="app"></div>
+</div>
+<footer id="ftr">WKO Inc. &middot; Carson, WA &middot; WAC 296-800-30025 &middot; Module v1.0 (2026)</footer>
+<script>
+"use strict";
+var FORM_URL = "https://forms.cloud.microsoft/r/YHYEJNbAMt";
+var MODULE_VERSION = "v1.0";
+var CODE_PREFIX = "FE26-";
+var PASS_PCT = 80;
+
+var STR = {
+en: {"basedOn": "Based on WAC 296-800-30025 and the WKO Inc. Emergency Action & Fire Prevention Plan. Questions? Ask your supervisor or the safety manager.", "introH": "Welcome — Fire Extinguisher Safety at WKO Inc.", "introP1": "This training covers portable fire extinguishers: the classes of fire, how to use an extinguisher with the PASS method, and — most important — how to decide whether to fight a small fire or get out and pull the alarm. It takes about 15 minutes.", "introP2": "</p><div class='notice'><b>The one rule to remember:</b> only fight a small, just-starting fire, with your back to a clear exit. If it is bigger than a trash can, spreading, or between you and the way out — leave, pull the alarm, and let the fire department handle it.</div><p>Required when first hired and annually thereafter for all WKO Inc. employees.", "nameLabel": "Enter your full name to begin:", "namePh": "First and last name", "startBtn": "Start Training", "continueBtn": "Continue", "checkBtn": "Check Answer", "kcOk": "Correct — well done.", "kcBad": "Not quite — the correct answer is highlighted. Review it, then continue.", "secLabel": "Section", "ofLabel": "of", "sections": [{"h": "1. Why This Training", "body": "<p>A portable fire extinguisher can stop a small fire before it becomes a disaster — but only if you know how to use it and, just as important, when <b>not</b> to.</p><p>Washington State law — <b>WAC 296-800-30025</b> — requires WKO Inc. to train you on the general principles of fire extinguisher use when you are hired and every year after. A sawmill has real fire risk: sawdust, wood, hydraulic oil, fuels, electrical equipment, and hot work all around you.</p><div class='notice'>WKO Inc.'s plan is <b>incipient use, then evacuate</b>: any employee may fight a small, just-starting fire if it is safe to do so — but when the fire alarm sounds, everyone evacuates.</div>", "kc": {"q": "What does WAC 296-800-30025 require?", "opts": ["Nothing — extinguisher training is optional", "Training on fire extinguisher use when hired and annually", "Only supervisors need training", "Training once, never repeated"], "a": 1}}, {"h": "2. How Fire Works — The Fire Triangle", "body": "<p>A fire needs three things at once. Take away any one and the fire goes out:</p><ul><li><b>Fuel</b> — wood, sawdust, paper, oil, fuel, plastics</li><li><b>Heat</b> — a spark, a flame, hot work, an overheated motor</li><li><b>Oxygen</b> — the air around us</li></ul><p>A fire extinguisher works by removing one or more of these — smothering the oxygen, cooling the heat, or interrupting the chemical reaction.</p><div class='notice'>This is why the <b>right type</b> of extinguisher matters: water cools a wood fire but is dangerous on an electrical or an oil fire, which need to be smothered instead.</div>", "kc": {"q": "Which three things does a fire need?", "opts": ["Water, foam, powder", "Wood, metal, and plastic", "Smoke, ash, and sparks", "Fuel, heat, and oxygen"], "a": 3}}, {"h": "3. Classes of Fire", "body": "<p>Fires are grouped by what is burning. The class tells you which extinguisher to use.</p><table class='mini'><tr><th>Class</th><th>What burns</th></tr><tr><td><b>Class A</b></td><td>Ordinary combustibles — wood, sawdust, paper, cardboard, cloth</td></tr><tr><td><b>Class B</b></td><td>Flammable liquids and gases — hydraulic oil, diesel, gasoline, grease</td></tr><tr><td><b>Class C</b></td><td>Energized electrical — motors, panels, wiring, MCCs</td></tr><tr><td><b>Class D</b></td><td>Combustible metals (special agents only)</td></tr><tr><td><b>Class K</b></td><td>Cooking oils and fats (kitchen)</td></tr></table><p>In a sawmill you will most often meet <b>A, B, and C</b> fires — often close together, which is why a multipurpose extinguisher is common.</p>", "kc": {"q": "Burning hydraulic oil or diesel is which class of fire?", "opts": ["Class A", "Class B", "Class C", "Class K"], "a": 1}}, {"h": "4. Matching the Extinguisher to the Fire", "body": "<p>Every extinguisher is labeled with the classes it can fight. Read the label <b>before</b> you need it.</p><table class='mini'><tr><th>Extinguisher</th><th>Good for</th></tr><tr><td><b>ABC dry chemical</b> (most common here)</td><td>Class A, B, and C — a safe all-around choice</td></tr><tr><td><b>CO&#8322; (carbon dioxide)</b></td><td>Class B and C — leaves no residue, good for electrical</td></tr><tr><td><b>Water</b></td><td>Class A only — <b>never</b> on electrical or oil fires</td></tr></table><div class='danger'><b>Never put water on an electrical or oil fire.</b> Water conducts electricity and can spread burning oil — it makes things worse. When in doubt, an <b>ABC</b> extinguisher is the safe choice.</div>", "kc": {"q": "Which extinguisher is a safe all-around choice for A, B, and C fires?", "opts": ["Water", "ABC dry chemical", "A bucket of sand", "Class D powder"], "a": 1}}, {"h": "5. Should You Fight It? — The Decision", "body": "<p>This is the most important section. Before you touch an extinguisher, decide honestly:</p><div class='danger'><b>Only fight a fire if ALL of these are true:</b><ul><li>The fire is <b>small</b> — no bigger than a trash can — and just starting</li><li>You have a <b>clear exit</b> behind you and the fire is not between you and the way out</li><li>You have the <b>right extinguisher</b> and know how to use it</li><li>The fire is <b>not spreading</b> and there is little smoke</li></ul></div><p>If <b>any</b> of these is not true — or you are unsure — do not fight it. There is no shame in walking away from a fire; extinguishers and buildings can be replaced, you cannot.</p>", "kc": {"q": "You should only fight a fire if…", "opts": ["It is large but you feel brave", "The exit is on the far side of the fire", "There is heavy smoke", "It is small, not spreading, you have the right extinguisher, and a clear exit behind you"], "a": 3}}, {"h": "6. When to Walk Away and Pull the Alarm", "body": "<p>Get out and pull the alarm — do <b>not</b> fight the fire — if any of these is true:</p><ul><li>The fire is <b>bigger than a trash can</b> or spreading fast</li><li>There is <b>heavy smoke</b>, or the room is filling with smoke</li><li>The fire is between you and your <b>only exit</b></li><li>You do not have the <b>right</b> extinguisher, or the first one did not put it out</li><li>You feel unsafe for <b>any</b> reason</li></ul><div class='danger'>If you empty one extinguisher and the fire is not out — <b>stop, leave, and pull the alarm.</b> Do not go looking for a second extinguisher. Leave fire suppression to the fire department.</div><p>When the <b>alarm sounds, everyone evacuates</b> to the muster point — that is our plan, no exceptions.</p>", "kc": {"q": "You emptied one extinguisher and the fire is still going. You should…", "opts": ["Find a second extinguisher and keep fighting", "Stop, leave, and pull the alarm", "Wait to see if it goes out", "Open a window"], "a": 1}}, {"h": "7. How to Use One — The PASS Method", "body": "<p>If you have decided it is safe to fight the fire, use <b>PASS</b>:</p><table class='mini'><tr><td><b>P — Pull</b></td><td>Pull the pin. This breaks the seal and lets you discharge.</td></tr><tr><td><b>A — Aim</b></td><td>Aim the nozzle low, at the <b>base</b> of the fire — not at the flames.</td></tr><tr><td><b>S — Squeeze</b></td><td>Squeeze the handle to release the agent.</td></tr><tr><td><b>S — Sweep</b></td><td>Sweep side to side across the base until the fire is out.</td></tr></table><div class='notice'>Aim at the <b>base</b>, not the flames — the fuel is at the bottom. Stand about <b>6 to 8 feet back</b> and keep your exit behind you the whole time.</div>", "kc": {"q": "In PASS, where do you aim the extinguisher?", "opts": ["At the top of the flames", "At the base of the fire", "At the smoke", "At the ceiling"], "a": 1}}, {"h": "8. Stay Between the Fire and the Exit", "body": "<p>Even when you fight a fire, protect your escape:</p><ul><li><b>Keep your back to a clear exit</b> so you can leave the instant things change.</li><li>Never let the fire get between you and the door.</li><li>Stay low if there is smoke — cleaner air is near the floor.</li><li>Watch for the fire flaring back up after it looks out — dry chemical can knock down flames that reignite.</li></ul><div class='danger'>The moment the fire grows, the smoke thickens, or your escape is threatened — <b>drop the extinguisher and get out.</b> Your life is worth more than any equipment.</div>", "kc": {"q": "While fighting a fire, your exit should always be…", "opts": ["On the far side of the fire", "Behind you and clear", "Blocked so no one enters", "Wherever is closest to the fire"], "a": 1}}, {"h": "9. After You Use an Extinguisher", "body": "<p>An extinguisher that has been used — even for a second — is no longer ready and must be taken out of service:</p><ul><li><b>Report it to your supervisor</b> so it can be recharged or replaced right away.</li><li>Never put a used or partly discharged extinguisher back on the wall. A partly-used one may be empty when the next person needs it.</li><li>Tell your supervisor about the fire itself, even a small one you put out — it may point to a hazard that needs fixing.</li></ul><div class='notice'>A used extinguisher looks full but may be empty inside. Reporting it is how we keep every station ready for the next emergency.</div>", "kc": {"q": "After you use an extinguisher — even briefly — you should…", "opts": ["Hang it back on the wall", "Report it to your supervisor for recharge or replacement", "Refill it yourself", "Leave it on the floor"], "a": 1}}, {"h": "10. Know Before There's a Fire", "body": "<p>The time to learn the extinguishers is <b>now</b>, not during a fire. Take a minute in your work area to know:</p><ul><li><b>Where</b> the nearest extinguishers are — and the one after that</li><li><b>What class</b> each one is rated for (read the label)</li><li>Where the <b>fire alarm pull stations</b> are</li><li>Your <b>evacuation route</b> and the muster point</li></ul><div class='notice'>Extinguishers must be kept <b>visible, unblocked, and reachable</b>. If one is blocked, missing, or shows a discharged gauge, tell your supervisor — a fire extinguisher you cannot reach is no help at all.</div>", "kc": {"q": "When is the right time to learn where extinguishers are?", "opts": ["During a fire", "Now, before any fire happens", "Only at your annual review", "Never — someone will tell you"], "a": 1}}, {"h": "11. Fire Prevention in the Mill", "body": "<p>The best fire is the one that never starts. Everyday habits that prevent fire:</p><ul><li><b>Housekeeping</b> — keep sawdust and wood scrap from building up; it is fuel.</li><li>Clean up <b>oil and fuel spills</b> right away.</li><li>Follow the <b>Hot Work permit</b> and fire-watch rules for welding, cutting, and grinding.</li><li>Keep <b>electrical panels clear</b> and report overheating motors or burning smells.</li><li>Never block extinguishers, exits, or alarm pull stations.</li></ul><div class='notice'>Report fire hazards before they become fires — a report is always cheaper than a fire.</div>", "kc": {"q": "Which everyday habit helps prevent fires in the mill?", "opts": ["Keeping sawdust and spills cleaned up", "Letting sawdust pile up", "Blocking an extinguisher for convenience", "Ignoring a burning smell"], "a": 0}}, {"h": "12. Questions About This Training", "body": "<p>You can ask questions about this training and get answers during your shift.</p><div class='kc' style='border-left-color:var(--blue);'><div class='kct'>Questions about this training?</div><p style='margin:0'>Ask your <b>supervisor</b> or the <b>safety manager</b> — in person during your shift, or by the contact numbers posted on the department bulletin board. You can ask before, during, or after this module and get an answer the same day.</p></div><p>When you continue, you'll take a short 10-question quiz. You need 8 correct (80%) to pass, and you can retake it as many times as you need.</p>"}], "quiz": [{"q": "WKO Inc.'s fire posture is…", "opts": ["Fight every fire no matter the size", "Incipient use, then evacuate — fight only a small fire if safe, evacuate on the alarm", "Never touch an extinguisher", "Wait for the fire department for everything"], "a": 1}, {"q": "A fire needs which three things?", "opts": ["Water, foam, powder", "Smoke, ash, and sparks", "Fuel, heat, and oxygen", "Metal, wood, and plastic"], "a": 2}, {"q": "Burning diesel or hydraulic oil is which class of fire?", "opts": ["Class B", "Class A", "Class C", "Class K"], "a": 0}, {"q": "Which extinguisher is a safe all-around choice for A, B, and C fires?", "opts": ["Water", "ABC dry chemical", "A wet rag", "Class D powder"], "a": 1}, {"q": "You should ONLY fight a fire if…", "opts": ["It is large but you feel confident", "The exit is past the fire", "There is heavy smoke in the room", "It is small, not spreading, you have the right extinguisher, and a clear exit behind you"], "a": 3}, {"q": "You emptied one extinguisher and the fire is still burning. You should…", "opts": ["Get a second extinguisher and keep going", "Stop, leave, and pull the alarm", "Open a window and wait", "Throw water on it"], "a": 1}, {"q": "In the PASS method, you aim the extinguisher at…", "opts": ["The top of the flames", "The base of the fire", "The smoke", "The ceiling"], "a": 1}, {"q": "While fighting a fire, your exit should be…", "opts": ["On the far side of the fire", "Locked", "Behind you and clear", "Wherever's closest to the flames"], "a": 2}, {"q": "After using an extinguisher — even for a second — you must…", "opts": ["Report it to your supervisor for recharge or replacement", "Hang it back on the wall", "Refill it yourself", "Leave it where it is"], "a": 0}, {"q": "You should NEVER put water on…", "opts": ["A wood or paper fire", "An electrical or oil fire", "A cardboard fire", "Burning sawdust"], "a": 1}], "quizH": "Final Quiz", "quizIntro": "Answer all 10 questions. You need 8 correct (80%) to pass. Take your time — you can review the material and retake the quiz if needed.", "submitBtn": "Submit Quiz", "answerAll": "Please answer every question before submitting.", "passH": "Congratulations — You Passed!", "passSub": "Certificate of Completion", "passModule": "Fire Extinguisher Safety — Employee Training ", "scoreLabel": "Score", "dateLabel": "Date", "codeLabel": "Your completion code", "passInstr": "<b>Last step — record your completion:</b> tap the button below and submit the completion form. Enter your name, select <b>\"Fire Extinguisher Safety / Seguridad con Extintores\"</b> from the module list, and enter the completion code shown above. Your training is not on record until you submit the form.", "completion": "", "recordBtn": "Record My Completion", "failH": "Not Yet — Keep Going", "failMsg": "You scored below 80%. Review the material — especially when to fight a fire versus evacuate, the PASS method, matching the extinguisher to the fire class, and never using water on electrical or oil fires — and try again. There is no limit on attempts.", "reviewBtn": "Review the Material", "retakeBtn": "Retake the Quiz", "yourScore": "Your score"},
+es: {"basedOn": "Basado en WAC 296-800-30025 y el Plan de Acción de Emergencia y Prevención de Incendios de WKO Inc. ¿Preguntas? Pregunte a su supervisor o al gerente de seguridad.", "introH": "Bienvenido — Seguridad con Extintores en WKO Inc.", "introP1": "Esta capacitación cubre los extintores portátiles: las clases de fuego, cómo usar un extintor con el método PASS y — lo más importante — cómo decidir si combatir un fuego pequeño o salir y activar la alarma. Toma unos 15 minutos.", "introP2": "</p><div class='notice'><b>La regla que debe recordar:</b> combata solo un fuego pequeño que apenas comienza, con la espalda hacia una salida despejada. Si es más grande que un bote de basura, se está propagando, o está entre usted y la salida — salga, active la alarma y deje que los bomberos se encarguen.</div><p>Requerido al ser contratado y cada año para todos los empleados de WKO Inc.", "nameLabel": "Escriba su nombre completo para comenzar:", "namePh": "Nombre y apellido", "startBtn": "Comenzar la capacitación", "continueBtn": "Continuar", "checkBtn": "Verificar respuesta", "kcOk": "Correcto — bien hecho.", "kcBad": "No exactamente — la respuesta correcta está resaltada. Revísela y continúe.", "secLabel": "Sección", "ofLabel": "de", "sections": [{"h": "1. Por qué esta capacitación", "body": "<p>Un extintor portátil puede detener un fuego pequeño antes de que se convierta en un desastre — pero solo si sabe cómo usarlo y, igual de importante, cuándo <b>no</b> hacerlo.</p><p>La ley del estado de Washington — <b>WAC 296-800-30025</b> — exige que WKO Inc. lo capacite en los principios generales del uso de extintores al ser contratado y cada año. Un aserradero tiene riesgo real de incendio: aserrín, madera, aceite hidráulico, combustibles, equipo eléctrico y trabajo en caliente a su alrededor.</p><div class='notice'>El plan de WKO Inc. es <b>uso incipiente, luego evacuar</b>: cualquier empleado puede combatir un fuego pequeño que apenas comienza si es seguro hacerlo — pero cuando suena la alarma, todos evacúan.</div>", "kc": {"q": "¿Qué exige la WAC 296-800-30025?", "opts": ["Nada — la capacitación es opcional", "Capacitación sobre el uso de extintores al ser contratado y cada año", "Solo los supervisores necesitan capacitación", "Capacitación una vez, sin repetir"], "a": 1}}, {"h": "2. Cómo funciona el fuego — El triángulo del fuego", "body": "<p>Un fuego necesita tres cosas a la vez. Quite cualquiera y el fuego se apaga:</p><ul><li><b>Combustible</b> — madera, aserrín, papel, aceite, combustible, plásticos</li><li><b>Calor</b> — una chispa, una llama, trabajo en caliente, un motor sobrecalentado</li><li><b>Oxígeno</b> — el aire a nuestro alrededor</li></ul><p>Un extintor funciona quitando uno o más de estos — sofocando el oxígeno, enfriando el calor o interrumpiendo la reacción química.</p><div class='notice'>Por eso importa el <b>tipo correcto</b> de extintor: el agua enfría un fuego de madera pero es peligrosa en un fuego eléctrico o de aceite, que deben sofocarse.</div>", "kc": {"q": "¿Qué tres cosas necesita un fuego?", "opts": ["Agua, espuma, polvo", "Madera, metal y plástico", "Humo, ceniza y chispas", "Combustible, calor y oxígeno"], "a": 3}}, {"h": "3. Clases de fuego", "body": "<p>Los fuegos se agrupan por lo que se quema. La clase le dice qué extintor usar.</p><table class='mini'><tr><th>Clase</th><th>Qué se quema</th></tr><tr><td><b>Clase A</b></td><td>Combustibles ordinarios — madera, aserrín, papel, cartón, tela</td></tr><tr><td><b>Clase B</b></td><td>Líquidos y gases inflamables — aceite hidráulico, diésel, gasolina, grasa</td></tr><tr><td><b>Clase C</b></td><td>Eléctrico energizado — motores, paneles, cableado, MCC</td></tr><tr><td><b>Clase D</b></td><td>Metales combustibles (solo agentes especiales)</td></tr><tr><td><b>Clase K</b></td><td>Aceites y grasas de cocina</td></tr></table><p>En un aserradero encontrará con más frecuencia fuegos <b>A, B y C</b> — a menudo juntos, por lo que un extintor multiusos es común.</p>", "kc": {"q": "El aceite hidráulico o el diésel ardiendo son ¿qué clase de fuego?", "opts": ["Clase A", "Clase B", "Clase C", "Clase K"], "a": 1}}, {"h": "4. Elegir el extintor según el fuego", "body": "<p>Cada extintor está etiquetado con las clases que puede combatir. Lea la etiqueta <b>antes</b> de necesitarlo.</p><table class='mini'><tr><th>Extintor</th><th>Bueno para</th></tr><tr><td><b>Químico seco ABC</b> (el más común aquí)</td><td>Clase A, B y C — una opción segura para todo</td></tr><tr><td><b>CO&#8322; (dióxido de carbono)</b></td><td>Clase B y C — no deja residuo, bueno para eléctrico</td></tr><tr><td><b>Agua</b></td><td>Solo Clase A — <b>nunca</b> en fuegos eléctricos o de aceite</td></tr></table><div class='danger'><b>Nunca ponga agua en un fuego eléctrico o de aceite.</b> El agua conduce electricidad y puede esparcir el aceite ardiendo — empeora las cosas. En caso de duda, un extintor <b>ABC</b> es la opción segura.</div>", "kc": {"q": "¿Qué extintor es una opción segura para todo tipo de fuego A, B y C?", "opts": ["Agua", "Químico seco ABC", "Un balde de arena", "Polvo Clase D"], "a": 1}}, {"h": "5. ¿Debe combatirlo? — La decisión", "body": "<p>Esta es la sección más importante. Antes de tocar un extintor, decida con honestidad:</p><div class='danger'><b>Combata un fuego solo si TODO esto es cierto:</b><ul><li>El fuego es <b>pequeño</b> — no más grande que un bote de basura — y apenas comienza</li><li>Tiene una <b>salida despejada</b> detrás de usted y el fuego no está entre usted y la salida</li><li>Tiene el <b>extintor correcto</b> y sabe usarlo</li><li>El fuego <b>no se está propagando</b> y hay poco humo</li></ul></div><p>Si <b>algo</b> de esto no es cierto — o no está seguro — no lo combata. No hay vergüenza en alejarse de un fuego; los extintores y los edificios se reemplazan, usted no.</p>", "kc": {"q": "Debe combatir un fuego solo si…", "opts": ["Es grande pero se siente valiente", "La salida está al otro lado del fuego", "Hay mucho humo", "Es pequeño, no se propaga, tiene el extintor correcto y una salida despejada detrás"], "a": 3}}, {"h": "6. Cuándo alejarse y activar la alarma", "body": "<p>Salga y active la alarma — <b>no</b> combata el fuego — si algo de esto es cierto:</p><ul><li>El fuego es <b>más grande que un bote de basura</b> o se propaga rápido</li><li>Hay <b>mucho humo</b>, o el cuarto se está llenando de humo</li><li>El fuego está entre usted y su <b>única salida</b></li><li>No tiene el extintor <b>correcto</b>, o el primero no lo apagó</li><li>Se siente inseguro por <b>cualquier</b> razón</li></ul><div class='danger'>Si vacía un extintor y el fuego no se apaga — <b>deténgase, salga y active la alarma.</b> No vaya a buscar un segundo extintor. Deje la extinción a los bomberos.</div><p>Cuando <b>suena la alarma, todos evacúan</b> al punto de reunión — ese es nuestro plan, sin excepciones.</p>", "kc": {"q": "Vació un extintor y el fuego sigue. Debe…", "opts": ["Buscar un segundo extintor y seguir combatiendo", "Detenerse, salir y activar la alarma", "Esperar a ver si se apaga", "Abrir una ventana"], "a": 1}}, {"h": "7. Cómo usarlo — El método PASS", "body": "<p>Si decidió que es seguro combatir el fuego, use <b>PASS</b>:</p><table class='mini'><tr><td><b>P — Pull (Jale)</b></td><td>Jale el pasador. Esto rompe el sello y permite descargar.</td></tr><tr><td><b>A — Aim (Apunte)</b></td><td>Apunte la boquilla abajo, a la <b>base</b> del fuego — no a las llamas.</td></tr><tr><td><b>S — Squeeze (Apriete)</b></td><td>Apriete la manija para liberar el agente.</td></tr><tr><td><b>S — Sweep (Barra)</b></td><td>Barra de lado a lado por la base hasta que el fuego se apague.</td></tr></table><div class='notice'>Apunte a la <b>base</b>, no a las llamas — el combustible está abajo. Párese a unos <b>2 metros (6 a 8 pies)</b> y mantenga su salida detrás de usted todo el tiempo.</div>", "kc": {"q": "En PASS, ¿a dónde apunta el extintor?", "opts": ["A la parte alta de las llamas", "A la base del fuego", "Al humo", "Al techo"], "a": 1}}, {"h": "8. Manténgase entre el fuego y la salida", "body": "<p>Incluso al combatir un fuego, proteja su escape:</p><ul><li><b>Mantenga la espalda hacia una salida despejada</b> para poder salir en cuanto algo cambie.</li><li>Nunca deje que el fuego quede entre usted y la puerta.</li><li>Agáchese si hay humo — el aire más limpio está cerca del piso.</li><li>Vigile que el fuego no se reavive después de parecer apagado — el químico seco puede sofocar llamas que vuelven a encenderse.</li></ul><div class='danger'>En el momento en que el fuego crece, el humo se espesa o su escape está en peligro — <b>suelte el extintor y salga.</b> Su vida vale más que cualquier equipo.</div>", "kc": {"q": "Al combatir un fuego, su salida siempre debe estar…", "opts": ["Al otro lado del fuego", "Detrás de usted y despejada", "Bloqueada para que nadie entre", "Donde esté más cerca del fuego"], "a": 1}}, {"h": "9. Después de usar un extintor", "body": "<p>Un extintor que se ha usado — aunque sea un segundo — ya no está listo y debe retirarse de servicio:</p><ul><li><b>Repórtelo a su supervisor</b> para que se recargue o reemplace de inmediato.</li><li>Nunca vuelva a colgar en la pared un extintor usado o descargado en parte. Uno usado a medias puede estar vacío cuando la próxima persona lo necesite.</li><li>Informe a su supervisor sobre el fuego en sí, incluso uno pequeño que apagó — puede señalar un peligro que hay que corregir.</li></ul><div class='notice'>Un extintor usado parece lleno pero puede estar vacío por dentro. Reportarlo es cómo mantenemos cada estación lista para la próxima emergencia.</div>", "kc": {"q": "Después de usar un extintor — aunque sea brevemente — debe…", "opts": ["Volver a colgarlo en la pared", "Reportarlo a su supervisor para recarga o reemplazo", "Rellenarlo usted mismo", "Dejarlo en el piso"], "a": 1}}, {"h": "10. Conozca antes de que haya fuego", "body": "<p>El momento de conocer los extintores es <b>ahora</b>, no durante un incendio. Tómese un minuto en su área de trabajo para saber:</p><ul><li><b>Dónde</b> están los extintores más cercanos — y el siguiente</li><li><b>Para qué clase</b> está clasificado cada uno (lea la etiqueta)</li><li>Dónde están las <b>estaciones de alarma</b> de incendio</li><li>Su <b>ruta de evacuación</b> y el punto de reunión</li></ul><div class='notice'>Los extintores deben mantenerse <b>visibles, sin obstrucción y al alcance</b>. Si uno está bloqueado, falta, o muestra el manómetro descargado, dígale a su supervisor — un extintor que no puede alcanzar no sirve de nada.</div>", "kc": {"q": "¿Cuándo es el momento correcto de aprender dónde están los extintores?", "opts": ["Durante un fuego", "Ahora, antes de que ocurra un fuego", "Solo en su revisión anual", "Nunca — alguien le dirá"], "a": 1}}, {"h": "11. Prevención de incendios en el aserradero", "body": "<p>El mejor fuego es el que nunca comienza. Hábitos diarios que previenen incendios:</p><ul><li><b>Orden y limpieza</b> — evite que se acumule aserrín y desperdicio de madera; es combustible.</li><li>Limpie de inmediato los <b>derrames de aceite y combustible</b>.</li><li>Siga el <b>permiso de Trabajo en Caliente</b> y las reglas de vigilancia contra incendios para soldar, cortar y esmerilar.</li><li>Mantenga <b>despejados los paneles eléctricos</b> y reporte motores sobrecalentados u olor a quemado.</li><li>Nunca bloquee extintores, salidas ni estaciones de alarma.</li></ul><div class='notice'>Reporte los peligros de incendio antes de que se vuelvan incendios — un reporte siempre es más barato que un incendio.</div>", "kc": {"q": "¿Qué hábito diario ayuda a prevenir incendios en el aserradero?", "opts": ["Mantener limpios el aserrín y los derrames", "Dejar que se acumule el aserrín", "Bloquear un extintor por comodidad", "Ignorar un olor a quemado"], "a": 0}}, {"h": "12. Preguntas sobre esta capacitación", "body": "<p>Puede hacer preguntas sobre esta capacitación y recibir respuestas durante su turno.</p><div class='kc' style='border-left-color:var(--blue);'><div class='kct'>¿Preguntas sobre esta capacitación?</div><p style='margin:0'>Pregunte a su <b>supervisor</b> o al <b>gerente de seguridad</b> — en persona durante su turno, o por los números de contacto publicados en el tablero del departamento. Puede preguntar antes, durante o después de este módulo y recibir respuesta el mismo día.</p></div><p>Al continuar, tomará un breve examen de 10 preguntas. Necesita 8 correctas (80%) para aprobar, y puede repetirlo cuantas veces necesite.</p>"}], "quiz": [{"q": "La postura de incendios de WKO Inc. es…", "opts": ["Combatir todo fuego sin importar el tamaño", "Uso incipiente, luego evacuar — combatir solo un fuego pequeño si es seguro, evacuar con la alarma", "Nunca tocar un extintor", "Esperar a los bomberos para todo"], "a": 1}, {"q": "¿Qué tres cosas necesita un fuego?", "opts": ["Agua, espuma, polvo", "Humo, ceniza y chispas", "Combustible, calor y oxígeno", "Metal, madera y plástico"], "a": 2}, {"q": "El diésel o el aceite hidráulico ardiendo son ¿qué clase de fuego?", "opts": ["Clase B", "Clase A", "Clase C", "Clase K"], "a": 0}, {"q": "¿Qué extintor es una opción segura para todo fuego A, B y C?", "opts": ["Agua", "Químico seco ABC", "Un trapo mojado", "Polvo Clase D"], "a": 1}, {"q": "Debe combatir un fuego SOLO si…", "opts": ["Es grande pero se siente seguro", "La salida está pasando el fuego", "Hay mucho humo en el cuarto", "Es pequeño, no se propaga, tiene el extintor correcto y una salida despejada detrás"], "a": 3}, {"q": "Vació un extintor y el fuego sigue ardiendo. Debe…", "opts": ["Buscar un segundo extintor y seguir", "Detenerse, salir y activar la alarma", "Abrir una ventana y esperar", "Echarle agua"], "a": 1}, {"q": "En el método PASS, apunta el extintor a…", "opts": ["La parte alta de las llamas", "La base del fuego", "El humo", "El techo"], "a": 1}, {"q": "Al combatir un fuego, su salida debe estar…", "opts": ["Al otro lado del fuego", "Cerrada con llave", "Detrás de usted y despejada", "Donde esté más cerca de las llamas"], "a": 2}, {"q": "Después de usar un extintor — aunque sea un segundo — debe…", "opts": ["Reportarlo a su supervisor para recarga o reemplazo", "Volver a colgarlo en la pared", "Rellenarlo usted mismo", "Dejarlo donde está"], "a": 0}, {"q": "NUNCA debe poner agua en…", "opts": ["Un fuego de madera o papel", "Un fuego eléctrico o de aceite", "Un fuego de cartón", "Aserrín ardiendo"], "a": 1}], "quizH": "Examen final", "quizIntro": "Responda las 10 preguntas. Necesita 8 correctas (80%) para aprobar. Tómese su tiempo — puede revisar el material y volver a tomar el examen si es necesario.", "submitBtn": "Enviar examen", "answerAll": "Por favor responda todas las preguntas antes de enviar.", "passH": "¡Felicidades — Aprobó!", "passSub": "Certificado de Finalización", "passModule": "Seguridad con Extintores — Capacitación del Empleado ", "scoreLabel": "Puntaje", "dateLabel": "Fecha", "codeLabel": "Su código de finalización", "passInstr": "<b>Último paso — registre su finalización:</b> toque el botón de abajo y envíe el formulario. Escriba su nombre, seleccione <b>\"Fire Extinguisher Safety / Seguridad con Extintores\"</b> de la lista de módulos, e ingrese el código mostrado arriba. Su capacitación no queda registrada hasta que envíe el formulario.", "completion": "", "recordBtn": "Registrar mi finalización", "failH": "Aún no — Siga adelante", "failMsg": "Obtuvo menos del 80%. Repase el material — especialmente cuándo combatir un fuego versus evacuar, el método PASS, elegir el extintor según la clase de fuego, y nunca usar agua en fuegos eléctricos o de aceite — e inténtelo de nuevo. No hay límite de intentos.", "reviewBtn": "Repasar el material", "retakeBtn": "Repetir el examen", "yourScore": "Su puntaje"}
+};
+
+var ANSWER_KEY = STR.en.quiz.map(function(q){ return q.a; });
+
+/* ------------ State ------------ */
+var state = { lang:null, screen:"lang", section:0, name:"", kcDone:{}, quizAnswers:{}, lastScore:null, code:null };
+
+/* ------------ Helpers ------------ */
+function T(){ return STR[state.lang]; }
+function $(id){ return document.getElementById(id); }
+function esc(s){ var d=document.createElement("div"); d.appendChild(document.createTextNode(s)); return d.innerHTML; }
+
+function generateCode(){
+  var chars="ABCDEFGHJKMNPQRSTUVWXYZ23456789", out="";
+  for(var i=0;i<5;i++){ out+=chars.charAt(Math.floor(Math.random()*chars.length)); }
+  return CODE_PREFIX+out;
+}
+function gradeQuiz(answers){
+  var correct=0;
+  for(var i=0;i<ANSWER_KEY.length;i++){ if(answers[i]===ANSWER_KEY[i]) correct++; }
+  var pct=Math.round(correct/ANSWER_KEY.length*100);
+  return { correct:correct, total:ANSWER_KEY.length, pct:pct, pass: pct>=PASS_PCT };
+}
+
+/* ------------ Rendering ------------ */
+function setLang(l){
+  state.lang=l;
+  if(state.screen==="lang") state.screen="intro";
+  $("langBar").className="langbar";
+  $("btnEN").className = l==="en"?"active":"";
+  $("btnES").className = l==="es"?"active":"";
+  render();
+}
+function progress(){
+  if(state.screen==="lang"){ $("progBar").style.width="0%"; return; }
+  var total = T().sections.length + 2;
+  var pos = state.screen==="intro"?0 : state.screen==="quiz"?total-1 : state.screen==="pass"||state.screen==="fail"?total : state.section+1;
+  $("progBar").style.width = Math.round(pos/total*100)+"%";
+}
+function renderLang(){
+  $("app").innerHTML =
+    '<div class="card splash">'+
+    '<div class="co">WKO INC.</div>'+
+    '<div class="ti-en">Fire Extinguisher Safety Training</div>'+
+    '<div class="ti-es">Capacitación sobre Seguridad con Extintores</div>'+
+    '<div class="choose">Choose your language / Elija su idioma:</div>'+
+    '<div class="langbtns">'+
+    '<button id="langBtnEN">English</button>'+
+    '<button id="langBtnES">Español</button>'+
+    '</div></div>';
+  $("langBtnEN").addEventListener("click", function(){ setLang("en"); });
+  $("langBtnES").addEventListener("click", function(){ setLang("es"); });
+}
+function render(){
+  progress();
+  if(state.screen==="lang") renderLang();
+  else if(state.screen==="intro") renderIntro();
+  else if(state.screen==="section") renderSection();
+  else if(state.screen==="quiz") renderQuiz();
+  else if(state.screen==="pass") renderPass();
+  else if(state.screen==="fail") renderFail();
+}
+function renderIntro(){
+  var t=T();
+  $("app").innerHTML =
+    '<div class="card"><h1>'+t.introH+'</h1><p>'+t.introP1+'</p><p>'+t.introP2+'</p>'+
+    '<h2>'+t.nameLabel+'</h2>'+
+    '<input type="text" id="nameInput" placeholder="'+t.namePh+'" value="'+esc(state.name)+'" autocomplete="name">'+
+    '<br><button class="btn" id="startBtn" disabled>'+t.startBtn+'</button>'+
+    '<p style="color:var(--gray);font-size:.85em;margin-top:16px">'+t.basedOn+'</p></div>';
+  var inp=$("nameInput"), btn=$("startBtn");
+  function gate(){ state.name=inp.value.trim(); btn.disabled = state.name.length<2; }
+  inp.addEventListener("input", gate); gate();
+  btn.addEventListener("click", function(){ if(state.name.length>=2){ state.screen="section"; state.section=0; render(); window.scrollTo(0,0);} });
+}
+function renderSection(){
+  var t=T(), s=t.sections[state.section];
+  var html = '<div class="card"><div class="qnum">'+t.secLabel+' '+(state.section+1)+' '+t.ofLabel+' '+t.sections.length+'</div><h1>'+s.h+'</h1>'+s.body;
+  var kcPassed = !!state.kcDone[state.section];
+  if(s.kc){
+    html += '<div class="kc"><div class="kct">✔ '+s.kc.q+'</div>';
+    for(var i=0;i<s.kc.opts.length;i++){
+      html += '<label class="opt" id="kcOpt'+i+'"><input type="radio" name="kc" value="'+i+'"'+(kcPassed?' disabled':'')+'>'+s.kc.opts[i]+'</label>';
+    }
+    html += '<div class="fb" id="kcFb"></div>';
+    if(!kcPassed) html += '<button class="btn secondary" id="kcCheck">'+t.checkBtn+'</button>';
+    html += '</div>';
+  }
+  html += '<br><button class="btn" id="contBtn"'+((s.kc&&!kcPassed)?' disabled':'')+'>'+t.continueBtn+'</button></div>';
+  $("app").innerHTML = html;
+  if(s.kc && !kcPassed){
+    $("kcCheck").addEventListener("click", function(){
+      var sel=document.querySelector('input[name="kc"]:checked');
+      if(!sel) return;
+      var v=parseInt(sel.value,10), fb=$("kcFb");
+      if(v===s.kc.a){
+        state.kcDone[state.section]=true;
+        $("kcOpt"+v).className="opt correct";
+        fb.className="fb ok"; fb.textContent=t.kcOk;
+        $("contBtn").disabled=false; $("kcCheck").disabled=true;
+      } else {
+        $("kcOpt"+v).className="opt wrong";
+        $("kcOpt"+s.kc.a).className="opt correct";
+        fb.className="fb bad"; fb.textContent=t.kcBad;
+        state.kcDone[state.section]=true;
+        $("contBtn").disabled=false; $("kcCheck").disabled=true;
+      }
+    });
+  }
+  $("contBtn").addEventListener("click", function(){
+    if(state.section < t.sections.length-1){ state.section++; } else { state.screen="quiz"; }
+    render(); window.scrollTo(0,0);
+  });
+}
+function renderQuiz(){
+  var t=T();
+  var html='<div class="card"><h1>'+t.quizH+'</h1><p>'+t.quizIntro+'</p>';
+  for(var i=0;i<t.quiz.length;i++){
+    var q=t.quiz[i];
+    html+='<div class="quizq"><div class="qt">'+(i+1)+'. '+q.q+'</div>';
+    for(var j=0;j<q.opts.length;j++){
+      var checked = state.quizAnswers[i]===j ? ' checked' : '';
+      html+='<label class="opt"><input type="radio" name="q'+i+'" value="'+j+'"'+checked+'>'+q.opts[j]+'</label>';
+    }
+    html+='</div>';
+  }
+  html+='<div class="fb bad" id="quizWarn" style="display:none">'+t.answerAll+'</div>';
+  html+='<button class="btn" id="quizSubmit">'+t.submitBtn+'</button></div>';
+  $("app").innerHTML=html;
+  var radios=document.querySelectorAll('#app input[type=radio]');
+  for(var r=0;r<radios.length;r++){
+    radios[r].addEventListener("change", function(e){
+      var name=e.target.name, idx=parseInt(name.substring(1),10);
+      state.quizAnswers[idx]=parseInt(e.target.value,10);
+    });
+  }
+  $("quizSubmit").addEventListener("click", function(){
+    var answers=[];
+    for(var i=0;i<t.quiz.length;i++){
+      if(typeof state.quizAnswers[i]==="undefined"){ $("quizWarn").style.display="block"; return; }
+      answers.push(state.quizAnswers[i]);
+    }
+    var res=gradeQuiz(answers);
+    state.lastScore=res;
+    if(res.pass){ state.code=generateCode(); state.screen="pass"; }
+    else { state.screen="fail"; }
+    render(); window.scrollTo(0,0);
+  });
+}
+function fmtDate(){
+  var d=new Date();
+  var m=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+  var mes=["ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic"];
+  return state.lang==="es" ? d.getDate()+" "+mes[d.getMonth()]+" "+d.getFullYear() : m[d.getMonth()]+" "+d.getDate()+", "+d.getFullYear();
+}
+function renderPass(){
+  var t=T(), r=state.lastScore;
+  $("app").innerHTML =
+    '<div class="card"><p class="passmsg">'+t.passH+'</p></div>'+
+    '<div class="cert" id="certBox">'+
+      '<div>'+t.passSub+'</div>'+
+      '<div class="big" id="certName">'+esc(state.name)+'</div>'+
+      '<div>'+t.passModule+'</div>'+
+      '<div style="margin:8px 0">'+t.scoreLabel+': <b>'+r.correct+'/'+r.total+' ('+r.pct+'%)</b> &nbsp;·&nbsp; '+t.dateLabel+': <b id="certDate">'+fmtDate()+'</b></div>'+
+      '<div>'+t.codeLabel+':</div>'+
+      '<div class="code" id="certCode">'+state.code+'</div>'+
+    '</div>'+
+    '<div class="card"><p>'+t.passInstr+'</p>'+
+    '<a class="btn" id="recordLink" href="'+FORM_URL+'" target="_blank" rel="noopener">'+t.recordBtn+'</a></div>';
+}
+function renderFail(){
+  var t=T(), r=state.lastScore;
+  $("app").innerHTML =
+    '<div class="card" id="failBox"><p class="failmsg">'+t.failH+'</p>'+
+    '<p>'+t.yourScore+': <b>'+r.correct+'/'+r.total+' ('+r.pct+'%)</b></p>'+
+    '<p>'+t.failMsg+'</p>'+
+    '<button class="btn secondary" id="reviewBtn">'+t.reviewBtn+'</button> '+
+    '<button class="btn" id="retakeBtn">'+t.retakeBtn+'</button></div>';
+  $("reviewBtn").addEventListener("click", function(){ state.quizAnswers={}; state.screen="section"; state.section=0; render(); window.scrollTo(0,0); });
+  $("retakeBtn").addEventListener("click", function(){ state.quizAnswers={}; state.screen="quiz"; render(); window.scrollTo(0,0); });
+}
+
+/* ------------ Test hooks ------------ */
+window.APP = { STR:STR, state:state, gradeQuiz:gradeQuiz, generateCode:generateCode, ANSWER_KEY:ANSWER_KEY, FORM_URL:FORM_URL, PASS_PCT:PASS_PCT, MODULE_VERSION:MODULE_VERSION, CODE_PREFIX:CODE_PREFIX, setLang:setLang, render:render };
+window.setLang = setLang;
+
+render();
+</script>
+</body>
+</html>

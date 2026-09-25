@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WKO Inc. — Outdoor Heat Exposure SUPERVISOR Training</title>
+<style>
+  :root { --blue:#2E75B6; --dark:#1F4E79; --gray:#666; --light:#F2F2F2;
+          --green:#2E8B57; --amber:#E8A317; --orange:#D2691E; --red:#B22222; --maroon:#701C1C; }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:Arial,Helvetica,sans-serif; background:var(--light); color:#222; line-height:1.5; -webkit-text-size-adjust:100%; }
+  .wrap { max-width:640px; margin:0 auto; min-height:100vh; display:flex; flex-direction:column; background:#fff; box-shadow:0 0 24px rgba(0,0,0,.08); }
+  header { background:var(--dark); color:#fff; padding:14px 20px; }
+  header .co { font-weight:bold; font-size:15px; letter-spacing:.5px; }
+  header .prog { font-size:12px; color:#cfe0f0; }
+  .badge { display:inline-block; background:var(--amber); color:#2b1c00; font-weight:bold; font-size:11px; letter-spacing:1px; padding:2px 8px; border-radius:999px; margin-top:5px; }
+  .bar { height:6px; background:#dce7f2; } .bar span { display:block; height:100%; background:var(--blue); width:0%; transition:width .3s; }
+  main { flex:1; padding:24px 20px 32px; }
+  h1 { color:var(--dark); font-size:24px; margin-bottom:12px; }
+  p { margin-bottom:12px; font-size:16px; }
+  ul, ol { margin:0 0 12px 22px; } li { margin-bottom:7px; font-size:16px; }
+  .eyebrow { text-transform:uppercase; letter-spacing:1.5px; font-size:11px; color:var(--gray); font-weight:bold; margin-bottom:6px; }
+  .card { background:var(--light); border-left:4px solid var(--blue); padding:12px 14px; margin:14px 0; border-radius:0 6px 6px 0; font-size:15px; }
+  .card.warn { border-left-color:var(--red); }
+  .card.do { border-left-color:var(--green); }
+  .btn { display:block; width:100%; background:var(--blue); color:#fff; border:none; border-radius:8px; padding:15px; font-size:17px; font-weight:bold; font-family:inherit; cursor:pointer; margin-top:18px; }
+  .btn:active { background:var(--dark); } .btn:disabled { background:#b9c8d6; cursor:default; }
+  .btn.secondary { background:#fff; color:var(--blue); border:2px solid var(--blue); }
+  a.btn { text-decoration:none; text-align:center; box-sizing:border-box; }
+  input[type=text] { width:100%; padding:13px; font-size:17px; font-family:inherit; border:2px solid #c6d4e2; border-radius:8px; margin-top:6px; }
+  input[type=text]:focus { outline:none; border-color:var(--blue); }
+  label { font-weight:bold; font-size:14px; color:var(--dark); }
+  .ladder { margin:16px 0; }
+  .rung { display:flex; border-radius:8px; overflow:hidden; margin-bottom:8px; }
+  .rung .lvl { flex:0 0 112px; color:#fff; font-weight:bold; padding:10px 8px; font-size:13px; text-align:center; display:flex; flex-direction:column; justify-content:center; }
+  .rung .lvl small { font-weight:normal; font-size:11px; opacity:.9; }
+  .rung .act { flex:1; background:var(--light); padding:10px 12px; font-size:14px; display:flex; align-items:center; }
+  .opt { display:block; width:100%; text-align:left; background:#fff; border:2px solid #c6d4e2; border-radius:8px; padding:13px 14px; font-size:16px; font-family:inherit; margin-top:10px; cursor:pointer; }
+  .opt.sel { border-color:var(--blue); background:#eaf2fa; }
+  .opt.right { border-color:var(--green); background:#e8f5ee; }
+  .opt.wrong { border-color:var(--red); background:#fbeaea; }
+  .feedback { margin-top:12px; padding:12px 14px; border-radius:8px; font-size:15px; display:none; }
+  .feedback.good { background:#e8f5ee; border-left:4px solid var(--green); display:block; }
+  .feedback.bad { background:#fbeaea; border-left:4px solid var(--red); display:block; }
+  .qnum { font-size:12px; color:var(--gray); font-weight:bold; text-transform:uppercase; letter-spacing:1px; margin-bottom:4px; }
+  .cert { border:3px solid var(--dark); border-radius:10px; padding:22px; text-align:center; margin-top:16px; }
+  .cert .big { font-size:22px; font-weight:bold; color:var(--dark); margin:8px 0; }
+  .cert .code { font-size:26px; letter-spacing:3px; font-weight:bold; color:var(--blue); background:var(--light); border-radius:8px; padding:10px; margin:12px 0; }
+  .score-pill { display:inline-block; background:var(--green); color:#fff; border-radius:999px; padding:6px 18px; font-weight:bold; font-size:18px; }
+  .score-pill.fail { background:var(--red); }
+  .steps { counter-reset:s; list-style:none; margin-left:0; }
+  .steps li { counter-increment:s; position:relative; padding-left:34px; margin-bottom:10px; }
+  .steps li:before { content:counter(s); position:absolute; left:0; top:1px; background:var(--blue); color:#fff; width:24px; height:24px; border-radius:50%; text-align:center; font-weight:bold; font-size:14px; line-height:24px; }
+  table.mini { border-collapse:collapse; width:100%; margin:12px 0; font-size:14px; }
+  table.mini th { background:var(--blue); color:#fff; padding:8px; text-align:left; }
+  table.mini td { border:1px solid #d9e2ec; padding:8px; vertical-align:top; }
+  table.mini tr:nth-child(even) td { background:var(--light); }
+  footer { padding:12px 20px; font-size:11px; color:var(--gray); text-align:center; border-top:1px solid #e4e9ef; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="co">WKO INC.</div>
+    <div class="prog">Outdoor Heat Exposure Training — WAC 296-62-09560(3)</div>
+    <div class="badge">SUPERVISOR MODULE</div>
+  </header>
+  <div class="bar"><span id="prog"></span></div>
+  <main id="main"></main>
+  <footer>WKO Inc. · Carson, WA · WAC 296-62-09560(3) · Supervisor Module v1.0 (2026)</footer>
+</div>
+
+<script>
+const FORM_URL = "https://forms.cloud.microsoft/r/YHYEJNbAMt";
+
+let empName = "", slideIdx = 0, quizIdx = 0, quizScore = 0;
+
+const slides = [
+{ t:'content', eyebrow:'Section 1 of 9', title:'Why Supervisors Get Extra Training', html:`
+  <p>Washington's outdoor heat rule requires <b>supervisors to be trained on topics beyond the employee training</b> (WAC 296-62-09560(3)). You are the one who reads the temperature, calls the rest periods, and spots the employee who is in trouble before they know it themselves.</p>
+  <p>Your training must cover:</p>
+  <ul>
+    <li>Everything in the employee training</li>
+    <li>The procedures you must follow to implement the heat rule</li>
+    <li>The importance of engineering and administrative controls to reduce heat exposure</li>
+    <li>What to do when an employee shows signs or symptoms of heat-related illness, including first aid and emergency response</li>
+    <li>How to move or transport an employee to a place where EMS can reach them</li>
+  </ul>
+  <div class="card warn"><b>This module does not replace the employee training.</b> You must complete the employee Outdoor Heat Exposure module as well — it covers risk factors, water, shade, acclimatization and symptom recognition. This module covers your duties on top of that. Both are required of you, annually.</div>
+`},
+
+{ t:'content', eyebrow:'Section 2 of 9', title:'Duty 1 — Know the Temperature', html:`
+  <p>The whole rule keys off one number: the <b>outdoor temperature</b> where your crew is working. Washington's rule uses <b>measured temperature in °F — not the heat index</b>.</p>
+  <p><b>Your action levels</b> depend on what the employee is required to wear:</p>
+  <table class="mini"><tr><th>Clothing</th><th>Action level</th></tr>
+  <tr><td>All other clothing — regular work clothes, single or double layers, hard hat, normal raingear</td><td><b>80°F</b></td></tr>
+  <tr><td>Non-breathable clothing — vapor barrier, chemical-resistant or encapsulating suits</td><td><b>52°F</b></td></tr></table>
+  <p><b>How you monitor:</b></p>
+  <ul>
+    <li>A thermometer placed <b>in the shade</b> at a spot representative of where the crew is working</li>
+    <li>National Weather Service current conditions and forecast for the Carson/Stevenson area</li>
+    <li>A weather app on your phone</li>
+  </ul>
+  <p>Check <b>at the start of the shift</b> and <b>at least every two hours</b> when temperatures are approaching or above the action level.</p>
+  <div class="card do"><b>Write it down.</b> The rule does not require a formal temperature log — but documenting your checks is the cheapest proof you have that protections were applied when they were needed. A line in the shift notes is enough: time, reading, what you did.</div>
+`},
+
+{ t:'check', q:'Washington\u2019s heat rule triggers on which measurement?',
+  opts:['The heat index','The measured outdoor temperature in °F','Humidity alone','Whatever the app says it "feels like"'], a:1,
+  why:'Correct. Washington uses measured temperature in °F — 80°F for regular work clothes, 52°F for non-breathable clothing. Heat index is not the trigger.' },
+
+{ t:'content', eyebrow:'Section 3 of 9', title:'Duty 2 — Implement the Right Tier', html:`
+  <p>Match the protections to the temperature. Here is what <b>you</b> do at each level:</p>
+  <div class="ladder">
+    <div class="rung"><div class="lvl" style="background:var(--blue)">Action level<small>80°F / 52°F</small></div><div class="act"><span>Water (1 qt/hr/employee, suitably cool, readily accessible). Shade close to the work. Allow and encourage preventive cool-down rest — never discourage it. Verify training. Watch for unacclimatized employees.</span></div></div>
+    <div class="rung"><div class="lvl" style="background:var(--amber)">High heat<small>90°F</small></div><div class="act"><span>All the above PLUS mandatory <b>paid 10-minute cool-down rest every 2 hours</b> in shade, and <b>close observation of every employee</b>.</span></div></div>
+    <div class="rung"><div class="lvl" style="background:var(--red)">Extreme<small>100°F</small></div><div class="act"><span>All the above PLUS mandatory <b>paid 15-minute cool-down rest every hour</b>, and close observation of every employee.</span></div></div>
+  </div>
+  <p>Mandatory cool-down rest can run concurrently with a meal or rest break the employee already gets. It must be paid unless taken during an unpaid meal period.</p>
+  <div class="card"><b>The controls exception:</b> the high-heat procedures at 90°F apply <i>unless</i> engineering or administrative controls — air conditioning, or scheduling work during cooler hours — bring exposure below 90°F. Moving the crew's start time earlier isn't just kindness; it's a recognized way to keep the work out of the worst heat.</div>
+`},
+
+{ t:'check', q:'It is 101°F in the log yard. What are you required to provide?',
+  opts:['A 10-minute paid rest every 2 hours','A 15-minute paid rest every hour, plus close observation of everyone','Nothing beyond normal breaks','Rest only for employees who ask'], a:1,
+  why:'Correct. At or above 100°F: a mandatory paid cool-down rest of at least 15 minutes every hour, plus close observation of all employees.' },
+
+{ t:'content', eyebrow:'Section 4 of 9', title:'Duty 3 — Water and Shade Are On You', html:`
+  <p><b>Water.</b> At or above the action level, each employee must have at least <b>one quart per hour</b> of suitably cool drinking water, readily accessible where they are working.</p>
+  <ul>
+    <li>Position portable containers close to crews working away from fixed water sources</li>
+    <li>Keep containers clean, labeled, and replenished through the shift — <b>do not let the supply run out</b></li>
+    <li>Encourage frequent small amounts rather than a lot at once</li>
+    <li>Water and caffeine-free sports drinks count. Coffee, tea and energy drinks <b>do not</b></li>
+  </ul>
+  <p><b>Shade.</b> At or above the action level, shade or equally effective cooling must be:</p>
+  <ul>
+    <li>Big enough for everyone on a break to sit <b>fully in the shade</b></li>
+    <li><b>As close as feasible</b> to where the work is happening</li>
+    <li><b>Open to the air</b> — an enclosed, unventilated structure that becomes an oven does not count</li>
+  </ul>
+  <div class="card do">Air-conditioned cabs and cooled break rooms count as equally effective cooling. A closed truck cab sitting in the sun with the engine off does not.</div>
+`},
+
+{ t:'content', eyebrow:'Section 5 of 9', title:'Duty 4 — Acclimatization and Close Observation', html:`
+  <p>New and returning employees are the ones who die of heat stroke. Acclimatization builds over <b>7 to 14 days</b> and is <b>lost after 7 or more consecutive days</b> away from working in the heat.</p>
+  <p>You must closely observe, for <b>14 consecutive days</b>, any employee who is:</p>
+  <ul>
+    <li><b>Newly assigned</b> to work at or above the action level</li>
+    <li><b>Returning</b> after an absence of 7 days or more — vacation, illness, layoff, or a stretch of cool weather</li>
+  </ul>
+  <p><b>During a heat wave, you closely observe everyone</b> — including your veterans. A heat wave is any day when the <b>predicted high</b> is at or above the action level <i>and</i> at least <b>10°F higher than the average high of the previous five days</b>.</p>
+  <div class="card warn"><b>Nobody builds tolerance during a heat wave.</b> A sudden jump in temperature is dangerous for every employee regardless of experience. Do not assume your long-timers are safe.</div>
+  <p><b>Acceptable close observation methods:</b></p>
+  <ul>
+    <li>Direct observation by you during the work period</li>
+    <li>A mandatory buddy system — pairs monitoring each other</li>
+    <li>Regular radio or cell phone check-ins with employees working alone or in remote parts of the yard</li>
+  </ul>
+  <p>Also ease new employees in: gradually increase workload and exposure over the first 14 days, keep the hardest outdoor tasks off them in week one, and give them extra water and rest breaks.</p>
+`},
+
+{ t:'check', q:'A veteran yard employee returns Monday from 10 days off. The forecast high is 94°F. What applies?',
+  opts:['Nothing — he is experienced','Close observation for 14 days; acclimatization is lost after 7+ days away','He needs a new hire orientation','He cannot work outdoors that week'], a:1,
+  why:'Correct. Acclimatization is lost after 7 or more consecutive days away, so he gets close observation for 14 consecutive days — experience does not exempt him.' },
+
+{ t:'content', eyebrow:'Section 6 of 9', title:'Duty 5 — Controls Before Endurance', html:`
+  <p>The rule expects you to consider <b>engineering and administrative controls</b> to reduce exposure — not just hand out water and hope.</p>
+  <p><b>Engineering controls:</b></p>
+  <ul>
+    <li>Air-conditioned equipment cabs — and keeping that A/C in working order</li>
+    <li>Cooled break rooms; fans and misting where practical</li>
+    <li>Shade structures placed where the work actually is</li>
+  </ul>
+  <p><b>Administrative controls:</b></p>
+  <ul>
+    <li><b>Start shifts earlier</b> to move work out of the afternoon peak</li>
+    <li>Reschedule the heaviest tasks to the cooler parts of the day</li>
+    <li>Rotate crews through hot tasks; add extra rest</li>
+    <li>Add people to a task so the physical load per person drops</li>
+  </ul>
+  <div class="card">Remember the exception: if controls actually bring employee exposure below 90°F, the high-heat procedures at that level do not apply. Controls aren't just protective — they are also the practical answer to losing production time to mandatory rest.</div>
+`},
+
+{ t:'content', eyebrow:'Section 7 of 9', title:'Duty 6 — When an Employee Shows Symptoms', html:`
+  <p>Know these cold. <b>Confusion is the red flag</b> — an employee who stops making sense, becomes irritable or combative, or stops sweating in the heat may be having a heat stroke.</p>
+  <table class="mini"><tr><th>Condition</th><th>What you do</th></tr>
+  <tr><td><b>Heat cramps</b></td><td>Move to shade, rest, water, gentle stretching</td></tr>
+  <tr><td><b>Heat exhaustion</b><br>Heavy sweating, weakness, cold pale clammy skin, nausea, headache, dizziness, fainting</td><td>Move to shade or A/C, loosen clothing, cool wet cloths, sips of water, stay with them. <b>Vomiting or worsening — call 911</b></td></tr>
+  <tr><td><b>Heat stroke</b><br>104°F+, hot red skin, rapid strong pulse, <b>confusion, slurred speech</b>, seizures, unconsciousness</td><td><b>CALL 911 IMMEDIATELY.</b> Move to shade, cool rapidly — water, ice packs to armpits and groin. Do NOT give fluids if unconscious</td></tr></table>
+  <p><b>Your response sequence:</b></p>
+  <ol class="steps">
+    <li>Stop the work and move the employee to shade or a cool environment</li>
+    <li>Loosen or remove heavy, heat-retaining clothing and PPE</li>
+    <li>Cool them actively — fan, spray or sponge with cool water, wet cloths, ice packs</li>
+    <li>Give cool water only if they are conscious and alert</li>
+    <li><b>Stay with them — never leave an affected employee alone</b></li>
+    <li>Call 911 immediately for confusion, unconsciousness, or any sign of heat stroke</li>
+  </ol>
+  <div class="card warn"><b>Do not "wait and see" on confusion.</b> Heat stroke kills fast and the window to cool someone is short. Calling 911 on an employee who turns out to have heat exhaustion is a good outcome. The reverse is not.</div>
+`},
+
+{ t:'check', q:'An employee is confused and combative with hot, red skin. Your FIRST action is to:',
+  opts:['Have them sit and watch them for 30 minutes','Call 911 immediately and begin cooling them','Send them home to rest','Give them water and finish the task'], a:1,
+  why:'Correct. Confusion plus hot red skin points to heat stroke — a life-threatening emergency. Call 911 immediately and cool aggressively while you wait.' },
+
+{ t:'content', eyebrow:'Section 8 of 9', title:'Duty 7 — Communication and Getting Them to EMS', html:`
+  <p>WKO Inc. must maintain <b>effective communication</b> between employees and supervisors so symptoms get reported and help gets summoned fast. In practice that means radios and cell phones that work where your crew is — and a check-in routine for anyone working alone or out at the far end of the yard.</p>
+  <p><b>Getting an employee to medical care:</b></p>
+  <ul>
+    <li><b>Make sure EMS can reach the location.</b> Know the access route into the yard, and who is meeting the ambulance at the gate to guide it in</li>
+    <li>If the employee is somewhere an ambulance cannot get to, <b>arrange to move them</b> to a location EMS can reach — and keep cooling them the whole time</li>
+    <li>your nearest hospital is <b>3–4 minutes away</b> at see posted emergency contact sheet — <b>see posted emergency contact sheet</b></li>
+    <li>Never send an affected employee to drive themselves, and never send them home alone</li>
+  </ul>
+  <div class="card do"><b>Never retaliate.</b> An employee who reports symptoms, takes a preventive cool-down rest, or asks for water is exercising a protected right. Discipline for any of those is a violation — and it teaches the whole crew to hide symptoms, which is how someone ends up in an ambulance.</div>
+`},
+
+{ t:'content', eyebrow:'Section 9 of 9', title:'Duty 8 — Training and Records', html:`
+  <p><b>Nobody works at or above the action level without training first.</b> Employees and supervisors must be trained <b>before</b> outdoor work where heat exposure might occur, and <b>at least annually</b> after that. WKO schedules refreshers before the warm season each spring.</p>
+  <p><b>Your part:</b></p>
+  <ul>
+    <li>Verify every employee assigned to outdoor work has completed the current-year training — before you put them out there</li>
+    <li>New hires get trained before their first outdoor assignment</li>
+    <li>Training must be in a language and manner the employee understands — the employee module is available in English and Spanish</li>
+  </ul>
+  <p><b>Paper-path employees:</b> for anyone taking the printed handout and written test, you grade the test, and if they pass you submit the SDS Training Completion form <b>on their behalf</b> and file the graded test. That graded paper is the only evidence of their comprehension — keep it.</p>
+  <p>Training records are retained a minimum of <b>three years</b> and include who was trained, when, on what content, in what language, by whom, and verification of understanding.</p>
+`},
+];
+
+const quiz = [
+ { q:'Supervisor training is required in addition to employee training because the rule requires supervisors to know:',
+   opts:['Only how to read a thermometer','The procedures to implement the rule, the value of engineering and administrative controls, how to respond to symptoms, and how to get an employee to EMS','Nothing extra — it is the same training','How to file workers\u2019 comp claims'], a:1 },
+ { q:'Washington\u2019s outdoor heat rule triggers on:',
+   opts:['The heat index','The measured outdoor temperature in °F','Relative humidity','The National Weather Service advisory color'], a:1 },
+ { q:'For an employee in regular work clothes and a hard hat, the action level is:',
+   opts:['52°F','80°F','90°F','100°F'], a:1 },
+ { q:'At or above 90°F, you must provide:',
+   opts:['A paid 10-minute cool-down rest every 2 hours, plus close observation of all employees','A paid 15-minute rest every hour','Nothing until 100°F','Rest only for unacclimatized employees'], a:0 },
+ { q:'At or above 100°F, you must provide:',
+   opts:['A paid 10-minute rest every 2 hours','A paid 15-minute cool-down rest every hour, plus close observation of all employees','One extra break at lunch','Double water only'], a:1 },
+ { q:'The high heat procedures at 90°F apply unless:',
+   opts:['The crew says they feel fine','Engineering or administrative controls lower employee exposure below 90°F','It is before noon','The employees are acclimatized'], a:1 },
+ { q:'An employee returns from 9 days off in August. You must:',
+   opts:['Nothing — he is a veteran','Closely observe him for 14 consecutive days','Give him a written test','Keep him indoors for a month'], a:1 },
+ { q:'During a heat wave, close observation applies to:',
+   opts:['New employees only','Employees returning from absence only','All employees, including fully acclimatized ones','Only employees who report symptoms'], a:2 },
+ { q:'An employee is confused, combative, and has hot red skin. You should:',
+   opts:['Call 911 immediately and start cooling them','Have them rest in the truck and check back in 30 minutes','Drive them home','Give them water and let them finish the task'], a:0 },
+ { q:'An employee reports symptoms of heat illness or takes a preventive cool-down rest. You may:',
+   opts:['Dock their pay','Discipline them for slowing production','Never retaliate — it is a protected right','Require a doctor\u2019s note before they report anything'], a:2 },
+];
+
+const main = document.getElementById('main');
+const progEl = document.getElementById('prog');
+const totalSteps = slides.length + quiz.length + 2;
+function setProg(n){ progEl.style.width = Math.min(100, Math.round(n/totalSteps*100)) + '%'; }
+function esc(s){ const d=document.createElement('div'); d.textContent=s; return d.innerHTML; }
+
+function showStart(){
+  setProg(0);
+  main.innerHTML = `
+    <div class="eyebrow">WKO Inc. · Safety Department</div>
+    <h1>Outdoor Heat Exposure — Supervisor Training</h1>
+    <p>Required annual supervisor training under WAC 296-62-09560(3). About 15 minutes.</p>
+    <div class="card warn"><b>Complete the employee Outdoor Heat Exposure module first.</b> This module covers your additional duties as a supervisor — it does not replace the employee training, and both are required of you.</div>
+    <div class="card">Pass the 10-question quiz with <b>80% or better</b> to finish. You'll get a completion code and a button to record it.</div>
+    <label for="nm">Enter your full name to begin</label>
+    <input type="text" id="nm" autocomplete="name" placeholder="First and last name">
+    <button class="btn" id="startBtn" disabled>Start Supervisor Training</button>`;
+  const nm=document.getElementById('nm'), b=document.getElementById('startBtn');
+  nm.addEventListener('input', ()=>{ b.disabled = nm.value.trim().split(/\s+/).length < 2; });
+  b.addEventListener('click', ()=>{ empName=nm.value.trim(); slideIdx=0; showSlide(); });
+}
+
+function showSlide(){
+  if (slideIdx >= slides.length){ quizIdx=0; quizScore=0; showQuizIntro(); return; }
+  setProg(1+slideIdx);
+  const s = slides[slideIdx];
+  if (s.t === 'content'){
+    main.innerHTML = `<div class="eyebrow">${esc(s.eyebrow)}</div><h1>${esc(s.title)}</h1>${s.html}
+      <button class="btn" id="nextBtn">Continue</button>`;
+    document.getElementById('nextBtn').addEventListener('click', ()=>{ slideIdx++; showSlide(); window.scrollTo(0,0); });
+  } else {
+    main.innerHTML = `<div class="eyebrow">Knowledge Check</div><h1>Quick Question</h1><p><b>${esc(s.q)}</b></p>
+      <div id="opts"></div><div class="feedback" id="fb"></div>
+      <button class="btn" id="nextBtn" style="display:none">Continue</button>`;
+    const optsEl=document.getElementById('opts');
+    s.opts.forEach((o,i)=>{
+      const b=document.createElement('button');
+      b.className='opt'; b.textContent=o;
+      b.addEventListener('click', ()=>{
+        const fb=document.getElementById('fb');
+        [...optsEl.children].forEach(c=>c.disabled=true);
+        if (i===s.a){ b.classList.add('right'); fb.className='feedback good'; fb.textContent=s.why;
+          document.getElementById('nextBtn').style.display='block'; }
+        else { b.classList.add('wrong'); fb.className='feedback bad'; fb.textContent='Not quite — take another look and try again.';
+          setTimeout(()=>{ [...optsEl.children].forEach(c=>{c.disabled=false;c.classList.remove('wrong');}); fb.className='feedback'; },1600); }
+      });
+      optsEl.appendChild(b);
+    });
+    document.getElementById('nextBtn').addEventListener('click', ()=>{ slideIdx++; showSlide(); window.scrollTo(0,0); });
+  }
+}
+
+function showQuizIntro(){
+  setProg(1+slides.length);
+  main.innerHTML = `<div class="eyebrow">Final Quiz</div>
+    <h1>Ready, ${esc(empName.split(' ')[0])}?</h1>
+    <p>10 questions. You need <b>8 correct (80%)</b> to pass. If you don't pass, review the material and retake it.</p>
+    <button class="btn" id="goBtn">Begin Quiz</button>
+    <button class="btn secondary" id="revBtn">Review Material First</button>`;
+  document.getElementById('goBtn').addEventListener('click', ()=>{ showQuizQ(); window.scrollTo(0,0); });
+  document.getElementById('revBtn').addEventListener('click', ()=>{ slideIdx=0; showSlide(); window.scrollTo(0,0); });
+}
+
+function showQuizQ(){
+  if (quizIdx >= quiz.length){ showResult(); return; }
+  setProg(1+slides.length+quizIdx);
+  const qq = quiz[quizIdx];
+  main.innerHTML = `<div class="qnum">Question ${quizIdx+1} of ${quiz.length}</div>
+    <h1 style="font-size:20px">${esc(qq.q)}</h1><div id="opts"></div>
+    <button class="btn" id="subBtn" disabled>Submit Answer</button>`;
+  const optsEl=document.getElementById('opts');
+  let sel=-1;
+  qq.opts.forEach((o,i)=>{
+    const b=document.createElement('button');
+    b.className='opt'; b.textContent=o;
+    b.addEventListener('click', ()=>{ sel=i; [...optsEl.children].forEach(c=>c.classList.remove('sel')); b.classList.add('sel');
+      document.getElementById('subBtn').disabled=false; });
+    optsEl.appendChild(b);
+  });
+  document.getElementById('subBtn').addEventListener('click', ()=>{
+    if (sel===qq.a) quizScore++;
+    quizIdx++; showQuizQ(); window.scrollTo(0,0);
+  });
+}
+
+function completionCode(){
+  const d=new Date();
+  const ds=d.getFullYear()+String(d.getMonth()+1).padStart(2,'0')+String(d.getDate()).padStart(2,'0');
+  let h=0; const src=empName.toUpperCase()+ds+quizScore+'SUP';
+  for (let i=0;i<src.length;i++){ h=((h<<5)-h+src.charCodeAt(i))|0; }
+  return 'HT26S-' + Math.abs(h).toString(36).toUpperCase().slice(0,5).padStart(5,'0');
+}
+
+function showResult(){
+  setProg(totalSteps);
+  const pct = Math.round(quizScore/quiz.length*100);
+  const passed = pct >= 80;
+  const dateStr = new Date().toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'});
+  if (passed){
+    main.innerHTML = `<div class="eyebrow">Training Complete</div><h1>Congratulations!</h1>
+      <p style="text-align:center"><span class="score-pill">Score: ${pct}%</span></p>
+      <div class="cert">
+        <div class="eyebrow">Certificate of Completion</div>
+        <div class="big">${esc(empName)}</div>
+        <p>has completed <b>Outdoor Heat Exposure SUPERVISOR Training</b><br>per WAC 296-62-09560(3)</p>
+        <p><b>${dateStr}</b> · Score: <b>${quizScore}/${quiz.length} (${pct}%)</b></p>
+        <div class="code">${completionCode()}</div>
+        <p style="font-size:13px;color:var(--gray)">WKO Inc. · Carson, WA</p>
+      </div>
+      <div class="card"><b>Final step — record your completion:</b> Tap the button below to open the SDS Training Completion form. Select the module <b>Outdoor Heat Exposure — Supervisor / Exposición al Calor al Aire Libre — Supervisor</b>, enter today's date, your score, and the completion code above, then submit. Screenshot this screen for your own records. Your training is not documented until the form is submitted.</div>
+      <a class="btn" href="${FORM_URL}" target="_blank" rel="noopener">Record My Completion</a>`;
+  } else {
+    main.innerHTML = `<div class="eyebrow">Quiz Result</div><h1>Not Quite — Let's Try Again</h1>
+      <p style="text-align:center"><span class="score-pill fail">Score: ${pct}%</span></p>
+      <p>You need 80% to pass. Review the material and take the quiz again — your crew is counting on you knowing this cold.</p>
+      <button class="btn" id="revBtn">Review Material</button>
+      <button class="btn secondary" id="retryBtn">Retake Quiz Now</button>`;
+    document.getElementById('revBtn').addEventListener('click', ()=>{ slideIdx=0; showSlide(); window.scrollTo(0,0); });
+    document.getElementById('retryBtn').addEventListener('click', ()=>{ quizIdx=0; quizScore=0; showQuizQ(); window.scrollTo(0,0); });
+  }
+}
+
+/* test hooks */
+window.APP = { slides, quiz, FORM_URL, completionCode, showStart,
+  get state(){ return { empName, slideIdx, quizIdx, quizScore }; },
+  setName(n){ empName = n; }, setScore(s){ quizScore = s; },
+  showResult, showSlide, showQuizQ, showQuizIntro };
+
+showStart();
+</script>
+</body>
+</html>

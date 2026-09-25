@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WKO Inc. — Confined Space Awareness / Conciencia de Espacios Confinados</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Arial,sans-serif;background:#f5f5f5;color:#222;line-height:1.5}
+.container{max-width:800px;margin:0 auto;padding:16px}
+.header{background:#1F4E79;color:#fff;padding:18px 20px;text-align:center;position:relative}
+.header h1{font-size:1.3em;margin-bottom:2px}
+.header .sub{font-size:.85em;opacity:.9}
+.prog{background:#2E75B6;color:#fff;text-align:center;padding:6px 10px;font-size:.82em}
+.lang-bar{display:flex;justify-content:center;gap:8px;padding:10px;background:#e8e8e8}
+.lang-btn{padding:6px 18px;border:2px solid #2E75B6;border-radius:4px;cursor:pointer;font-weight:bold;background:#fff;color:#2E75B6;font-size:.95em}
+.lang-btn.active{background:#2E75B6;color:#fff}
+.card{background:#fff;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,.1);margin:16px 0;padding:20px;display:none}
+.card.active{display:block}
+.card h2{color:#1F4E79;margin-bottom:10px;font-size:1.15em;border-bottom:2px solid #2E75B6;padding-bottom:6px}
+.card h3{color:#2E75B6;margin:12px 0 6px;font-size:1em}
+.warn{background:#FFF3CD;border-left:4px solid #FFC107;padding:10px 14px;margin:10px 0;border-radius:4px;font-size:.92em}
+.danger{background:#F8D7DA;border-left:4px solid #DC3545;padding:10px 14px;margin:10px 0;border-radius:4px;font-size:.92em}
+.info{background:#D1ECF1;border-left:4px solid #17A2B8;padding:10px 14px;margin:10px 0;border-radius:4px;font-size:.92em}
+.success-box{background:#D4EDDA;border-left:4px solid #28A745;padding:10px 14px;margin:10px 0;border-radius:4px;font-size:.92em}
+ul,ol{margin:8px 0 8px 20px}
+li{margin-bottom:5px;font-size:.95em}
+.btn{display:inline-block;padding:10px 28px;border:none;border-radius:4px;font-size:1em;font-weight:bold;cursor:pointer;margin:6px 4px}
+.btn-primary{background:#2E75B6;color:#fff}
+.btn-primary:hover{background:#1F4E79}
+.btn-secondary{background:#6c757d;color:#fff}
+.btn-success{background:#28a745;color:#fff}
+.btn-danger{background:#dc3545;color:#fff}
+.nav-row{display:flex;justify-content:space-between;margin-top:14px;flex-wrap:wrap;gap:8px}
+.quiz-option{display:block;width:100%;text-align:left;padding:12px 16px;margin:6px 0;border:2px solid #ddd;border-radius:6px;background:#fff;cursor:pointer;font-size:.95em;transition:border-color .2s}
+.quiz-option:hover{border-color:#2E75B6}
+.quiz-option.selected{border-color:#2E75B6;background:#EBF3FB}
+.quiz-option.correct{border-color:#28a745;background:#D4EDDA}
+.quiz-option.incorrect{border-color:#dc3545;background:#F8D7DA}
+.quiz-option:disabled{cursor:default}
+.progress-bar{background:#e0e0e0;border-radius:10px;height:8px;margin:10px 0}
+.progress-fill{background:#2E75B6;height:100%;border-radius:10px;transition:width .3s}
+.score-display{font-size:1.3em;font-weight:bold;text-align:center;margin:14px 0}
+.cert{border:3px solid #2E75B6;border-radius:10px;padding:24px;text-align:center;margin:16px 0;background:#FAFCFF}
+.cert h2{border:none;color:#1F4E79}
+.cert .code{font-size:1.4em;font-weight:bold;color:#2E75B6;letter-spacing:2px;margin:10px 0}
+.hidden{display:none}
+input[type=text]{padding:8px 12px;border:2px solid #ddd;border-radius:4px;font-size:1em;width:100%;max-width:350px}
+.splash-title{font-size:1.6em;color:#1F4E79;font-weight:bold;margin:10px 0}
+.kc-feedback{padding:10px 14px;border-radius:6px;margin:8px 0;font-weight:bold;font-size:.95em}
+.kc-correct{background:#D4EDDA;color:#155724;border:1px solid #C3E6CB}
+.kc-incorrect{background:#F8D7DA;color:#721C24;border:1px solid #F5C6CB}
+.cross-ref{background:#E8EAF6;border-left:4px solid #3F51B5;padding:10px 14px;margin:10px 0;border-radius:4px;font-size:.92em}
+@media(max-width:600px){.container{padding:10px}.card{padding:14px}.btn{padding:8px 18px;font-size:.9em}}
+</style>
+</head>
+<body>
+<div class="header">
+<h1 id="headerTitle"></h1>
+<div class="sub" id="headerSub"></div>
+</div>
+<div class="prog" id="progBanner"></div>
+<div class="lang-bar">
+<button class="lang-btn active" onclick="setLang('en')">English</button>
+<button class="lang-btn" onclick="setLang('es')">Español</button>
+</div>
+<div class="container" id="appContainer"></div>
+
+<script>
+// ============================================================
+// LANGUAGE PACKS
+// ============================================================
+const LANG = {
+en: {
+  headerTitle: "Confined Space Awareness Training",
+  headerSub: "WKO Inc. — Carson, WA",
+  progBanner: "Confined Space Program · WAC 296-809 · 29 CFR 1910.146 · NFPA 350 (2022)",
+  splashTitle: "Confined Space Awareness",
+  splashText: "WKO Inc. has confined spaces throughout the facility — tanks, vessels, bins, hoppers, pits, vaults, and silos. Confined spaces kill more would-be rescuers than they do original entrants. This training makes sure you can recognize a confined space, understand why they are dangerous, and know exactly what to do — and what never to do — when something goes wrong.",
+  splashNote: "REQUIRED FOR ALL EMPLOYEES — This is awareness training. It does not authorize anyone to enter a confined space. Employees assigned entrant, attendant, or entry supervisor duties receive additional role-specific hands-on training from the company's contracted fall-protection and rescue trainer.",
+  enterName: "Enter your full name to begin:",
+  namePlaceholder: "First and Last Name",
+  beginBtn: "Begin Training",
+  nameError: "Please enter your first and last name.",
+  nextBtn: "Next", prevBtn: "Back", checkBtn: "Check Answer", continueBtn: "Continue",
+  startQuiz: "Start Quiz", submitAnswer: "Submit Answer", nextQuestion: "Next Question",
+  seeResults: "See Results", tryAgain: "Review & Try Again",
+  questionOf: "Question {n} of {t}",
+  quizTitle: "Knowledge Quiz",
+  quizIntro: "Answer 5 questions. You need 4 correct (80%) to pass.",
+  passTitle: "Training Complete!",
+  passMsg: "{name}, you passed with a score of {score}/5.",
+  failTitle: "Not Yet — Review and Retry",
+  failMsg: "{name}, you scored {score}/5. You need at least 4/5 to pass. Review the material and try again.",
+  certTitle: "Certificate of Completion",
+  certBody: "This certifies that",
+  certModule: "has completed the WKO Inc. Confined Space Awareness Training",
+  certDate: "Date: {date}",
+  certCode: "Completion Code: {code}",
+  recordBtn: "Record Your Completion",
+  passH: "Congratulations — You Passed!",
+  passSub: "Certificate of Completion",
+  scoreLabel: "Score", dateLabel: "Date", codeLabel: "Your completion code",
+  failH: "Not Yet — Keep Going", yourScore: "Your score",
+  reviewBtn: "Review the Material", retakeBtn: "Retake the Quiz",
+  passInstr: "<b>Last step — record your completion:</b> tap the button below and submit the completion form. Enter your name, select <b>\"Confined Space Awareness / Conciencia de Espacios Confinados\"</b> from the module list, and enter the completion code shown above. Your training is not on record until you submit the form.",
+  passModule: "Confined Space Awareness Training v1.0",
+  secLabel: "Section", ofLabel: "of",
+  failDetail: "Review the material — especially the three criteria that make a space confined, the atmospheric hazards, the permit requirement, and above all the rule that WKO employees never enter a confined space to perform a rescue — and try again. There is no limit on attempts.",
+  quizDetail: "Take your time — you can review the material and retake the quiz if needed.",
+  sections: [
+    {
+      title: "Section 1: What Is a Confined Space?",
+      content: `<p>A confined space is not just any tight spot. Under WAC 296-809, a space is a <strong>confined space</strong> only if it meets <strong>all three</strong> of the following criteria:</p>
+      <ol>
+        <li><strong>Large enough to bodily enter and perform work</strong> — you can get your whole body inside</li>
+        <li><strong>Limited or restricted means of entry or exit</strong> — a condition that would hinder your ability to escape in an emergency</li>
+        <li><strong>Not primarily designed for human occupancy</strong> — it was built to hold material or equipment, not people</li>
+      </ol>
+      <div class="info">ℹ️ All three must be true. A crawlspace you can exit easily from several points may not qualify. A tank with one small top hatch does.</div>
+      <h3>Confined Spaces at WKO Inc.</h3>
+      <p>Confined spaces at our facility can include:</p>
+      <ul>
+        <li>Tanks and pressure vessels</li>
+        <li>Boiler drums and steam plant equipment</li>
+        <li>Silos, storage bins, and hoppers</li>
+        <li>Pits and vaults</li>
+        <li>Excavations and tunnels</li>
+        <li>Dust collection equipment and ductwork</li>
+      </ul>
+      <h3>Permit-Required Confined Space</h3>
+      <p>A confined space becomes a <strong>permit-required confined space</strong> when it has one or more of these characteristics:</p>
+      <ul>
+        <li>Contains or could contain a <strong>hazardous atmosphere</strong></li>
+        <li>Contains material that could <strong>engulf</strong> someone who enters</li>
+        <li>Has an internal shape that could <strong>trap or asphyxiate</strong> you — inwardly converging walls, or a floor that slopes down to a narrow point</li>
+        <li>Contains any other recognized serious safety or health hazard</li>
+      </ul>
+      <div class="warn">⚠️ Permit-required confined spaces at WKO Inc. are marked with signs reading <strong>"DANGER — PERMIT-REQUIRED CONFINED SPACE — DO NOT ENTER."</strong> If you see that sign, the space is off limits without a signed permit.</div>`,
+      kc: {
+        question: "Which of these must be true for a space to be a 'confined space' under WAC 296-809?",
+        options: ["It must be dark and poorly ventilated", "All three: big enough to enter, limited entry/exit, and not designed for people", "It must contain hazardous chemicals", "It must be underground"],
+        correct: 1,
+        rightMsg: "✓ Correct — all three criteria must be met. Big enough to bodily enter, limited or restricted means of entry or exit, and not primarily designed for human occupancy.",
+        wrongMsg: "✗ Not quite — a confined space must meet all three criteria: large enough to bodily enter and perform work, limited or restricted means of entry or exit, and not primarily designed for human occupancy."
+      }
+    },
+    {
+      title: "Section 2: Why Confined Spaces Kill",
+      content: `<p>Confined spaces are dangerous because the hazards are usually <strong>invisible</strong>. You cannot see, smell, or taste most of what kills people in these spaces. By the time you feel symptoms, you may already be unable to save yourself.</p>
+      <h3>Atmospheric Hazards — The Number One Killer</h3>
+      <p><strong>Oxygen deficiency.</strong> Normal air is about 21% oxygen. Oxygen can be consumed by rust, decomposing wood or organic material, or displaced by another gas. Below 19.5% the atmosphere is oxygen deficient. Below 16% is immediately dangerous to life or health.</p>
+      <p><strong>Flammable gases and vapors.</strong> A confined space can accumulate combustible gas to the point where any spark causes an explosion.</p>
+      <p><strong>Toxic gases.</strong> Carbon monoxide and hydrogen sulfide are the common ones. Hydrogen sulfide smells like rotten eggs at low concentrations — but at dangerous concentrations it <em>deadens your sense of smell</em>. If the smell goes away, that is not good news.</p>
+      <h3>Acceptable Atmospheric Levels</h3>
+      <table style="width:100%;border-collapse:collapse;margin:10px 0;font-size:.9em">
+      <tr><th style="text-align:left;padding:6px;border-bottom:2px solid #2E75B6">Test</th><th style="text-align:left;padding:6px;border-bottom:2px solid #2E75B6">Acceptable</th><th style="text-align:left;padding:6px;border-bottom:2px solid #2E75B6">IDLH</th></tr>
+      <tr><td style="padding:6px;border-bottom:1px solid #ddd">Oxygen</td><td style="padding:6px;border-bottom:1px solid #ddd">19.5% – 23.5%</td><td style="padding:6px;border-bottom:1px solid #ddd">Below 16%</td></tr>
+      <tr><td style="padding:6px;border-bottom:1px solid #ddd">Flammable (LEL)</td><td style="padding:6px;border-bottom:1px solid #ddd">Below 10% LFL</td><td style="padding:6px;border-bottom:1px solid #ddd">10% LFL or above</td></tr>
+      <tr><td style="padding:6px;border-bottom:1px solid #ddd">Carbon Monoxide</td><td style="padding:6px;border-bottom:1px solid #ddd">Below 25 ppm</td><td style="padding:6px;border-bottom:1px solid #ddd">1,200 ppm</td></tr>
+      <tr><td style="padding:6px;border-bottom:1px solid #ddd">Hydrogen Sulfide</td><td style="padding:6px;border-bottom:1px solid #ddd">Below 10 ppm</td><td style="padding:6px;border-bottom:1px solid #ddd">100 ppm</td></tr>
+      </table>
+      <h3>Engulfment</h3>
+      <p>Material like sawdust, chips, bark, or grain behaves like quicksand. A person standing on top of bridged material in a bin or silo can break through and be buried in seconds. Engulfment kills by suffocation or by crushing.</p>
+      <h3>Physical and Mechanical Hazards</h3>
+      <ul>
+        <li>Augers, agitators, and moving equipment inside the space</li>
+        <li>Stored energy — electrical, hydraulic, pneumatic, steam</li>
+        <li>Material entering through unblocked lines</li>
+        <li>Heat, noise, poor lighting, slippery surfaces, falling objects</li>
+      </ul>
+      <div class="danger">🚨 Atmospheric hazards do not announce themselves. The air in a space that was safe yesterday — or an hour ago — may not be safe now.</div>`
+    },
+    {
+      title: "Section 3: Never Enter Without a Permit",
+      content: `<p>No employee may enter a permit-required confined space unless they have been trained, the entry has been authorized by a <strong>signed written permit</strong>, and every required safety measure is in place.</p>
+      <div class="danger">🚨 <strong>Entry begins the moment any part of your body breaks the plane of the opening.</strong> Reaching in with your head and shoulders to grab something is an entry. There is no such thing as "just leaning in."</div>
+      <h3>What the Permit Does</h3>
+      <p>The Confined Space Entry Permit is signed by an authorized Entry Supervisor. It documents that:</p>
+      <ul>
+        <li>The hazards of that specific space have been evaluated</li>
+        <li>All energy sources have been locked and tagged out</li>
+        <li>Lines have been blanked, blinded, disconnected, or capped</li>
+        <li>The atmosphere has been tested and is acceptable</li>
+        <li>Ventilation, PPE, monitoring, and communication are in place</li>
+        <li>Rescue services have been identified and are available</li>
+      </ul>
+      <p>The permit is posted at the work site outside the space, is good for one shift only, and is cancelled and returned to the Entry Supervisor when the work is done.</p>
+      <h3>Before Anyone Goes In</h3>
+      <p>These controls must be in place before entry:</p>
+      <ul>
+        <li><strong>Lockout/tagout</strong> — every energy source that could affect the space is locked out under the WKO Inc. LOTO Program</li>
+        <li><strong>Isolation</strong> — connecting lines blanked, blinded, disconnected, or capped so nothing can flow in</li>
+        <li><strong>Product removal</strong> — the space is drained, pumped out, or emptied</li>
+        <li><strong>Ventilation</strong> — blowers push clean air <em>into</em> the space and run continuously for the whole entry</li>
+        <li><strong>Atmospheric testing</strong> — tested in order: oxygen first, then flammable gases, then toxics</li>
+      </ul>
+      <div class="info">ℹ️ Ventilation is a method of hazard <em>control</em>, not hazard <em>elimination</em>. Continuous atmospheric monitoring is still required even when the blower is running.</div>
+      <h3>The Black Packet</h3>
+      <p>WKO Inc. assembles a <strong>Confined Space Black Packet</strong> for every entry. It is a grab-and-go kit containing the decision flow chart, entry permit, alternative methods documentation, gas detector logs, rescue pre-plan, and field logs. A complete packet is verified before anyone breaks the plane of the opening.</p>`,
+      kc: {
+        question: "You need to reach into a permit-required confined space to retrieve a dropped tool. Your head and shoulders will cross the opening. Is this an entry?",
+        options: ["No — only full body entry counts", "No — as long as your feet stay outside", "Yes — entry occurs when any part of your body breaks the plane of the opening", "Only if you are inside longer than one minute"],
+        correct: 2,
+        rightMsg: "✓ Correct — entry occurs as soon as any part of your body breaks the plane of the opening. A permit is required. There is no such thing as 'just leaning in.'",
+        wrongMsg: "✗ No — entry is defined as any part of your body breaking the plane of the opening. Reaching in with your head and shoulders IS an entry and requires a signed permit."
+      }
+    },
+    {
+      title: "Section 4: The Three Roles",
+      content: `<p>Every permit entry at WKO Inc. has three defined roles. Each requires specific training before anyone is assigned to it.</p>
+      <h3>Entry Supervisor</h3>
+      <p>The person responsible for determining whether acceptable entry conditions exist, authorizing entry by signing the permit, overseeing the entry, and terminating it. The Entry Supervisor:</p>
+      <ul>
+        <li>Signs the permit — nobody enters without that signature</li>
+        <li>Verifies all tests were done and all equipment is in place</li>
+        <li>Confirms rescue services are available and reachable</li>
+        <li>Removes unauthorized people who try to enter</li>
+        <li>Terminates the entry when the job is done or conditions change</li>
+      </ul>
+      <h3>Attendant</h3>
+      <p>Stationed <strong>outside</strong> the space for the entire entry. The Attendant is the entrants' lifeline. They:</p>
+      <ul>
+        <li>Keep an accurate count of who is in the space at all times</li>
+        <li>Continuously monitor the gas detector readings, recording them at least hourly</li>
+        <li>Stay in communication with the entrants</li>
+        <li>Order immediate evacuation if anything goes wrong</li>
+        <li>Perform <strong>non-entry</strong> rescue and summon emergency services</li>
+        <li>Keep unauthorized people away from the space</li>
+      </ul>
+      <div class="danger">🚨 <strong>The Attendant never leaves and never takes on other duties.</strong> Not to grab a tool, not to answer a radio call about something else. They monitor and protect the entrants — that is the entire job.</div>
+      <h3>Entrant</h3>
+      <p>The trained, authorized employee who enters the space. Entrants:</p>
+      <ul>
+        <li>Know the hazards, and the signs and symptoms of exposure</li>
+        <li>Use the equipment specified on the permit — including a full-body harness and retrieval line where practical</li>
+        <li>Stay in communication with the Attendant</li>
+        <li>Alert the Attendant at the first warning sign — dizziness, confusion, euphoria, or any prohibited condition</li>
+        <li><strong>Exit immediately</strong> when ordered, when an alarm sounds, or when they notice a warning sign</li>
+      </ul>
+      <div class="info">ℹ️ These roles require role-specific training and hands-on practice. the company's contracted fall-protection and rescue trainer provides annual training on WKO Inc.'s own rescue equipment, including a simulated non-entry rescue.</div>`
+    },
+    {
+      title: "Section 5: NEVER Attempt a Rescue",
+      content: `<p>This is the single most important thing in this training.</p>
+      <div class="danger">🚨 <strong>A large share of people who die in confined spaces are would-be rescuers.</strong> They saw a co-worker collapse, went in to help, and died in the same atmosphere. It happens within seconds and it happens to good people acting on instinct.</div>
+      <h3>The WKO Inc. Rule</h3>
+      <div class="warn">⚠️ <strong>WKO Inc. employees perform NON-ENTRY rescue only. No WKO Inc. employee enters a confined space to perform a rescue — under any circumstances.</strong></div>
+      <p>We do not have self-contained breathing apparatus on site. We are a non-entry rescue operation. If the atmosphere dropped a trained entrant wearing monitored equipment, it will drop you in the same number of seconds — and now there are two casualties instead of one.</p>
+      <h3>What Non-Entry Rescue Means</h3>
+      <p>Entrants wear a full-body harness with a retrieval line attached to a mechanical retrieval device — a tripod and winch — or a fixed anchor outside the space. Mechanical retrieval equipment is required for vertical spaces deeper than five feet. The Attendant retrieves the entrant <strong>from outside</strong>, without ever entering.</p>
+      <h3>Entry Rescue Is the local fire department (911)</h3>
+      <p>Any rescue that requires entering the space is performed by the <strong>the local fire department (911)</strong>. They are our designated entry-rescue service. For any entry that could expose entrants to conditions immediately dangerous to life or health, the Entry Supervisor notifies the local fire department in advance and they stand by for the duration.</p>
+      <h3>If You See Someone Down in a Confined Space</h3>
+      <ol>
+        <li><strong>DO NOT ENTER.</strong> Not for a second. Not to pull them to the opening.</li>
+        <li><strong>Call 911</strong> and state clearly that it is a confined space rescue.</li>
+        <li><strong>Alert the Attendant and Entry Supervisor</strong> immediately.</li>
+        <li><strong>Keep others out.</strong> Stop anyone else from going in — that is now your job.</li>
+        <li><strong>Assist with non-entry retrieval</strong> from outside if you are trained and asked to.</li>
+      </ol>
+      <div class="danger">🚨 The hardest thing you may ever do is stand at an opening and not go in. Do it anyway. Going in does not save them — it kills you both.</div>`,
+      kc: {
+        question: "You find a co-worker collapsed inside a confined space. What do you do?",
+        options: ["Enter quickly and drag them out before the atmosphere affects you", "Hold your breath and pull them to the opening", "Do not enter — call 911, alert the attendant and supervisor, and keep others out", "Enter only if you can see the exit clearly"],
+        correct: 2,
+        rightMsg: "✓ Correct — never enter. Call 911, alert the attendant and entry supervisor, and stop anyone else from entering. WKO employees perform non-entry rescue only.",
+        wrongMsg: "✗ NEVER enter. Would-be rescuers make up a large share of confined space deaths — the same atmosphere that dropped your co-worker will drop you in seconds. Call 911, alert the attendant and entry supervisor, and keep others out."
+      }
+    },
+    {
+      title: "Section 6: Alternative Methods and Contractors",
+      content: `<h3>Alternative Methods Entry</h3>
+      <p>In some cases a permit-required confined space can be entered <strong>without a full permit</strong>, using what the rule calls alternative methods. This is only allowed when monitoring and inspection data supports it AND one of these is true:</p>
+      <ul>
+        <li>All hazards — atmospheric and physical — have been eliminated from the space; <strong>or</strong></li>
+        <li>All physical hazards have been eliminated and any hazardous atmosphere is controlled by continuous forced-air ventilation, with monitoring data proving the space stays safe. If the ventilation stops, entrants must be able to get out safely.</li>
+      </ul>
+      <div class="warn">⚠️ Alternative methods is <strong>not</strong> a shortcut or a way to skip paperwork. It is a documented process with its own form and a 15-point pre-entry checklist in the Black Packet. If you cannot answer YES to every checklist item, STOP and use the full entry permit.</div>
+      <p>If entry is needed <em>before</em> hazards are eliminated — for example to collect monitoring data — that entry follows the full permit procedure.</p>
+      <h3>Hot Work in a Confined Space</h3>
+      <p>Any welding, cutting, burning, or heating inside a confined space requires a <strong>separate Hot Work Permit</strong>, approved by the Entry Supervisor and attached to the entry permit. See the Hot Work Safety training for the fire watch and permit requirements.</p>
+      <h3>Contractors</h3>
+      <p>When a contractor enters a confined space at an WKO Inc. facility, WKO Inc. as host employer must inform them that the workplace contains permit spaces, share the hazards we have identified, provide our program information, and coordinate entry operations when our people and theirs are working in or near the space. After the work, both sides debrief each other on any hazards encountered or created.</p>
+      <div class="cross-ref">📋 <strong>Related training:</strong> Lockout/Tagout covers the energy isolation required before entry. Hot Work Safety covers welding and cutting permits. Respiratory Protection covers respirator use. Contractor Site Orientation covers the host-contractor coordination process.</div>`,
+      kc: {
+        question: "Under alternative methods entry, what happens if the ventilation system stops working?",
+        options: ["Entrants keep working until the blower is restarted", "Entrants must be able to exit the space safely", "The attendant enters to check on them", "Work continues if the last reading was acceptable"],
+        correct: 1,
+        rightMsg: "✓ Correct — one of the conditions for alternative methods entry is that entrants can exit safely if the ventilation stops. If that is not true, alternative methods cannot be used.",
+        wrongMsg: "✗ Not quite — alternative methods entry is only permitted if entrants can exit the space safely in the event the ventilation system stops working. That is a required condition, not an optional one."
+      }
+    },
+    {
+      title: "Section 7: Your Responsibilities",
+      content: `<p>Even if you never enter a confined space, you have responsibilities under this program.</p>
+      <h3>Every Employee</h3>
+      <ul>
+        <li><strong>Recognize confined spaces</strong> and respect the "DANGER — PERMIT-REQUIRED CONFINED SPACE" signs</li>
+        <li><strong>Never enter</strong> a permit-required confined space without training and a signed permit</li>
+        <li><strong>Never attempt an entry rescue</strong> — call 911 and keep others out</li>
+        <li><strong>Report</strong> unmarked spaces, damaged signs, open hatches, or unauthorized entries to your supervisor</li>
+        <li><strong>Stay clear</strong> of an entry in progress unless you have a role in it</li>
+        <li><strong>Speak up</strong> if you see someone about to enter without a permit</li>
+      </ul>
+      <h3>If You Are Assigned a Confined Space Role</h3>
+      <p>You will receive role-specific training before you are assigned entrant, attendant, or entry supervisor duties — and again whenever your duties change, a new hazard appears, or your performance shows a gap. Annual training including a simulated non-entry rescue is provided by the company's contracted fall-protection and rescue trainer on our own equipment.</p>
+      <h3>Emergency Numbers</h3>
+      <p><strong>Emergency: 911</strong> — state clearly that it is a confined space rescue</p>
+      <p><strong>your nearest hospital Emergency Department</strong> — see posted emergency contact sheet, WA · <strong>see posted emergency contact sheet</strong></p>
+      <div class="success-box">✅ The whole point of this training is simple: know what a confined space is, stay out unless you are authorized and permitted, and never — under any circumstances — go in after someone. Call 911 and keep others out.</div>`
+    }
+  ],
+  quizQuestions: [
+    { q: "How many criteria must a space meet to be classified as a 'confined space'?",
+      opts: ["Any one of the three", "Any two of the three", "All three — large enough to enter, limited entry/exit, not designed for occupancy", "It depends on the size of the opening"], ans: 2 },
+    { q: "At what oxygen level is an atmosphere considered oxygen deficient?",
+      opts: ["Below 23.5%", "Below 19.5%", "Below 16%", "Below 21%"], ans: 1 },
+    { q: "When does 'entry' into a confined space legally occur?",
+      opts: ["When any part of your body breaks the plane of the opening", "Only when your whole body is inside", "After you have been inside for 60 seconds", "When both feet leave the ground outside"], ans: 0 },
+    { q: "A co-worker collapses inside a confined space. What is the correct action?",
+      opts: ["Enter immediately to pull them out", "Hold your breath and reach in for them", "Enter only with a co-worker as backup", "Do not enter — call 911, alert the attendant and supervisor, keep others out"], ans: 3 },
+    { q: "Who performs entry rescue at WKO Inc.?",
+      opts: ["Any trained WKO Inc. employee", "The attendant", "The the local fire department (911)", "The entry supervisor"], ans: 2 }
+  ]
+},
+es: {
+  headerTitle: "Capacitación de Conciencia de Espacios Confinados",
+  headerSub: "WKO Inc. — Carson, WA",
+  progBanner: "Programa de Espacios Confinados · WAC 296-809 · 29 CFR 1910.146 · NFPA 350 (2022)",
+  splashTitle: "Conciencia de Espacios Confinados",
+  splashText: "WKO Inc. tiene espacios confinados en toda la instalación — tanques, recipientes, tolvas, pozos, bóvedas y silos. Los espacios confinados matan a más personas que intentan rescatar que a los que entraron originalmente. Esta capacitación asegura que usted pueda reconocer un espacio confinado, comprender por qué son peligrosos, y saber exactamente qué hacer — y qué nunca hacer — cuando algo sale mal.",
+  splashNote: "REQUERIDO PARA TODOS LOS EMPLEADOS — Esta es capacitación de conciencia. No autoriza a nadie a entrar en un espacio confinado. Los empleados asignados a tareas de entrante, asistente o supervisor de entrada reciben capacitación práctica adicional específica de the company's contracted fall-protection and rescue trainer.",
+  enterName: "Escriba su nombre completo para comenzar:",
+  namePlaceholder: "Nombre y Apellido",
+  beginBtn: "Comenzar Capacitación",
+  nameError: "Por favor ingrese su nombre y apellido.",
+  nextBtn: "Siguiente", prevBtn: "Atrás", checkBtn: "Verificar Respuesta", continueBtn: "Continuar",
+  startQuiz: "Comenzar Examen", submitAnswer: "Enviar Respuesta", nextQuestion: "Siguiente Pregunta",
+  seeResults: "Ver Resultados", tryAgain: "Revisar e Intentar de Nuevo",
+  questionOf: "Pregunta {n} de {t}",
+  quizTitle: "Examen de Conocimiento",
+  quizIntro: "Responda 5 preguntas. Necesita 4 correctas (80%) para aprobar.",
+  passTitle: "¡Capacitación Completada!",
+  passMsg: "{name}, aprobó con una puntuación de {score}/5.",
+  failTitle: "Aún No — Revise e Intente de Nuevo",
+  failMsg: "{name}, su puntuación fue {score}/5. Necesita al menos 4/5 para aprobar. Revise el material e intente de nuevo.",
+  certTitle: "Certificado de Finalización",
+  certBody: "Esto certifica que",
+  certModule: "ha completado la Capacitación de Conciencia de Espacios Confinados de WKO Inc.",
+  certDate: "Fecha: {date}",
+  certCode: "Código de Finalización: {code}",
+  recordBtn: "Registrar Su Finalización",
+  passH: "¡Felicidades — Aprobó!",
+  passSub: "Certificado de Finalización",
+  scoreLabel: "Puntuación", dateLabel: "Fecha", codeLabel: "Su código de finalización",
+  failH: "Aún No — Siga Adelante", yourScore: "Su puntuación",
+  reviewBtn: "Revisar el Material", retakeBtn: "Volver a Tomar el Examen",
+  passInstr: "<b>Último paso — registre su finalización:</b> toque el botón de abajo y envíe el formulario de finalización. Escriba su nombre, seleccione <b>\"Confined Space Awareness / Conciencia de Espacios Confinados\"</b> de la lista de módulos, e ingrese el código de finalización mostrado arriba. Su capacitación no queda registrada hasta que envíe el formulario.",
+  passModule: "Capacitación de Conciencia de Espacios Confinados v1.0",
+  secLabel: "Sección", ofLabel: "de",
+  failDetail: "Revise el material — especialmente los tres criterios que hacen que un espacio sea confinado, los peligros atmosféricos, el requisito del permiso, y sobre todo la regla de que los empleados de WKO nunca entran en un espacio confinado para realizar un rescate — e intente de nuevo. No hay límite de intentos.",
+  quizDetail: "Tómese su tiempo — puede revisar el material y volver a tomar el examen si es necesario.",
+  sections: [
+    {
+      title: "Sección 1: ¿Qué Es un Espacio Confinado?",
+      content: `<p>Un espacio confinado no es simplemente cualquier lugar estrecho. Bajo WAC 296-809, un espacio es un <strong>espacio confinado</strong> solo si cumple <strong>los tres</strong> criterios siguientes:</p>
+      <ol>
+        <li><strong>Suficientemente grande para entrar con el cuerpo y realizar trabajo</strong> — puede meter todo su cuerpo adentro</li>
+        <li><strong>Medios limitados o restringidos de entrada o salida</strong> — una condición que dificultaría su capacidad de escapar en una emergencia</li>
+        <li><strong>No diseñado principalmente para ocupación humana</strong> — fue construido para contener material o equipo, no personas</li>
+      </ol>
+      <div class="info">ℹ️ Los tres deben ser verdaderos. Un espacio angosto del que puede salir fácilmente por varios puntos puede no calificar. Un tanque con una sola escotilla superior pequeña sí califica.</div>
+      <h3>Espacios Confinados en WKO Inc.</h3>
+      <p>Los espacios confinados en nuestra instalación pueden incluir:</p>
+      <ul>
+        <li>Tanques y recipientes a presión</li>
+        <li>Tambores de caldera y equipo de la planta de vapor</li>
+        <li>Silos, tolvas de almacenamiento y contenedores</li>
+        <li>Pozos y bóvedas</li>
+        <li>Excavaciones y túneles</li>
+        <li>Equipo de recolección de polvo y conductos</li>
+      </ul>
+      <h3>Espacio Confinado que Requiere Permiso</h3>
+      <p>Un espacio confinado se convierte en un <strong>espacio confinado que requiere permiso</strong> cuando tiene una o más de estas características:</p>
+      <ul>
+        <li>Contiene o podría contener una <strong>atmósfera peligrosa</strong></li>
+        <li>Contiene material que podría <strong>sepultar</strong> a alguien que entre</li>
+        <li>Tiene una forma interna que podría <strong>atrapar o asfixiar</strong> — paredes que convergen hacia adentro, o un piso que se inclina hacia un punto estrecho</li>
+        <li>Contiene cualquier otro peligro serio reconocido de seguridad o salud</li>
+      </ul>
+      <div class="warn">⚠️ Los espacios confinados que requieren permiso en WKO Inc. están marcados con letreros que dicen <strong>"PELIGRO — ESPACIO CONFINADO QUE REQUIERE PERMISO — NO ENTRE."</strong> Si ve ese letrero, el espacio está prohibido sin un permiso firmado.</div>`,
+      kc: {
+        question: "¿Qué debe ser verdadero para que un espacio sea un 'espacio confinado' bajo WAC 296-809?",
+        options: ["Debe ser oscuro y mal ventilado", "Los tres: suficientemente grande para entrar, entrada/salida limitada, y no diseñado para personas", "Debe contener químicos peligrosos", "Debe estar bajo tierra"],
+        correct: 1,
+        rightMsg: "✓ Correcto — los tres criterios deben cumplirse. Suficientemente grande para entrar con el cuerpo, medios limitados o restringidos de entrada o salida, y no diseñado principalmente para ocupación humana.",
+        wrongMsg: "✗ No exactamente — un espacio confinado debe cumplir los tres criterios: suficientemente grande para entrar con el cuerpo y trabajar, medios limitados o restringidos de entrada o salida, y no diseñado principalmente para ocupación humana."
+      }
+    },
+    {
+      title: "Sección 2: Por Qué Matan los Espacios Confinados",
+      content: `<p>Los espacios confinados son peligrosos porque los peligros generalmente son <strong>invisibles</strong>. No puede ver, oler ni saborear la mayoría de lo que mata a las personas en estos espacios. Para cuando siente síntomas, es posible que ya no pueda salvarse.</p>
+      <h3>Peligros Atmosféricos — El Asesino Número Uno</h3>
+      <p><strong>Deficiencia de oxígeno.</strong> El aire normal tiene aproximadamente 21% de oxígeno. El oxígeno puede ser consumido por óxido, madera o material orgánico en descomposición, o desplazado por otro gas. Por debajo de 19.5% la atmósfera es deficiente en oxígeno. Por debajo de 16% es inmediatamente peligroso para la vida o la salud.</p>
+      <p><strong>Gases y vapores inflamables.</strong> Un espacio confinado puede acumular gas combustible hasta el punto en que cualquier chispa cause una explosión.</p>
+      <p><strong>Gases tóxicos.</strong> El monóxido de carbono y el sulfuro de hidrógeno son los comunes. El sulfuro de hidrógeno huele a huevos podridos en concentraciones bajas — pero en concentraciones peligrosas <em>anula su sentido del olfato</em>. Si el olor desaparece, eso no es una buena noticia.</p>
+      <h3>Niveles Atmosféricos Aceptables</h3>
+      <table style="width:100%;border-collapse:collapse;margin:10px 0;font-size:.9em">
+      <tr><th style="text-align:left;padding:6px;border-bottom:2px solid #2E75B6">Prueba</th><th style="text-align:left;padding:6px;border-bottom:2px solid #2E75B6">Aceptable</th><th style="text-align:left;padding:6px;border-bottom:2px solid #2E75B6">IDLH</th></tr>
+      <tr><td style="padding:6px;border-bottom:1px solid #ddd">Oxígeno</td><td style="padding:6px;border-bottom:1px solid #ddd">19.5% – 23.5%</td><td style="padding:6px;border-bottom:1px solid #ddd">Menos de 16%</td></tr>
+      <tr><td style="padding:6px;border-bottom:1px solid #ddd">Inflamable (LEL)</td><td style="padding:6px;border-bottom:1px solid #ddd">Menos de 10% LFL</td><td style="padding:6px;border-bottom:1px solid #ddd">10% LFL o más</td></tr>
+      <tr><td style="padding:6px;border-bottom:1px solid #ddd">Monóxido de Carbono</td><td style="padding:6px;border-bottom:1px solid #ddd">Menos de 25 ppm</td><td style="padding:6px;border-bottom:1px solid #ddd">1,200 ppm</td></tr>
+      <tr><td style="padding:6px;border-bottom:1px solid #ddd">Sulfuro de Hidrógeno</td><td style="padding:6px;border-bottom:1px solid #ddd">Menos de 10 ppm</td><td style="padding:6px;border-bottom:1px solid #ddd">100 ppm</td></tr>
+      </table>
+      <h3>Sepultamiento</h3>
+      <p>Material como aserrín, astillas, corteza o grano se comporta como arena movediza. Una persona parada sobre material apuntalado en una tolva o silo puede romper la superficie y ser sepultada en segundos. El sepultamiento mata por asfixia o por aplastamiento.</p>
+      <h3>Peligros Físicos y Mecánicos</h3>
+      <ul>
+        <li>Barrenas, agitadores y equipo en movimiento dentro del espacio</li>
+        <li>Energía almacenada — eléctrica, hidráulica, neumática, vapor</li>
+        <li>Material que entra por líneas sin bloquear</li>
+        <li>Calor, ruido, mala iluminación, superficies resbaladizas, objetos que caen</li>
+      </ul>
+      <div class="danger">🚨 Los peligros atmosféricos no se anuncian. El aire en un espacio que era seguro ayer — o hace una hora — puede no ser seguro ahora.</div>`
+    },
+    {
+      title: "Sección 3: Nunca Entre Sin un Permiso",
+      content: `<p>Ningún empleado puede entrar en un espacio confinado que requiere permiso a menos que haya sido capacitado, la entrada haya sido autorizada por un <strong>permiso escrito firmado</strong>, y cada medida de seguridad requerida esté en su lugar.</p>
+      <div class="danger">🚨 <strong>La entrada comienza en el momento en que cualquier parte de su cuerpo cruza el plano de la abertura.</strong> Meter la cabeza y los hombros para agarrar algo es una entrada. No existe tal cosa como "solo asomarse."</div>
+      <h3>Qué Hace el Permiso</h3>
+      <p>El Permiso de Entrada a Espacio Confinado es firmado por un Supervisor de Entrada autorizado. Documenta que:</p>
+      <ul>
+        <li>Los peligros de ese espacio específico han sido evaluados</li>
+        <li>Todas las fuentes de energía han sido bloqueadas y etiquetadas</li>
+        <li>Las líneas han sido cegadas, desconectadas o tapadas</li>
+        <li>La atmósfera ha sido probada y es aceptable</li>
+        <li>La ventilación, el EPP, el monitoreo y la comunicación están en su lugar</li>
+        <li>Los servicios de rescate han sido identificados y están disponibles</li>
+      </ul>
+      <p>El permiso se publica en el sitio de trabajo fuera del espacio, es válido solo por un turno, y se cancela y devuelve al Supervisor de Entrada cuando el trabajo termina.</p>
+      <h3>Antes de Que Alguien Entre</h3>
+      <p>Estos controles deben estar en su lugar antes de la entrada:</p>
+      <ul>
+        <li><strong>Bloqueo y etiquetado</strong> — cada fuente de energía que podría afectar el espacio está bloqueada bajo el Programa LOTO de WKO Inc.</li>
+        <li><strong>Aislamiento</strong> — las líneas conectadas cegadas, desconectadas o tapadas para que nada pueda entrar</li>
+        <li><strong>Remoción de producto</strong> — el espacio se drena, se bombea o se vacía</li>
+        <li><strong>Ventilación</strong> — los sopladores empujan aire limpio <em>hacia adentro</em> del espacio y funcionan continuamente durante toda la entrada</li>
+        <li><strong>Prueba atmosférica</strong> — probada en orden: oxígeno primero, luego gases inflamables, luego tóxicos</li>
+      </ul>
+      <div class="info">ℹ️ La ventilación es un método de <em>control</em> de peligros, no de <em>eliminación</em> de peligros. El monitoreo atmosférico continuo sigue siendo requerido incluso cuando el soplador está funcionando.</div>
+      <h3>El Paquete Negro</h3>
+      <p>WKO Inc. ensambla un <strong>Paquete Negro de Espacio Confinado</strong> para cada entrada. Es un kit listo para llevar que contiene el diagrama de flujo de decisiones, el permiso de entrada, la documentación de métodos alternativos, los registros del detector de gas, el plan previo de rescate y los registros de campo. Un paquete completo se verifica antes de que alguien cruce el plano de la abertura.</p>`,
+      kc: {
+        question: "Necesita meter la mano en un espacio confinado que requiere permiso para recuperar una herramienta caída. Su cabeza y hombros cruzarán la abertura. ¿Es esto una entrada?",
+        options: ["No — solo cuenta la entrada de cuerpo completo", "No — mientras sus pies permanezcan afuera", "Sí — la entrada ocurre cuando cualquier parte de su cuerpo cruza el plano de la abertura", "Solo si está adentro más de un minuto"],
+        correct: 2,
+        rightMsg: "✓ Correcto — la entrada ocurre tan pronto como cualquier parte de su cuerpo cruza el plano de la abertura. Se requiere un permiso. No existe tal cosa como 'solo asomarse.'",
+        wrongMsg: "✗ No — la entrada se define como cualquier parte de su cuerpo cruzando el plano de la abertura. Meter la cabeza y los hombros ES una entrada y requiere un permiso firmado."
+      }
+    },
+    {
+      title: "Sección 4: Los Tres Roles",
+      content: `<p>Cada entrada con permiso en WKO Inc. tiene tres roles definidos. Cada uno requiere capacitación específica antes de que alguien sea asignado.</p>
+      <h3>Supervisor de Entrada</h3>
+      <p>La persona responsable de determinar si existen condiciones aceptables de entrada, autorizar la entrada firmando el permiso, supervisar la entrada y terminarla. El Supervisor de Entrada:</p>
+      <ul>
+        <li>Firma el permiso — nadie entra sin esa firma</li>
+        <li>Verifica que todas las pruebas se hayan hecho y todo el equipo esté en su lugar</li>
+        <li>Confirma que los servicios de rescate estén disponibles y localizables</li>
+        <li>Retira a personas no autorizadas que intenten entrar</li>
+        <li>Termina la entrada cuando el trabajo está hecho o las condiciones cambian</li>
+      </ul>
+      <h3>Asistente</h3>
+      <p>Estacionado <strong>afuera</strong> del espacio durante toda la entrada. El Asistente es la línea de vida de los entrantes. Ellos:</p>
+      <ul>
+        <li>Mantienen un conteo exacto de quién está en el espacio en todo momento</li>
+        <li>Monitorean continuamente las lecturas del detector de gas, registrándolas al menos cada hora</li>
+        <li>Se mantienen en comunicación con los entrantes</li>
+        <li>Ordenan evacuación inmediata si algo sale mal</li>
+        <li>Realizan rescate <strong>sin entrada</strong> y llaman a los servicios de emergencia</li>
+        <li>Mantienen alejadas a las personas no autorizadas</li>
+      </ul>
+      <div class="danger">🚨 <strong>El Asistente nunca se va y nunca asume otras tareas.</strong> Ni para agarrar una herramienta, ni para responder una llamada de radio sobre otra cosa. Monitorean y protegen a los entrantes — ese es todo el trabajo.</div>
+      <h3>Entrante</h3>
+      <p>El empleado capacitado y autorizado que entra en el espacio. Los entrantes:</p>
+      <ul>
+        <li>Conocen los peligros y los signos y síntomas de exposición</li>
+        <li>Usan el equipo especificado en el permiso — incluyendo un arnés de cuerpo completo y línea de recuperación cuando sea práctico</li>
+        <li>Se mantienen en comunicación con el Asistente</li>
+        <li>Alertan al Asistente ante la primera señal de advertencia — mareo, confusión, euforia, o cualquier condición prohibida</li>
+        <li><strong>Salen inmediatamente</strong> cuando se les ordena, cuando suena una alarma, o cuando notan una señal de advertencia</li>
+      </ul>
+      <div class="info">ℹ️ Estos roles requieren capacitación específica y práctica. the company's contracted fall-protection and rescue trainer proporciona capacitación anual con el equipo de rescate propio de WKO Inc., incluyendo un ejercicio simulado de rescate sin entrada.</div>`
+    },
+    {
+      title: "Sección 5: NUNCA Intente un Rescate",
+      content: `<p>Esto es lo más importante de toda esta capacitación.</p>
+      <div class="danger">🚨 <strong>Una gran proporción de las personas que mueren en espacios confinados son quienes intentaron rescatar.</strong> Vieron a un compañero colapsar, entraron a ayudar, y murieron en la misma atmósfera. Sucede en segundos y le sucede a buenas personas actuando por instinto.</div>
+      <h3>La Regla de WKO Inc.</h3>
+      <div class="warn">⚠️ <strong>Los empleados de WKO Inc. realizan SOLAMENTE rescate sin entrada. Ningún empleado de WKO Inc. entra en un espacio confinado para realizar un rescate — bajo ninguna circunstancia.</strong></div>
+      <p>No tenemos aparatos de respiración autónoma en el sitio. Somos una operación de rescate sin entrada. Si la atmósfera derribó a un entrante capacitado usando equipo monitoreado, lo derribará a usted en la misma cantidad de segundos — y ahora hay dos víctimas en lugar de una.</p>
+      <h3>Qué Significa Rescate Sin Entrada</h3>
+      <p>Los entrantes usan un arnés de cuerpo completo con una línea de recuperación conectada a un dispositivo mecánico de recuperación — un trípode y malacate — o un anclaje fijo fuera del espacio. Se requiere equipo mecánico de recuperación para espacios verticales de más de cinco pies de profundidad. El Asistente recupera al entrante <strong>desde afuera</strong>, sin entrar nunca.</p>
+      <h3>El Rescate con Entrada Es el Departamento de Bomberos de Carson</h3>
+      <p>Cualquier rescate que requiera entrar en el espacio es realizado por el <strong>Departamento de Bomberos de Carson</strong>. Son nuestro servicio designado de rescate con entrada. Para cualquier entrada que pudiera exponer a los entrantes a condiciones inmediatamente peligrosas para la vida o la salud, el Supervisor de Entrada notifica a los Bomberos de Carson con anticipación y ellos permanecen presentes durante toda la entrada.</p>
+      <h3>Si Ve a Alguien Caído en un Espacio Confinado</h3>
+      <ol>
+        <li><strong>NO ENTRE.</strong> Ni por un segundo. Ni para acercarlos a la abertura.</li>
+        <li><strong>Llame al 911</strong> y diga claramente que es un rescate de espacio confinado.</li>
+        <li><strong>Alerte al Asistente y al Supervisor de Entrada</strong> inmediatamente.</li>
+        <li><strong>Mantenga a otros afuera.</strong> Impida que alguien más entre — ese es ahora su trabajo.</li>
+        <li><strong>Ayude con la recuperación sin entrada</strong> desde afuera si está capacitado y se lo piden.</li>
+      </ol>
+      <div class="danger">🚨 Lo más difícil que quizás haga en su vida sea pararse frente a una abertura y no entrar. Hágalo de todos modos. Entrar no los salva — los mata a los dos.</div>`,
+      kc: {
+        question: "Encuentra a un compañero de trabajo colapsado dentro de un espacio confinado. ¿Qué hace?",
+        options: ["Entrar rápidamente y sacarlo antes de que la atmósfera lo afecte", "Contener la respiración y jalarlo hacia la abertura", "No entrar — llamar al 911, alertar al asistente y supervisor, y mantener a otros afuera", "Entrar solo si puede ver la salida claramente"],
+        correct: 2,
+        rightMsg: "✓ Correcto — nunca entre. Llame al 911, alerte al asistente y al supervisor de entrada, y evite que alguien más entre. Los empleados de WKO realizan solamente rescate sin entrada.",
+        wrongMsg: "✗ NUNCA entre. Quienes intentan rescatar representan una gran proporción de las muertes en espacios confinados — la misma atmósfera que derribó a su compañero lo derribará a usted en segundos. Llame al 911, alerte al asistente y supervisor, y mantenga a otros afuera."
+      }
+    },
+    {
+      title: "Sección 6: Métodos Alternativos y Contratistas",
+      content: `<h3>Entrada por Métodos Alternativos</h3>
+      <p>En algunos casos un espacio confinado que requiere permiso puede ser ingresado <strong>sin un permiso completo</strong>, usando lo que la regla llama métodos alternativos. Esto solo se permite cuando los datos de monitoreo e inspección lo respaldan Y una de estas condiciones es verdadera:</p>
+      <ul>
+        <li>Todos los peligros — atmosféricos y físicos — han sido eliminados del espacio; <strong>o</strong></li>
+        <li>Todos los peligros físicos han sido eliminados y cualquier atmósfera peligrosa está controlada por ventilación forzada continua, con datos de monitoreo que prueben que el espacio permanece seguro. Si la ventilación se detiene, los entrantes deben poder salir con seguridad.</li>
+      </ul>
+      <div class="warn">⚠️ Los métodos alternativos <strong>no</strong> son un atajo ni una forma de saltarse el papeleo. Es un proceso documentado con su propio formulario y una lista de verificación previa de 15 puntos en el Paquete Negro. Si no puede responder SÍ a cada punto de la lista, DETÉNGASE y use el permiso de entrada completo.</div>
+      <p>Si se necesita entrar <em>antes</em> de que los peligros sean eliminados — por ejemplo para recolectar datos de monitoreo — esa entrada sigue el procedimiento completo de permiso.</p>
+      <h3>Trabajo en Caliente en un Espacio Confinado</h3>
+      <p>Cualquier soldadura, corte, quemado o calentamiento dentro de un espacio confinado requiere un <strong>Permiso de Trabajo en Caliente separado</strong>, aprobado por el Supervisor de Entrada y adjunto al permiso de entrada. Vea la capacitación de Seguridad en Trabajo en Caliente para los requisitos de vigilancia de incendios y permisos.</p>
+      <h3>Contratistas</h3>
+      <p>Cuando un contratista entra en un espacio confinado en una instalación de WKO Inc., WKO Inc. como empleador anfitrión debe informarles que el lugar de trabajo contiene espacios con permiso, compartir los peligros que hemos identificado, proporcionar información de nuestro programa, y coordinar las operaciones de entrada cuando nuestra gente y la de ellos trabajen en o cerca del espacio. Después del trabajo, ambas partes se informan mutuamente sobre cualquier peligro encontrado o creado.</p>
+      <div class="cross-ref">📋 <strong>Capacitación relacionada:</strong> Bloqueo y Etiquetado cubre el aislamiento de energía requerido antes de la entrada. Seguridad en Trabajo en Caliente cubre los permisos de soldadura y corte. Protección Respiratoria cubre el uso de respiradores. La Orientación de Contratistas cubre el proceso de coordinación anfitrión-contratista.</div>`,
+      kc: {
+        question: "Bajo la entrada por métodos alternativos, ¿qué sucede si el sistema de ventilación deja de funcionar?",
+        options: ["Los entrantes siguen trabajando hasta que se reinicie el soplador", "Los entrantes deben poder salir del espacio con seguridad", "El asistente entra a revisarlos", "El trabajo continúa si la última lectura fue aceptable"],
+        correct: 1,
+        rightMsg: "✓ Correcto — una de las condiciones para la entrada por métodos alternativos es que los entrantes puedan salir con seguridad si la ventilación se detiene. Si eso no es cierto, no se pueden usar métodos alternativos.",
+        wrongMsg: "✗ No exactamente — la entrada por métodos alternativos solo se permite si los entrantes pueden salir del espacio con seguridad en caso de que el sistema de ventilación deje de funcionar. Esa es una condición requerida, no opcional."
+      }
+    },
+    {
+      title: "Sección 7: Sus Responsabilidades",
+      content: `<p>Incluso si nunca entra en un espacio confinado, usted tiene responsabilidades bajo este programa.</p>
+      <h3>Todo Empleado</h3>
+      <ul>
+        <li><strong>Reconocer los espacios confinados</strong> y respetar los letreros de "PELIGRO — ESPACIO CONFINADO QUE REQUIERE PERMISO"</li>
+        <li><strong>Nunca entrar</strong> en un espacio confinado que requiere permiso sin capacitación y un permiso firmado</li>
+        <li><strong>Nunca intentar un rescate con entrada</strong> — llame al 911 y mantenga a otros afuera</li>
+        <li><strong>Reportar</strong> espacios sin marcar, letreros dañados, escotillas abiertas o entradas no autorizadas a su supervisor</li>
+        <li><strong>Mantenerse alejado</strong> de una entrada en progreso a menos que tenga un rol en ella</li>
+        <li><strong>Hablar</strong> si ve a alguien a punto de entrar sin un permiso</li>
+      </ul>
+      <h3>Si Se Le Asigna un Rol de Espacio Confinado</h3>
+      <p>Recibirá capacitación específica antes de ser asignado a tareas de entrante, asistente o supervisor de entrada — y nuevamente cuando sus tareas cambien, aparezca un nuevo peligro, o su desempeño muestre una deficiencia. La capacitación anual que incluye un rescate simulado sin entrada es proporcionada por the company's contracted fall-protection and rescue trainer con nuestro propio equipo.</p>
+      <h3>Números de Emergencia</h3>
+      <p><strong>Emergencia: 911</strong> — diga claramente que es un rescate de espacio confinado</p>
+      <p><strong>Sala de Emergencias del su hospital más cercano</strong> — see posted emergency contact sheet, WA · <strong>see posted emergency contact sheet</strong></p>
+      <div class="success-box">✅ El punto de toda esta capacitación es simple: sepa qué es un espacio confinado, manténgase afuera a menos que esté autorizado y con permiso, y nunca — bajo ninguna circunstancia — entre a buscar a alguien. Llame al 911 y mantenga a otros afuera.</div>`
+    }
+  ],
+  quizQuestions: [
+    { q: "¿Cuántos criterios debe cumplir un espacio para ser clasificado como 'espacio confinado'?",
+      opts: ["Cualquiera de los tres", "Cualquiera dos de los tres", "Los tres — suficientemente grande para entrar, entrada/salida limitada, no diseñado para ocupación", "Depende del tamaño de la abertura"], ans: 2 },
+    { q: "¿A qué nivel de oxígeno se considera una atmósfera deficiente en oxígeno?",
+      opts: ["Menos de 23.5%", "Menos de 19.5%", "Menos de 16%", "Menos de 21%"], ans: 1 },
+    { q: "¿Cuándo ocurre legalmente la 'entrada' a un espacio confinado?",
+      opts: ["Cuando cualquier parte de su cuerpo cruza el plano de la abertura", "Solo cuando todo su cuerpo está adentro", "Después de estar adentro 60 segundos", "Cuando ambos pies dejan el suelo afuera"], ans: 0 },
+    { q: "Un compañero colapsa dentro de un espacio confinado. ¿Cuál es la acción correcta?",
+      opts: ["Entrar inmediatamente a sacarlo", "Contener la respiración y meter la mano por él", "Entrar solo con un compañero de respaldo", "No entrar — llamar al 911, alertar al asistente y supervisor, mantener a otros afuera"], ans: 3 },
+    { q: "¿Quién realiza el rescate con entrada en WKO Inc.?",
+      opts: ["Cualquier empleado capacitado de WKO Inc.", "El asistente", "El Departamento de Bomberos de Carson", "El supervisor de entrada"], ans: 2 }
+  ]
+}
+};
+// ============================================================
+// ENGINE
+// ============================================================
+const ANSWER_KEY = [2,1,0,3,2];
+const FORM_URL = "https://forms.cloud.microsoft/r/YHYEJNbAMt";
+const MODULE_VERSION = "v1.0";
+const CODE_PREFIX = "CS26-";
+const PASS_PCT = 80;
+let lang = 'en', userName = '', currentScreen = 'splash', sectionIdx = 0, completionCode = null;
+let quizIdx = 0, quizScore = 0, quizAnswers = [], quizLocked = false;
+
+function L() { return LANG[lang]; }
+function setLang(l) {
+  lang = l;
+  document.querySelectorAll('.lang-btn').forEach(b => b.classList.toggle('active', b.textContent.trim() === (l==='en'?'English':'Español')));
+  render();
+}
+function genCode() {
+  const c = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  let r = ''; for (let i=0;i<5;i++) r += c[Math.floor(Math.random()*c.length)];
+  return CODE_PREFIX + r;
+}
+function render() {
+  const l = L();
+  document.getElementById('headerTitle').textContent = l.headerTitle;
+  document.getElementById('headerSub').textContent = l.headerSub;
+  document.getElementById('progBanner').textContent = l.progBanner;
+  document.title = l.headerTitle + ' — WKO Inc.';
+  const c = document.getElementById('appContainer');
+  if (currentScreen === 'splash') renderSplash(c, l);
+  else if (currentScreen === 'section') renderSection(c, l);
+  else if (currentScreen === 'quiz') renderQuiz(c, l);
+  else if (currentScreen === 'results') renderResults(c, l);
+}
+function renderSplash(c, l) {
+  c.innerHTML = `<div class="card active">
+    <div class="splash-title">${l.splashTitle}</div>
+    <p>${l.splashText}</p>
+    <div class="info" style="margin:12px 0">${l.splashNote}</div>
+    <p style="margin-top:14px"><strong>${l.enterName}</strong></p>
+    <input type="text" id="nameInput" placeholder="${l.namePlaceholder}" style="margin:8px 0">
+    <div id="nameErr" class="hidden" style="color:#dc3545;font-size:.9em">${l.nameError}</div>
+    <div><button class="btn btn-primary" onclick="startTraining()">${l.beginBtn}</button></div>
+  </div>`;
+  const inp = document.getElementById('nameInput');
+  if (inp) { inp.value = userName; inp.addEventListener('keydown', e => { if (e.key === 'Enter') startTraining(); }); }
+}
+function startTraining() {
+  const v = document.getElementById('nameInput').value.trim();
+  if (!v || v.split(/\s+/).length < 2) { document.getElementById('nameErr').classList.remove('hidden'); return; }
+  userName = v; currentScreen = 'section'; sectionIdx = 0; render();
+}
+function renderSection(c, l) {
+  const sec = l.sections[sectionIdx];
+  const totalSteps = l.sections.length + 1;
+  const pct = Math.round((sectionIdx / totalSteps) * 100);
+  let html = `<div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div>`;
+  html += `<div class="card active"><div style="color:#666;font-size:.85em;margin-bottom:6px">${l.secLabel} ${sectionIdx+1} ${l.ofLabel} ${l.sections.length}</div><h2>${sec.title}</h2>${sec.content}`;
+  if (sec.kc) {
+    html += `<div style="margin-top:16px;padding-top:12px;border-top:2px solid #e0e0e0">
+      <h3 style="color:#1F4E79">✓ ${lang==='en'?'Knowledge Check':'Verificación de Conocimiento'}</h3>
+      <p style="margin:8px 0"><strong>${sec.kc.question}</strong></p>`;
+    sec.kc.options.forEach((o, i) => {
+      html += `<button class="quiz-option" id="kc-opt-${i}" onclick="selectKC(${i})">${o}</button>`;
+    });
+    html += `<div id="kcFeedback"></div>
+      <div id="kcBtnRow" class="hidden"><button class="btn btn-primary" onclick="kcContinue()">${l.continueBtn}</button></div>
+    </div>`;
+  }
+  html += `<div class="nav-row">`;
+  if (sectionIdx > 0) html += `<button class="btn btn-secondary" onclick="prevSection()">${l.prevBtn}</button>`;
+  else html += `<span></span>`;
+  if (!sec.kc) {
+    if (sectionIdx < l.sections.length - 1) html += `<button class="btn btn-primary" onclick="nextSection()">${l.nextBtn}</button>`;
+    else html += `<button class="btn btn-success" onclick="goQuiz()">${l.startQuiz}</button>`;
+  }
+  html += `</div></div>`;
+  c.innerHTML = html;
+  window.scrollTo(0, 0);
+}
+let kcAnswered = false;
+function selectKC(i) {
+  if (kcAnswered) return;
+  kcAnswered = true;
+  const sec = L().sections[sectionIdx];
+  const correct = sec.kc.correct;
+  document.getElementById(`kc-opt-${i}`).classList.add(i===correct?'correct':'incorrect');
+  if (i !== correct) document.getElementById(`kc-opt-${correct}`).classList.add('correct');
+  document.querySelectorAll('.quiz-option').forEach(b => b.disabled = true);
+  const fb = document.getElementById('kcFeedback');
+  fb.innerHTML = `<div class="kc-feedback ${i===correct?'kc-correct':'kc-incorrect'}">${i===correct?sec.kc.rightMsg:sec.kc.wrongMsg}</div>`;
+  document.getElementById('kcBtnRow').classList.remove('hidden');
+}
+function kcContinue() {
+  kcAnswered = false;
+  if (sectionIdx < L().sections.length - 1) nextSection();
+  else goQuiz();
+}
+function prevSection() { if (sectionIdx > 0) { sectionIdx--; kcAnswered = false; render(); } }
+function nextSection() { sectionIdx++; kcAnswered = false; render(); }
+function goQuiz() { currentScreen = 'quiz'; quizIdx = 0; quizScore = 0; quizAnswers = []; quizLocked = false; completionCode = null; render(); }
+function renderQuiz(c, l) {
+  const qs = l.quizQuestions;
+  const q = qs[quizIdx];
+  const totalSteps = l.sections.length + 1;
+  const prog = Math.round(((l.sections.length + quizIdx/qs.length) / totalSteps) * 100);
+  let html = `<div class="card active"><h2>${l.quizTitle}</h2>`;
+  if (quizIdx === 0) html += `<p style="font-size:.9em;color:#444;margin-bottom:8px">${l.quizIntro} ${l.quizDetail||''}</p>`;
+  html += `
+    <div class="progress-bar"><div class="progress-fill" style="width:${prog}%"></div></div>
+    <p style="font-size:.9em;color:#666;margin-bottom:4px">${l.questionOf.replace('{n}',quizIdx+1).replace('{t}',qs.length)}</p>
+    <p style="margin:12px 0"><strong>${q.q}</strong></p>`;
+  q.opts.forEach((o, i) => {
+    html += `<button class="quiz-option" id="q-opt-${i}" onclick="selectQuizOpt(${i})">${o}</button>`;
+  });
+  html += `<div id="quizBtnRow"><button class="btn btn-primary" id="quizSubmitBtn" onclick="submitQuizAnswer()" disabled>${l.submitAnswer}</button></div></div>`;
+  c.innerHTML = html;
+  window.scrollTo(0, 0);
+}
+let selectedQuizOpt = -1;
+function selectQuizOpt(i) {
+  if (quizLocked) return;
+  selectedQuizOpt = i;
+  document.querySelectorAll('.quiz-option').forEach((b, j) => b.classList.toggle('selected', j===i));
+  document.getElementById('quizSubmitBtn').disabled = false;
+}
+function submitQuizAnswer() {
+  if (quizLocked || selectedQuizOpt < 0) return;
+  quizLocked = true;
+  const correct = ANSWER_KEY[quizIdx];
+  quizAnswers.push(selectedQuizOpt);
+  if (selectedQuizOpt === correct) quizScore++;
+  document.getElementById(`q-opt-${selectedQuizOpt}`).classList.add(selectedQuizOpt===correct?'correct':'incorrect');
+  if (selectedQuizOpt !== correct) document.getElementById(`q-opt-${correct}`).classList.add('correct');
+  document.querySelectorAll('.quiz-option').forEach(b => b.disabled = true);
+  const l = L();
+  const isLast = quizIdx >= l.quizQuestions.length - 1;
+  document.getElementById('quizBtnRow').innerHTML = isLast
+    ? `<button class="btn btn-success" onclick="showResults()">${l.seeResults}</button>`
+    : `<button class="btn btn-primary" onclick="nextQuizQ()">${l.nextQuestion}</button>`;
+}
+function nextQuizQ() { quizIdx++; quizLocked = false; selectedQuizOpt = -1; render(); }
+function showResults() { currentScreen = 'results'; render(); }
+function renderResults(c, l) {
+  const needed = Math.ceil(l.quizQuestions.length * PASS_PCT / 100);
+  const passed = quizScore >= needed;
+  const totalQ = l.quizQuestions.length;
+  const pct = Math.round(quizScore / totalQ * 100);
+  const today = new Date().toLocaleDateString(lang==='es'?'es-US':'en-US', {year:'numeric',month:'long',day:'numeric'});
+  let html = '';
+  if (passed) {
+    if (!completionCode) completionCode = genCode();
+    html += '<div class="card active"><p style="font-size:1.15em;font-weight:bold;color:#28a745">'+l.passH+'</p></div>';
+    html += '<div class="cert">';
+    html += '<div style="font-size:.95em;color:#666">'+l.passSub+'</div>';
+    html += '<div style="font-size:1.5em;font-weight:bold;color:#1F4E79;margin:10px 0">'+userName+'</div>';
+    html += '<div>'+l.passModule+'</div>';
+    html += '<div style="margin:8px 0">'+l.scoreLabel+': <b>'+quizScore+'/'+totalQ+' ('+pct+'%)</b> &middot; '+l.dateLabel+': <b>'+today+'</b></div>';
+    html += '<div style="margin-top:10px">'+l.codeLabel+':</div>';
+    html += '<div class="code">'+completionCode+'</div>';
+    html += '</div>';
+    html += '<div class="card active" style="margin-top:12px"><p>'+l.passInstr+'</p>';
+    html += '<div style="text-align:center;margin:12px 0"><a href="'+FORM_URL+'" target="_blank" class="btn btn-success" style="text-decoration:none;color:#fff">'+l.recordBtn+'</a></div>';
+    html += '</div>';
+  } else {
+    html += '<div class="card active">';
+    html += '<p style="font-size:1.15em;font-weight:bold;color:#dc3545">'+l.failH+'</p>';
+    html += '<p style="margin:8px 0">'+l.yourScore+': <b>'+quizScore+'/'+totalQ+' ('+pct+'%)</b></p>';
+    html += '<p style="margin:8px 0;font-size:.95em">'+(l.failDetail||'')+'</p>';
+    html += '<div style="margin-top:14px;display:flex;gap:10px;flex-wrap:wrap">';
+    html += '<button class="btn btn-secondary" onclick="retryFromSections()">'+l.reviewBtn+'</button>';
+    html += '<button class="btn btn-primary" onclick="retakeQuiz()">'+l.retakeBtn+'</button>';
+    html += '</div></div>';
+  }
+  c.innerHTML = html;
+  window.scrollTo(0, 0);
+}
+function retryFromSections() { currentScreen = 'section'; sectionIdx = 0; render(); }
+function retakeQuiz() { currentScreen = 'quiz'; quizIdx = 0; quizScore = 0; quizAnswers = []; quizLocked = false; selectedQuizOpt = -1; render(); }
+render();
+</script>
+</body>
+</html>

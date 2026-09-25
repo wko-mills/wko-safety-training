@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WKO Inc. — Fall Protection / Protección contra Caídas</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Arial,sans-serif;background:#f5f5f5;color:#222;line-height:1.5}
+.container{max-width:800px;margin:0 auto;padding:16px}
+.header{background:#1F4E79;color:#fff;padding:18px 20px;text-align:center;position:relative}
+.header h1{font-size:1.3em;margin-bottom:2px}
+.header .sub{font-size:.85em;opacity:.9}
+.prog{background:#2E75B6;color:#fff;text-align:center;padding:6px 10px;font-size:.82em}
+.lang-bar{display:flex;justify-content:center;gap:8px;padding:10px;background:#e8e8e8}
+.lang-btn{padding:6px 18px;border:2px solid #2E75B6;border-radius:4px;cursor:pointer;font-weight:bold;background:#fff;color:#2E75B6;font-size:.95em}
+.lang-btn.active{background:#2E75B6;color:#fff}
+.card{background:#fff;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,.1);margin:16px 0;padding:20px;display:none}
+.card.active{display:block}
+.card h2{color:#1F4E79;margin-bottom:10px;font-size:1.15em;border-bottom:2px solid #2E75B6;padding-bottom:6px}
+.card h3{color:#2E75B6;margin:12px 0 6px;font-size:1em}
+.warn{background:#FFF3CD;border-left:4px solid #FFC107;padding:10px 14px;margin:10px 0;border-radius:4px;font-size:.92em}
+.danger{background:#F8D7DA;border-left:4px solid #DC3545;padding:10px 14px;margin:10px 0;border-radius:4px;font-size:.92em}
+.info{background:#D1ECF1;border-left:4px solid #17A2B8;padding:10px 14px;margin:10px 0;border-radius:4px;font-size:.92em}
+.success-box{background:#D4EDDA;border-left:4px solid #28A745;padding:10px 14px;margin:10px 0;border-radius:4px;font-size:.92em}
+ul,ol{margin:8px 0 8px 20px}
+li{margin-bottom:5px;font-size:.95em}
+.btn{display:inline-block;padding:10px 28px;border:none;border-radius:4px;font-size:1em;font-weight:bold;cursor:pointer;margin:6px 4px}
+.btn-primary{background:#2E75B6;color:#fff}
+.btn-primary:hover{background:#1F4E79}
+.btn-secondary{background:#6c757d;color:#fff}
+.btn-success{background:#28a745;color:#fff}
+.btn-danger{background:#dc3545;color:#fff}
+.nav-row{display:flex;justify-content:space-between;margin-top:14px;flex-wrap:wrap;gap:8px}
+.quiz-option{display:block;width:100%;text-align:left;padding:12px 16px;margin:6px 0;border:2px solid #ddd;border-radius:6px;background:#fff;cursor:pointer;font-size:.95em;transition:border-color .2s}
+.quiz-option:hover{border-color:#2E75B6}
+.quiz-option.selected{border-color:#2E75B6;background:#EBF3FB}
+.quiz-option.correct{border-color:#28a745;background:#D4EDDA}
+.quiz-option.incorrect{border-color:#dc3545;background:#F8D7DA}
+.quiz-option:disabled{cursor:default}
+.progress-bar{background:#e0e0e0;border-radius:10px;height:8px;margin:10px 0}
+.progress-fill{background:#2E75B6;height:100%;border-radius:10px;transition:width .3s}
+.score-display{font-size:1.3em;font-weight:bold;text-align:center;margin:14px 0}
+.cert{border:3px solid #2E75B6;border-radius:10px;padding:24px;text-align:center;margin:16px 0;background:#FAFCFF}
+.cert h2{border:none;color:#1F4E79}
+.cert .code{font-size:1.4em;font-weight:bold;color:#2E75B6;letter-spacing:2px;margin:10px 0}
+.hidden{display:none}
+input[type=text]{padding:8px 12px;border:2px solid #ddd;border-radius:4px;font-size:1em;width:100%;max-width:350px}
+.splash-title{font-size:1.6em;color:#1F4E79;font-weight:bold;margin:10px 0}
+.kc-feedback{padding:10px 14px;border-radius:6px;margin:8px 0;font-weight:bold;font-size:.95em}
+.kc-correct{background:#D4EDDA;color:#155724;border:1px solid #C3E6CB}
+.kc-incorrect{background:#F8D7DA;color:#721C24;border:1px solid #F5C6CB}
+.cross-ref{background:#E8EAF6;border-left:4px solid #3F51B5;padding:10px 14px;margin:10px 0;border-radius:4px;font-size:.92em}
+@media(max-width:600px){.container{padding:10px}.card{padding:14px}.btn{padding:8px 18px;font-size:.9em}}
+</style>
+</head>
+<body>
+<div class="header">
+<h1 id="headerTitle"></h1>
+<div class="sub" id="headerSub"></div>
+</div>
+<div class="prog" id="progBanner"></div>
+<div class="lang-bar">
+<button class="lang-btn active" onclick="setLang('en')">English</button>
+<button class="lang-btn" onclick="setLang('es')">Español</button>
+</div>
+<div class="container" id="appContainer"></div>
+
+<script>
+// ============================================================
+// LANGUAGE PACKS
+// ============================================================
+const LANG = {
+en: {
+  headerTitle: "Fall Protection Training",
+  headerSub: "WKO Inc. — Carson, WA",
+  progBanner: "Fall Protection Program · WAC 296-880 · 29 CFR 1910 Subpart D · ANSI Z359",
+  splashTitle: "Fall Protection",
+  splashText: "This training covers the knowledge you need to recognize fall hazards and understand the fall protection systems used at WKO Inc. Company. At a wood products facility, fall hazards exist throughout the operation — on platforms, roofs, mezzanines, log decks, ladders, and aerial lifts.",
+  splashNote: "REQUIRED FOR ALL EMPLOYEES — This module covers the knowledge component of fall protection training. Hands-on equipment training and rescue techniques are provided separately through annual training with the company's contracted fall-protection and rescue trainer.",
+  enterName: "Enter your full name to begin:",
+  namePlaceholder: "First and Last Name",
+  beginBtn: "Begin Training",
+  nameError: "Please enter your first and last name.",
+  nextBtn: "Next",
+  prevBtn: "Back",
+  checkBtn: "Check Answer",
+  continueBtn: "Continue",
+  startQuiz: "Start Quiz",
+  submitAnswer: "Submit Answer",
+  nextQuestion: "Next Question",
+  seeResults: "See Results",
+  tryAgain: "Review & Try Again",
+  questionOf: "Question {n} of {t}",
+  quizTitle: "Knowledge Quiz",
+  quizIntro: "Answer 5 questions. You need 4 correct (80%) to pass.",
+  passTitle: "Training Complete!",
+  passMsg: "{name}, you passed with a score of {score}/5.",
+  failTitle: "Not Yet — Review and Retry",
+  failMsg: "{name}, you scored {score}/5. You need at least 4/5 to pass. Review the material and try again.",
+  certTitle: "Certificate of Completion",
+  certBody: "This certifies that",
+  certModule: "has completed the WKO Inc. Fall Protection Training",
+  certDate: "Date: {date}",
+  certCode: "Completion Code: {code}",
+  recordBtn: "Record Your Completion",
+  passH: "Congratulations — You Passed!",
+  passSub: "Certificate of Completion",
+  scoreLabel: "Score",
+  dateLabel: "Date",
+  codeLabel: "Your completion code",
+  failH: "Not Yet — Keep Going",
+  yourScore: "Your score",
+  reviewBtn: "Review the Material",
+  retakeBtn: "Retake the Quiz",
+  passInstr: "<b>Last step — record your completion:</b> tap the button below and submit the completion form. Enter your name, select <b>\"Fall Protection / Protección contra Caídas\"</b> from the module list, and enter the completion code shown above. Your training is not on record until you submit the form.",
+  passModule: "Fall Protection Training v1.0",
+  secLabel: "Section",
+  ofLabel: "of",
+  failDetail: "Review the material — especially the protection hierarchy, equipment requirements, pre-use inspection steps, suspension trauma response, and post-fall procedures — and try again. There is no limit on attempts.",
+  quizDetail: "Take your time — you can review the material and retake the quiz if needed.",
+  sections: [
+    {
+      title: "Section 1: Why Falls Are Dangerous",
+      content: `<p>Falls are one of the leading causes of serious workplace injuries and fatalities across all industries. In wood products manufacturing, fall hazards exist throughout the facility — from elevated platforms and roof areas to log decks, sorting chains, and mezzanines.</p>
+      <h3>Fall Hazards at WKO Inc.</h3>
+      <p>Washington State requires fall protection at <strong>four (4) feet</strong> or more above the ground or a lower level. At WKO Inc., fall hazards include:</p>
+      <ul>
+        <li><strong>Open-sided floors, platforms, and walkways</strong> — any walking/working surface with unprotected sides or edges</li>
+        <li><strong>Roof work</strong> — within six (6) feet of the roof edge, or near skylights and roof openings</li>
+        <li><strong>Fixed ladders</strong> — ladders over twenty-four (24) feet in height</li>
+        <li><strong>Aerial lifts</strong> — boom lifts and scissor lifts used for maintenance and repair</li>
+        <li><strong>Floor openings, holes, and hatchways</strong> — any gap or void two (2) inches or more</li>
+        <li><strong>Log decks and lumber sorting chains</strong> — sawmill-specific elevated work areas</li>
+        <li><strong>Mezzanine edges</strong> — elevated work areas lacking guardrail protection</li>
+        <li><strong>Above dangerous equipment</strong> — fall protection is required regardless of height when working above dangerous machinery, pits, or tanks</li>
+      </ul>
+      <div class="danger">🚨 Falls of just 4 feet can cause broken bones, traumatic brain injuries, spinal cord injuries, and death. Never assume a short fall is a safe fall.</div>
+      <h3>Fall Protection Is Not Optional</h3>
+      <p>If you are on any surface four feet or more above the ground — or above dangerous equipment at any height — fall protection is required. There are no exceptions for "quick tasks" or "just a minute." If you see a fall hazard without protection, stop work and report it to your supervisor.</p>`
+    },
+    {
+      title: "Section 2: The Protection Hierarchy",
+      content: `<p>WKO Inc. follows a <strong>three-tier hierarchy</strong> when addressing fall hazards. The hierarchy moves from most effective to least effective. Always start at the top.</p>
+      <h3>Tier 1 — Elimination (Best)</h3>
+      <p>Remove the fall hazard entirely. This is always the first and best option. Examples:</p>
+      <ul>
+        <li>Relocate work tasks to ground level where feasible</li>
+        <li>Use remote-operated equipment to avoid elevated work</li>
+        <li>Design structures with permanent access systems and built-in anchorages</li>
+      </ul>
+      <h3>Tier 2 — Prevention (Second Best)</h3>
+      <p>When elimination is not possible, use passive fall protection that does not depend on employee behavior. Examples:</p>
+      <ul>
+        <li><strong>Standard guardrail systems</strong> — top rail at 42 inches (±3 inches), mid-rail, and toeboard</li>
+        <li><strong>Hole covers</strong> — secured, marked "HOLE" or "COVER," and capable of supporting twice the maximum load</li>
+        <li><strong>Complete scaffolding systems</strong></li>
+        <li><strong>Stairways and fixed access systems</strong></li>
+      </ul>
+      <h3>Tier 3 — Fall Arrest / Active Systems (Last Resort)</h3>
+      <p>Active fall protection systems are the last line of defense. These require employee interaction and training. Examples:</p>
+      <ul>
+        <li><strong>Personal fall arrest systems</strong> — full body harness, shock-absorbing lanyard, and anchorage</li>
+        <li><strong>Personal fall restraint systems</strong> — prevents you from reaching the fall hazard</li>
+        <li><strong>Positioning device systems</strong> — supports you on a vertical surface</li>
+        <li><strong>Warning line systems with safety monitoring</strong></li>
+      </ul>
+      <div class="info">ℹ️ Think of it this way: Can we get rid of the hazard? If not, can we put up a barrier? If not, then we use harnesses and lanyards — with training, inspection, and a rescue plan.</div>`,
+      kc: {
+        question: "What is the FIRST priority when addressing a fall hazard?",
+        options: ["Provide a personal fall arrest system (harness and lanyard)", "Eliminate the fall hazard entirely", "Post a warning sign near the hazard", "Schedule a safety meeting"],
+        correct: 1,
+        rightMsg: "✓ Correct — elimination is always the first and best option. Barriers come second, and active systems like harnesses are the last resort.",
+        wrongMsg: "✗ Not quite — the first priority is always to eliminate the hazard entirely. Guardrails come second. Personal fall arrest systems (harnesses and lanyards) are the last resort, used only when elimination and prevention are not feasible."
+      }
+    },
+    {
+      title: "Section 3: Know Your Equipment",
+      content: `<p>When fall hazards cannot be eliminated or prevented with guardrails, you may be required to use personal fall protection equipment. Understanding this equipment is essential to your safety.</p>
+      <h3>Full Body Harness — Required</h3>
+      <p>Only full body harnesses are permitted for fall arrest at WKO Inc. <strong>Body belts are prohibited for fall arrest</strong> — they do not distribute arrest forces safely and can cause serious internal injuries.</p>
+      <ul>
+        <li>Distributes fall arrest forces across the upper thighs, pelvis, chest, and shoulders</li>
+        <li>Dorsal D-ring (center back) is the primary attachment point for fall arrest</li>
+        <li>Must be equipped with <strong>suspension relief straps</strong> (trauma straps)</li>
+      </ul>
+      <h3>Shock-Absorbing Lanyard</h3>
+      <p>A shock-absorbing (deceleration) lanyard limits the maximum arrest force on your body to <strong>1,800 pounds or less</strong>. This is critical — without it, the sudden stop from a fall can cause fatal injuries even while wearing a harness.</p>
+      <h3>Self-Retracting Devices (SRDs)</h3>
+      <p>Self-retracting devices allow free movement during normal work but lock instantly when a fall begins — similar to a seat belt. WKO Inc. uses two classes:</p>
+      <ul>
+        <li><strong>Class 1</strong> — overhead anchorage only, maximum 2-foot free fall</li>
+        <li><strong>Class 2</strong> — above or below D-ring, maximum 6-foot free fall (includes leading-edge rated units)</li>
+      </ul>
+      <h3>Connectors — Double-Locking Only</h3>
+      <p>All snap hooks and carabiners must be <strong>self-closing and self-locking (double-action)</strong>. Single-action snap hooks are prohibited. The keeper must close and lock automatically after connection.</p>
+      <h3>Anchorage — The Foundation</h3>
+      <p>Everything connects to an anchorage point. For fall arrest, the anchorage must support:</p>
+      <div class="warn">⚠️ <strong>5,000 pounds per worker attached</strong> — or be designed by a qualified person with a safety factor of at least 2. Never attach to guardrails, hoists, or anything not rated as an anchorage.</div>
+      <h3>Total Fall Distance</h3>
+      <p>Before working in a fall arrest system, the total fall distance must be calculated to ensure you will not contact any lower level. This includes: lanyard length + shock absorber deployment (typically 3.5 feet) + harness stretch (about 1 foot) + a minimum 3-foot safety clearance below your feet.</p>`
+    },
+    {
+      title: "Section 4: Inspect Before Every Use",
+      content: `<p>All personal fall protection equipment must be inspected by the user <strong>before each use</strong>. Defective equipment must be removed from service immediately.</p>
+      <h3>Inspecting a Full Body Harness</h3>
+      <ul>
+        <li><strong>Webbing:</strong> Grasp the webbing 6–8 inches apart and bend into an inverted "U." Inspect both sides for frayed edges, broken fibers, pulled stitches, cuts, burns, and chemical damage</li>
+        <li><strong>D-Rings:</strong> Check for distortion, cracks, breaks, and rough or sharp edges. D-rings should pivot freely</li>
+        <li><strong>Buckles:</strong> Verify they operate correctly and are not deformed, cracked, or damaged</li>
+        <li><strong>Stitching:</strong> Check all attachment points for frayed or cut fibers and broken stitching</li>
+        <li><strong>Suspension relief straps:</strong> Confirm they are present and properly packaged</li>
+        <li><strong>Labels:</strong> Manufacturer, model, and date of manufacture must be legible</li>
+      </ul>
+      <h3>Inspecting Lanyards</h3>
+      <ul>
+        <li>Begin at one end and rotate the lanyard while inspecting to the opposite end</li>
+        <li>Check snap hooks and carabiners for distortion, cracks, corrosion. The lock must prevent the keeper from opening</li>
+        <li><strong>Shock-absorbing lanyards:</strong> Check for signs of deployment — torn stitching or a warning flag. <strong>Any lanyard that has been deployed must be immediately removed from service</strong></li>
+      </ul>
+      <h3>Inspecting Self-Retracting Devices (SRDs)</h3>
+      <ul>
+        <li>Inspect the outer casing for damage; verify nuts, rivets, and fasteners are tight</li>
+        <li>Inspect the full length of the line for cuts, abrasions, kinks, or broken strands</li>
+        <li><strong>Pull sharply on the line to verify the locking mechanism engages</strong></li>
+        <li>Check the manufacturer's label for Class, service life, and recertification status</li>
+      </ul>
+      <div class="danger">🚨 <strong>If any equipment is defective, damaged, or shows excessive wear — remove it from service immediately.</strong> Tag it "OUT OF SERVICE — DO NOT USE" and notify your supervisor.</div>`,
+      kc: {
+        question: "You find a shock-absorbing lanyard with torn stitching that looks like it may have been deployed in a fall. What should you do?",
+        options: ["Use it — torn stitching is normal wear", "Remove it from service immediately and tag it 'OUT OF SERVICE'", "Set it aside for inspection at the end of the shift", "Re-stitch it and return it to service"],
+        correct: 1,
+        rightMsg: "✓ Correct — any lanyard showing signs of deployment must be removed from service immediately. It has already absorbed the energy of a fall and cannot protect you again.",
+        wrongMsg: "✗ No — a shock-absorbing lanyard with torn stitching has likely been deployed in a fall. It must be immediately removed from service and tagged 'OUT OF SERVICE — DO NOT USE.' It cannot be repaired or reused."
+      }
+    },
+    {
+      title: "Section 5: Suspension Trauma — A Hidden Killer",
+      content: `<p>Suspension trauma (orthostatic intolerance) is a life-threatening condition that occurs when a worker hangs motionless in a harness after a fall. It is one of the most critical fall protection concepts you need to understand.</p>
+      <h3>What Happens</h3>
+      <p>When you are suspended motionless in a full body harness, the leg straps compress the femoral arteries in your upper thighs. Blood pools in your lower legs, reducing oxygen delivery to your brain, kidneys, and other vital organs.</p>
+      <h3>How Fast It Happens</h3>
+      <div class="danger">🚨 <strong>Unconsciousness can occur in as little as 15 minutes. Death can occur in less than 30 minutes.</strong> This is not a slow process — it is a medical emergency that requires immediate rescue.</div>
+      <h3>Signs and Symptoms</h3>
+      <ul>
+        <li>Light-headedness, dizziness, or fainting</li>
+        <li>Nausea and sweating</li>
+        <li>Rapid heartbeat followed by dangerously low heart rate</li>
+        <li>Hot flashes and paleness</li>
+        <li>Loss of consciousness</li>
+      </ul>
+      <h3>What YOU Can Do While Suspended</h3>
+      <ul>
+        <li><strong>Deploy your suspension relief straps immediately</strong> — every harness at WKO Inc. has them. They create a foot loop so you can stand in the harness and relieve pressure on your legs</li>
+        <li><strong>Keep moving</strong> — pump your legs, push against surfaces, do anything to promote blood circulation</li>
+        <li>Try to reach a nearby surface, structure, or ladder</li>
+      </ul>
+      <h3>After Rescue — Critical Rule</h3>
+      <div class="warn">⚠️ <strong>After rescue, keep the person seated or semi-upright for at least 30 minutes. NEVER lay them flat.</strong> Laying a suspension trauma victim flat can cause sudden redistribution of pooled blood, leading to cardiac arrest and death. This is called "rescue death."</div>`,
+      kc: {
+        question: "A co-worker has been rescued after hanging in a harness for several minutes. What position should they be placed in?",
+        options: ["Flat on their back so they can rest", "Standing upright immediately", "Seated or semi-upright for at least 30 minutes", "On their stomach with their head turned to the side"],
+        correct: 2,
+        rightMsg: "✓ Correct — the person must be kept seated or semi-upright for at least 30 minutes. Laying them flat can cause 'rescue death' — sudden cardiac arrest from redistribution of pooled blood.",
+        wrongMsg: "✗ That's the wrong position — a suspension trauma victim must be kept seated or semi-upright for at least 30 minutes after rescue. NEVER lay them flat. Sudden redistribution of pooled blood can cause cardiac arrest ('rescue death')."
+      }
+    },
+    {
+      title: "Section 6: Your Responsibilities",
+      content: `<p>Every employee exposed to fall hazards has specific responsibilities under WKO Inc.'s Fall Protection Program.</p>
+      <h3>You Must:</h3>
+      <ul>
+        <li><strong>Attend and participate in all fall protection training</strong> — both this knowledge training and the annual hands-on training provided by the company's contracted fall-protection and rescue trainer</li>
+        <li><strong>Inspect your fall protection equipment before each use</strong> — remove defective equipment from service immediately</li>
+        <li><strong>Use fall protection systems as directed and in accordance with your training</strong> — never use equipment you have not been trained on</li>
+        <li><strong>Report fall hazards, unsafe conditions, equipment defects, and near-misses</strong> to your supervisor immediately</li>
+        <li><strong>Never alter, modify, or misuse fall protection equipment</strong></li>
+        <li><strong>Know the rescue plan for your work area</strong> — before you work in a fall arrest system, your supervisor must have a rescue plan in place</li>
+        <li><strong>Participate in rescue drills</strong></li>
+      </ul>
+      <h3>Supervisors Must Also:</h3>
+      <ul>
+        <li>Conduct pre-work assessments to identify fall hazards</li>
+        <li>Ensure a <strong>rescue plan is in place before any employee works in a fall arrest system</strong></li>
+        <li>Verify that equipment is inspected before each use</li>
+        <li>Stop work when unsafe conditions or non-compliance are observed</li>
+        <li>Report fall incidents, near-misses, and equipment issues immediately</li>
+      </ul>
+      <div class="info">ℹ️ <strong>No rescue plan = no work at height.</strong> Your supervisor must identify the rescue method, equipment, and rescue-capable personnel before work begins. If a rescue plan is not in place, do not start the work.</div>`,
+      kc: {
+        question: "Before an employee works in a personal fall arrest system (harness and lanyard), what must be in place?",
+        options: ["A signed overtime authorization form", "A rescue plan specific to the work area", "Written approval from the Safety Lead only", "A minimum of three workers on site"],
+        correct: 1,
+        rightMsg: "✓ Correct — a rescue plan must be in place before any employee works in a fall arrest system. The plan must identify the rescue method, equipment, personnel, and communication method.",
+        wrongMsg: "✗ Not quite — the critical requirement is a rescue plan specific to the work area. Without a rescue plan, work in a fall arrest system must not begin. The plan identifies how the worker would be rescued if a fall occurred."
+      }
+    },
+    {
+      title: "Section 7: Emergency — What to Do After a Fall",
+      content: `<p>If a fall event occurs — whether or not injury is apparent — follow these procedures immediately.</p>
+      <h3>Immediate Actions</h3>
+      <ol>
+        <li><strong>Execute the rescue plan</strong> — WKO Inc. uses a three-tier rescue system:
+          <ul>
+            <li><strong>Tier 1: Self-rescue</strong> — deploy suspension relief straps, reach a surface</li>
+            <li><strong>Tier 2: Assisted rescue by trained co-workers</strong> — boom lift rescue (primary method), ladder-based rescue, or retrieval devices. Annual training with the company's contracted fall-protection and rescue trainer covers these techniques</li>
+            <li><strong>Tier 3: Emergency Medical Services</strong> — call 911 / the local fire department (911)</li>
+          </ul>
+        </li>
+        <li><strong>Call 911</strong> if there is any injury, loss of consciousness, or if the worker was suspended for more than five (5) minutes</li>
+        <li><strong>Remember the suspension trauma rules</strong> — keep the rescued person seated or semi-upright for at least 30 minutes. Never lay them flat</li>
+        <li><strong>Secure the area</strong> to prevent additional incidents</li>
+      </ol>
+      <h3>Equipment After a Fall</h3>
+      <div class="danger">🚨 <strong>ALL fall protection equipment involved in a fall event is permanently retired.</strong> Tag it "OUT OF SERVICE — INVOLVED IN FALL EVENT." Do not attempt to repair or reuse it. The equipment has absorbed arrest forces and can no longer be trusted to protect you.</div>
+      <h3>Investigation</h3>
+      <p>Every fall event and significant near-miss will be investigated by the Safety Lead. Do not disturb the fall protection equipment or the fall area until the investigation is complete, unless necessary for rescue. The investigation will determine root causes and corrective actions to prevent recurrence.</p>
+      <div class="cross-ref">📋 <strong>Related training:</strong> Emergency Evacuation training covers the facility's overall emergency procedures and muster points. Respiratory Protection training covers the use of respiratory equipment that may be needed in some work environments. Hands-on fall rescue techniques are covered in your annual the company's contracted fall-protection and rescue trainer training.</div>`
+    }
+  ],
+  quizQuestions: [
+    {
+      q: "In the fall protection hierarchy, what should be tried BEFORE using a personal fall arrest system (harness and lanyard)?",
+      opts: ["Warning signs and verbal instructions", "Elimination of the hazard, then guardrails or barriers", "A safety meeting to discuss the hazard", "Providing extra PPE like hard hats and gloves"],
+      ans: 1
+    },
+    {
+      q: "What type of body support is permitted for personal fall ARREST at WKO Inc.?",
+      opts: ["A chest harness with a front D-ring", "Body belt or full body harness — either is acceptable", "Full body harness only — body belts are prohibited for fall arrest", "A safety vest with built-in attachment points"],
+      ans: 2
+    },
+    {
+      q: "During a pre-use inspection of an SRD (self-retracting device), how do you verify the locking mechanism works?",
+      opts: ["Pull sharply on the line to confirm it locks", "Visually check the label for a green sticker", "Drop it from waist height and see if it catches", "Press the reset button on the casing"],
+      ans: 0
+    },
+    {
+      q: "After rescuing a worker who was suspended in a harness, what is the correct position to place them in?",
+      opts: ["Flat on their back", "Seated or semi-upright for at least 30 minutes", "Standing and walking immediately", "On their side in the recovery position"],
+      ans: 1
+    },
+    {
+      q: "What happens to fall protection equipment after it has been involved in a fall arrest event?",
+      opts: ["It is inspected and returned to service if no visible damage is found", "It is cleaned, repaired, and put back into use", "It is permanently removed from service — tag it and do not reuse", "It is returned to the manufacturer for recertification"],
+      ans: 2
+    }
+  ]
+},
+es: {
+  headerTitle: "Capacitación de Protección contra Caídas",
+  headerSub: "WKO Inc. — Carson, WA",
+  progBanner: "Programa de Protección contra Caídas · WAC 296-880 · 29 CFR 1910 Subparte D · ANSI Z359",
+  splashTitle: "Protección contra Caídas",
+  splashText: "Esta capacitación cubre el conocimiento que necesita para reconocer los peligros de caídas y comprender los sistemas de protección contra caídas utilizados en WKO Inc. Company. En una instalación de productos de madera, existen peligros de caídas en toda la operación — en plataformas, techos, mezzanines, pilas de troncos, escaleras y elevadores aéreos.",
+  splashNote: "REQUERIDO PARA TODOS LOS EMPLEADOS — Este módulo cubre el componente de conocimiento de la capacitación en protección contra caídas. La capacitación práctica con equipos y técnicas de rescate se proporciona por separado a través de la capacitación anual con the company's contracted fall-protection and rescue trainer.",
+  enterName: "Escriba su nombre completo para comenzar:",
+  namePlaceholder: "Nombre y Apellido",
+  beginBtn: "Comenzar Capacitación",
+  nameError: "Por favor ingrese su nombre y apellido.",
+  nextBtn: "Siguiente",
+  prevBtn: "Atrás",
+  checkBtn: "Verificar Respuesta",
+  continueBtn: "Continuar",
+  startQuiz: "Comenzar Examen",
+  submitAnswer: "Enviar Respuesta",
+  nextQuestion: "Siguiente Pregunta",
+  seeResults: "Ver Resultados",
+  tryAgain: "Revisar e Intentar de Nuevo",
+  questionOf: "Pregunta {n} de {t}",
+  quizTitle: "Examen de Conocimiento",
+  quizIntro: "Responda 5 preguntas. Necesita 4 correctas (80%) para aprobar.",
+  passTitle: "¡Capacitación Completada!",
+  passMsg: "{name}, aprobó con una puntuación de {score}/5.",
+  failTitle: "Aún No — Revise e Intente de Nuevo",
+  failMsg: "{name}, su puntuación fue {score}/5. Necesita al menos 4/5 para aprobar. Revise el material e intente de nuevo.",
+  certTitle: "Certificado de Finalización",
+  certBody: "Esto certifica que",
+  certModule: "ha completado la Capacitación de Protección contra Caídas de WKO Inc.",
+  certDate: "Fecha: {date}",
+  certCode: "Código de Finalización: {code}",
+  recordBtn: "Registrar Su Finalización",
+  passH: "¡Felicidades — Aprobó!",
+  passSub: "Certificado de Finalización",
+  scoreLabel: "Puntuación",
+  dateLabel: "Fecha",
+  codeLabel: "Su código de finalización",
+  failH: "Aún No — Siga Adelante",
+  yourScore: "Su puntuación",
+  reviewBtn: "Revisar el Material",
+  retakeBtn: "Volver a Tomar el Examen",
+  passInstr: "<b>Último paso — registre su finalización:</b> toque el botón de abajo y envíe el formulario de finalización. Escriba su nombre, seleccione <b>\"Fall Protection / Protección contra Caídas\"</b> de la lista de módulos, e ingrese el código de finalización mostrado arriba. Su capacitación no queda registrada hasta que envíe el formulario.",
+  passModule: "Capacitación de Protección contra Caídas v1.0",
+  secLabel: "Sección",
+  ofLabel: "de",
+  failDetail: "Revise el material — especialmente la jerarquía de protección, los requisitos de equipos, los pasos de inspección antes del uso, la respuesta al trauma por suspensión, y los procedimientos posteriores a una caída — e intente de nuevo. No hay límite de intentos.",
+  quizDetail: "Tómese su tiempo — puede revisar el material y volver a tomar el examen si es necesario.",
+  sections: [
+    {
+      title: "Sección 1: Por Qué las Caídas Son Peligrosas",
+      content: `<p>Las caídas son una de las principales causas de lesiones graves y muertes en el lugar de trabajo en todas las industrias. En la fabricación de productos de madera, existen peligros de caídas en toda la instalación — desde plataformas elevadas y áreas de techos hasta pilas de troncos, cadenas de clasificación y mezzanines.</p>
+      <h3>Peligros de Caídas en WKO Inc.</h3>
+      <p>El Estado de Washington requiere protección contra caídas a <strong>cuatro (4) pies</strong> o más sobre el suelo o un nivel inferior. En WKO Inc., los peligros de caídas incluyen:</p>
+      <ul>
+        <li><strong>Pisos, plataformas y pasarelas con lados abiertos</strong> — cualquier superficie de trabajo con lados o bordes sin protección</li>
+        <li><strong>Trabajo en techos</strong> — dentro de seis (6) pies del borde del techo, o cerca de tragaluces y aberturas del techo</li>
+        <li><strong>Escaleras fijas</strong> — escaleras de más de veinticuatro (24) pies de altura</li>
+        <li><strong>Elevadores aéreos</strong> — elevadores de pluma y de tijera utilizados para mantenimiento y reparación</li>
+        <li><strong>Aberturas en pisos, agujeros y escotillas</strong> — cualquier hueco o vacío de dos (2) pulgadas o más</li>
+        <li><strong>Pilas de troncos y cadenas de clasificación de madera</strong> — áreas de trabajo elevadas específicas del aserradero</li>
+        <li><strong>Bordes de mezzanines</strong> — áreas de trabajo elevadas sin protección de barandas</li>
+        <li><strong>Sobre equipos peligrosos</strong> — se requiere protección contra caídas independientemente de la altura cuando se trabaja sobre maquinaria peligrosa, pozos o tanques</li>
+      </ul>
+      <div class="danger">🚨 Las caídas de solo 4 pies pueden causar huesos rotos, lesiones cerebrales traumáticas, lesiones de la médula espinal y muerte. Nunca asuma que una caída corta es segura.</div>
+      <h3>La Protección contra Caídas No Es Opcional</h3>
+      <p>Si está en cualquier superficie a cuatro pies o más sobre el suelo — o sobre equipos peligrosos a cualquier altura — se requiere protección contra caídas. No hay excepciones por "tareas rápidas" o "solo un minuto." Si ve un peligro de caída sin protección, detenga el trabajo e informe a su supervisor.</p>`
+    },
+    {
+      title: "Sección 2: La Jerarquía de Protección",
+      content: `<p>WKO Inc. sigue una <strong>jerarquía de tres niveles</strong> al abordar los peligros de caídas. La jerarquía va de lo más efectivo a lo menos efectivo. Siempre comience desde arriba.</p>
+      <h3>Nivel 1 — Eliminación (Mejor)</h3>
+      <p>Eliminar el peligro de caída por completo. Esta es siempre la primera y mejor opción. Ejemplos:</p>
+      <ul>
+        <li>Reubicar las tareas de trabajo al nivel del suelo cuando sea posible</li>
+        <li>Usar equipos operados remotamente para evitar trabajo elevado</li>
+        <li>Diseñar estructuras con sistemas de acceso permanentes y anclajes integrados</li>
+      </ul>
+      <h3>Nivel 2 — Prevención (Segundo Mejor)</h3>
+      <p>Cuando la eliminación no es posible, use protección pasiva contra caídas que no dependa del comportamiento del empleado. Ejemplos:</p>
+      <ul>
+        <li><strong>Sistemas de barandas estándar</strong> — baranda superior a 42 pulgadas (±3 pulgadas), baranda intermedia y rodapié</li>
+        <li><strong>Cubiertas de agujeros</strong> — aseguradas, marcadas "HOLE" o "COVER," y capaces de soportar el doble de la carga máxima</li>
+        <li><strong>Sistemas completos de andamios</strong></li>
+        <li><strong>Escaleras y sistemas de acceso fijos</strong></li>
+      </ul>
+      <h3>Nivel 3 — Detención de Caídas / Sistemas Activos (Último Recurso)</h3>
+      <p>Los sistemas activos de protección contra caídas son la última línea de defensa. Requieren interacción y capacitación del empleado. Ejemplos:</p>
+      <ul>
+        <li><strong>Sistemas personales de detención de caídas</strong> — arnés de cuerpo completo, línea de vida con absorbedor de impacto y anclaje</li>
+        <li><strong>Sistemas personales de restricción de caídas</strong> — le impide llegar al peligro de caída</li>
+        <li><strong>Sistemas de dispositivos de posicionamiento</strong> — lo sostiene en una superficie vertical</li>
+        <li><strong>Sistemas de línea de advertencia con monitoreo de seguridad</strong></li>
+      </ul>
+      <div class="info">ℹ️ Piénselo así: ¿Podemos eliminar el peligro? Si no, ¿podemos poner una barrera? Si no, entonces usamos arneses y líneas de vida — con capacitación, inspección y un plan de rescate.</div>`,
+      kc: {
+        question: "¿Cuál es la PRIMERA prioridad al abordar un peligro de caída?",
+        options: ["Proporcionar un sistema personal de detención de caídas (arnés y línea de vida)", "Eliminar el peligro de caída por completo", "Colocar un letrero de advertencia cerca del peligro", "Programar una reunión de seguridad"],
+        correct: 1,
+        rightMsg: "✓ Correcto — la eliminación es siempre la primera y mejor opción. Las barreras son la segunda opción, y los sistemas activos como arneses son el último recurso.",
+        wrongMsg: "✗ No exactamente — la primera prioridad siempre es eliminar el peligro por completo. Las barandas son la segunda opción. Los sistemas personales de detención de caídas (arneses y líneas de vida) son el último recurso, usados solo cuando la eliminación y la prevención no son viables."
+      }
+    },
+    {
+      title: "Sección 3: Conozca Su Equipo",
+      content: `<p>Cuando los peligros de caída no se pueden eliminar o prevenir con barandas, es posible que deba usar equipo personal de protección contra caídas. Comprender este equipo es esencial para su seguridad.</p>
+      <h3>Arnés de Cuerpo Completo — Requerido</h3>
+      <p>Solo se permiten arneses de cuerpo completo para la detención de caídas en WKO Inc. <strong>Los cinturones corporales están prohibidos para la detención de caídas</strong> — no distribuyen las fuerzas de detención de manera segura y pueden causar lesiones internas graves.</p>
+      <ul>
+        <li>Distribuye las fuerzas de detención de caídas en los muslos superiores, la pelvis, el pecho y los hombros</li>
+        <li>El anillo D dorsal (centro de la espalda) es el punto de conexión principal para la detención de caídas</li>
+        <li>Debe estar equipado con <strong>correas de alivio de suspensión</strong> (correas de trauma)</li>
+      </ul>
+      <h3>Línea de Vida con Absorbedor de Impacto</h3>
+      <p>Una línea de vida con absorbedor de impacto (desaceleración) limita la fuerza máxima de detención en su cuerpo a <strong>1,800 libras o menos</strong>. Esto es crítico — sin ella, la parada repentina de una caída puede causar lesiones fatales incluso usando un arnés.</p>
+      <h3>Dispositivos Autorretráctiles (SRDs)</h3>
+      <p>Los dispositivos autorretráctiles permiten movimiento libre durante el trabajo normal, pero se bloquean instantáneamente cuando comienza una caída — similar a un cinturón de seguridad. WKO Inc. usa dos clases:</p>
+      <ul>
+        <li><strong>Clase 1</strong> — solo anclaje sobre la cabeza, caída libre máxima de 2 pies</li>
+        <li><strong>Clase 2</strong> — por encima o debajo del anillo D, caída libre máxima de 6 pies (incluye unidades con clasificación de borde principal)</li>
+      </ul>
+      <h3>Conectores — Solo de Doble Bloqueo</h3>
+      <p>Todos los ganchos y mosquetones deben ser <strong>de cierre automático y bloqueo automático (doble acción)</strong>. Los ganchos de acción simple están prohibidos. El seguro debe cerrarse y bloquearse automáticamente después de la conexión.</p>
+      <h3>Anclaje — La Base</h3>
+      <p>Todo se conecta a un punto de anclaje. Para detención de caídas, el anclaje debe soportar:</p>
+      <div class="warn">⚠️ <strong>5,000 libras por trabajador conectado</strong> — o ser diseñado por una persona calificada con un factor de seguridad de al menos 2. Nunca se conecte a barandas, grúas o cualquier cosa que no esté clasificada como anclaje.</div>
+      <h3>Distancia Total de Caída</h3>
+      <p>Antes de trabajar en un sistema de detención de caídas, se debe calcular la distancia total de caída para asegurar que no entre en contacto con ningún nivel inferior. Esto incluye: longitud de la línea de vida + despliegue del absorbedor de impacto (típicamente 3.5 pies) + estiramiento del arnés (aproximadamente 1 pie) + un espacio libre mínimo de seguridad de 3 pies debajo de sus pies.</p>`
+    },
+    {
+      title: "Sección 4: Inspeccione Antes de Cada Uso",
+      content: `<p>Todo el equipo personal de protección contra caídas debe ser inspeccionado por el usuario <strong>antes de cada uso</strong>. El equipo defectuoso debe retirarse del servicio de inmediato.</p>
+      <h3>Inspección de un Arnés de Cuerpo Completo</h3>
+      <ul>
+        <li><strong>Correas:</strong> Sujete las correas a 6–8 pulgadas de distancia y dóblelas en una "U" invertida. Inspeccione ambos lados para detectar bordes deshilachados, fibras rotas, costuras sueltas, cortes, quemaduras y daño químico</li>
+        <li><strong>Anillos D:</strong> Verifique que no haya distorsión, grietas, roturas o bordes ásperos o afilados. Los anillos D deben girar libremente</li>
+        <li><strong>Hebillas:</strong> Verifique que funcionen correctamente y no estén deformadas, agrietadas o dañadas</li>
+        <li><strong>Costuras:</strong> Revise todos los puntos de conexión para detectar fibras cortadas o deshilachadas y costuras rotas</li>
+        <li><strong>Correas de alivio de suspensión:</strong> Confirme que estén presentes y correctamente empaquetadas</li>
+        <li><strong>Etiquetas:</strong> El fabricante, modelo y fecha de fabricación deben ser legibles</li>
+      </ul>
+      <h3>Inspección de Líneas de Vida</h3>
+      <ul>
+        <li>Comience en un extremo y gire la línea de vida mientras inspecciona hasta el otro extremo</li>
+        <li>Revise ganchos y mosquetones para detectar distorsión, grietas, corrosión. El bloqueo debe impedir que el seguro se abra</li>
+        <li><strong>Líneas con absorbedor de impacto:</strong> Verifique si hay señales de despliegue — costuras rotas o una bandera de advertencia. <strong>Cualquier línea que haya sido desplegada debe retirarse del servicio inmediatamente</strong></li>
+      </ul>
+      <h3>Inspección de Dispositivos Autorretráctiles (SRDs)</h3>
+      <ul>
+        <li>Inspeccione la carcasa exterior para detectar daños; verifique que tuercas, remaches y sujetadores estén apretados</li>
+        <li>Inspeccione toda la longitud de la línea para detectar cortes, abrasiones, torceduras o hilos rotos</li>
+        <li><strong>Tire bruscamente de la línea para verificar que el mecanismo de bloqueo se active</strong></li>
+        <li>Verifique la etiqueta del fabricante para la Clase, vida útil y estado de recertificación</li>
+      </ul>
+      <div class="danger">🚨 <strong>Si algún equipo está defectuoso, dañado o muestra desgaste excesivo — retírelo del servicio inmediatamente.</strong> Etiquételo "FUERA DE SERVICIO — NO USAR" y notifique a su supervisor.</div>`,
+      kc: {
+        question: "Encuentra una línea de vida con absorbedor de impacto con costuras rotas que parecen indicar que fue desplegada en una caída. ¿Qué debe hacer?",
+        options: ["Usarla — las costuras rotas son desgaste normal", "Retirarla del servicio inmediatamente y etiquetarla 'FUERA DE SERVICIO'", "Dejarla a un lado para inspección al final del turno", "Volver a coserla y devolverla al servicio"],
+        correct: 1,
+        rightMsg: "✓ Correcto — cualquier línea que muestre señales de despliegue debe retirarse del servicio inmediatamente. Ya absorbió la energía de una caída y no puede protegerlo de nuevo.",
+        wrongMsg: "✗ No — una línea con absorbedor de impacto con costuras rotas probablemente fue desplegada en una caída. Debe retirarse del servicio inmediatamente y etiquetarse 'FUERA DE SERVICIO — NO USAR.' No puede repararse ni reutilizarse."
+      }
+    },
+    {
+      title: "Sección 5: Trauma por Suspensión — Un Asesino Oculto",
+      content: `<p>El trauma por suspensión (intolerancia ortostática) es una condición que amenaza la vida y ocurre cuando un trabajador cuelga inmóvil en un arnés después de una caída. Es uno de los conceptos más críticos de protección contra caídas que necesita comprender.</p>
+      <h3>Qué Sucede</h3>
+      <p>Cuando está suspendido inmóvil en un arnés de cuerpo completo, las correas de las piernas comprimen las arterias femorales en la parte superior de los muslos. La sangre se acumula en las piernas inferiores, reduciendo el suministro de oxígeno al cerebro, riñones y otros órganos vitales.</p>
+      <h3>Qué Tan Rápido Ocurre</h3>
+      <div class="danger">🚨 <strong>La pérdida de conciencia puede ocurrir en tan solo 15 minutos. La muerte puede ocurrir en menos de 30 minutos.</strong> Este no es un proceso lento — es una emergencia médica que requiere rescate inmediato.</div>
+      <h3>Señales y Síntomas</h3>
+      <ul>
+        <li>Mareos, vértigo o desmayo</li>
+        <li>Náuseas y sudoración</li>
+        <li>Latidos rápidos del corazón seguidos de frecuencia cardíaca peligrosamente baja</li>
+        <li>Sofocos y palidez</li>
+        <li>Pérdida del conocimiento</li>
+      </ul>
+      <h3>Lo Que USTED Puede Hacer Mientras Está Suspendido</h3>
+      <ul>
+        <li><strong>Despliegue sus correas de alivio de suspensión inmediatamente</strong> — cada arnés en WKO Inc. las tiene. Crean un estribo para que pueda pararse en el arnés y aliviar la presión en sus piernas</li>
+        <li><strong>Siga moviéndose</strong> — bombee sus piernas, empuje contra superficies, haga cualquier cosa para promover la circulación sanguínea</li>
+        <li>Intente alcanzar una superficie, estructura o escalera cercana</li>
+      </ul>
+      <h3>Después del Rescate — Regla Crítica</h3>
+      <div class="warn">⚠️ <strong>Después del rescate, mantenga a la persona sentada o semi-erguida durante al menos 30 minutos. NUNCA la acueste boca arriba.</strong> Acostar a una víctima de trauma por suspensión puede causar redistribución repentina de sangre acumulada, provocando paro cardíaco y muerte. Esto se llama "muerte por rescate."</div>`,
+      kc: {
+        question: "Un compañero de trabajo ha sido rescatado después de colgar en un arnés durante varios minutos. ¿En qué posición debe colocarse?",
+        options: ["Acostado boca arriba para que descanse", "De pie inmediatamente", "Sentado o semi-erguido durante al menos 30 minutos", "Boca abajo con la cabeza girada hacia un lado"],
+        correct: 2,
+        rightMsg: "✓ Correcto — la persona debe mantenerse sentada o semi-erguida durante al menos 30 minutos. Acostarla boca arriba puede causar 'muerte por rescate' — paro cardíaco repentino por redistribución de sangre acumulada.",
+        wrongMsg: "✗ Esa es la posición incorrecta — una víctima de trauma por suspensión debe mantenerse sentada o semi-erguida durante al menos 30 minutos después del rescate. NUNCA la acueste boca arriba. La redistribución repentina de sangre acumulada puede causar paro cardíaco ('muerte por rescate')."
+      }
+    },
+    {
+      title: "Sección 6: Sus Responsabilidades",
+      content: `<p>Todo empleado expuesto a peligros de caídas tiene responsabilidades específicas bajo el Programa de Protección contra Caídas de WKO Inc.</p>
+      <h3>Usted Debe:</h3>
+      <ul>
+        <li><strong>Asistir y participar en toda la capacitación de protección contra caídas</strong> — tanto esta capacitación de conocimiento como la capacitación práctica anual proporcionada por the company's contracted fall-protection and rescue trainer</li>
+        <li><strong>Inspeccionar su equipo de protección contra caídas antes de cada uso</strong> — retire el equipo defectuoso del servicio inmediatamente</li>
+        <li><strong>Usar los sistemas de protección contra caídas según las instrucciones y de acuerdo con su capacitación</strong> — nunca use equipos en los que no haya sido capacitado</li>
+        <li><strong>Reportar peligros de caídas, condiciones inseguras, defectos de equipos y casi-accidentes</strong> a su supervisor inmediatamente</li>
+        <li><strong>Nunca alterar, modificar o usar indebidamente el equipo de protección contra caídas</strong></li>
+        <li><strong>Conocer el plan de rescate para su área de trabajo</strong> — antes de trabajar en un sistema de detención de caídas, su supervisor debe tener un plan de rescate establecido</li>
+        <li><strong>Participar en simulacros de rescate</strong></li>
+      </ul>
+      <h3>Los Supervisores También Deben:</h3>
+      <ul>
+        <li>Realizar evaluaciones previas al trabajo para identificar peligros de caídas</li>
+        <li>Asegurar que un <strong>plan de rescate esté establecido antes de que cualquier empleado trabaje en un sistema de detención de caídas</strong></li>
+        <li>Verificar que el equipo sea inspeccionado antes de cada uso</li>
+        <li>Detener el trabajo cuando se observen condiciones inseguras o incumplimiento</li>
+        <li>Reportar incidentes de caídas, casi-accidentes y problemas de equipos inmediatamente</li>
+      </ul>
+      <div class="info">ℹ️ <strong>Sin plan de rescate = sin trabajo en altura.</strong> Su supervisor debe identificar el método de rescate, el equipo y el personal capaz de rescate antes de que comience el trabajo. Si no hay un plan de rescate establecido, no comience el trabajo.</div>`,
+      kc: {
+        question: "Antes de que un empleado trabaje en un sistema personal de detención de caídas (arnés y línea de vida), ¿qué debe estar establecido?",
+        options: ["Un formulario de autorización de horas extras firmado", "Un plan de rescate específico para el área de trabajo", "Aprobación escrita solo del Líder de Seguridad", "Un mínimo de tres trabajadores en el sitio"],
+        correct: 1,
+        rightMsg: "✓ Correcto — un plan de rescate debe estar establecido antes de que cualquier empleado trabaje en un sistema de detención de caídas. El plan debe identificar el método de rescate, equipo, personal y método de comunicación.",
+        wrongMsg: "✗ No exactamente — el requisito crítico es un plan de rescate específico para el área de trabajo. Sin un plan de rescate, el trabajo en un sistema de detención de caídas no debe comenzar. El plan identifica cómo se rescataría al trabajador si ocurriera una caída."
+      }
+    },
+    {
+      title: "Sección 7: Emergencia — Qué Hacer Después de una Caída",
+      content: `<p>Si ocurre un evento de caída — ya sea que haya lesión aparente o no — siga estos procedimientos inmediatamente.</p>
+      <h3>Acciones Inmediatas</h3>
+      <ol>
+        <li><strong>Ejecute el plan de rescate</strong> — WKO Inc. usa un sistema de rescate de tres niveles:
+          <ul>
+            <li><strong>Nivel 1: Auto-rescate</strong> — despliegue las correas de alivio de suspensión, alcance una superficie</li>
+            <li><strong>Nivel 2: Rescate asistido por compañeros capacitados</strong> — rescate con elevador de pluma (método principal), rescate con escalera o dispositivos de recuperación. La capacitación anual con the company's contracted fall-protection and rescue trainer cubre estas técnicas</li>
+            <li><strong>Nivel 3: Servicios Médicos de Emergencia</strong> — llame al 911 / Departamento de Bomberos de Carson</li>
+          </ul>
+        </li>
+        <li><strong>Llame al 911</strong> si hay cualquier lesión, pérdida del conocimiento, o si el trabajador estuvo suspendido por más de cinco (5) minutos</li>
+        <li><strong>Recuerde las reglas de trauma por suspensión</strong> — mantenga a la persona rescatada sentada o semi-erguida durante al menos 30 minutos. Nunca la acueste boca arriba</li>
+        <li><strong>Asegure el área</strong> para prevenir incidentes adicionales</li>
+      </ol>
+      <h3>Equipo Después de una Caída</h3>
+      <div class="danger">🚨 <strong>TODO el equipo de protección contra caídas involucrado en un evento de caída se retira permanentemente.</strong> Etiquételo "FUERA DE SERVICIO — INVOLUCRADO EN EVENTO DE CAÍDA." No intente repararlo ni reutilizarlo. El equipo ha absorbido fuerzas de detención y ya no se puede confiar en él para protegerlo.</div>
+      <h3>Investigación</h3>
+      <p>Cada evento de caída y casi-accidente significativo será investigado por el Líder de Seguridad. No altere el equipo de protección contra caídas ni el área de la caída hasta que se complete la investigación, a menos que sea necesario para el rescate. La investigación determinará las causas raíz y las acciones correctivas para prevenir la recurrencia.</p>
+      <div class="cross-ref">📋 <strong>Capacitación relacionada:</strong> La capacitación de Evacuación de Emergencia cubre los procedimientos generales de emergencia de la instalación y los puntos de reunión. La capacitación de Protección Respiratoria cubre el uso de equipos respiratorios que pueden ser necesarios en algunos entornos de trabajo. Las técnicas prácticas de rescate en caídas se cubren en su capacitación anual con the company's contracted fall-protection and rescue trainer.</div>`
+    }
+  ],
+  quizQuestions: [
+    {
+      q: "En la jerarquía de protección contra caídas, ¿qué debe intentarse ANTES de usar un sistema personal de detención de caídas (arnés y línea de vida)?",
+      opts: ["Señales de advertencia e instrucciones verbales", "Eliminación del peligro, luego barandas o barreras", "Una reunión de seguridad para discutir el peligro", "Proporcionar EPP adicional como cascos y guantes"],
+      ans: 1
+    },
+    {
+      q: "¿Qué tipo de soporte corporal está permitido para la DETENCIÓN personal de caídas en WKO Inc.?",
+      opts: ["Un arnés de pecho con un anillo D frontal", "Cinturón corporal o arnés de cuerpo completo — cualquiera es aceptable", "Solo arnés de cuerpo completo — los cinturones corporales están prohibidos para la detención de caídas", "Un chaleco de seguridad con puntos de conexión integrados"],
+      ans: 2
+    },
+    {
+      q: "Durante una inspección de un SRD (dispositivo autorretráctil) antes del uso, ¿cómo verifica que el mecanismo de bloqueo funcione?",
+      opts: ["Tire bruscamente de la línea para confirmar que se bloquea", "Inspeccione visualmente la etiqueta para ver si tiene una calcomanía verde", "Déjelo caer desde la cintura y vea si se engancha", "Presione el botón de reinicio en la carcasa"],
+      ans: 0
+    },
+    {
+      q: "Después de rescatar a un trabajador que estuvo suspendido en un arnés, ¿cuál es la posición correcta para colocarlo?",
+      opts: ["Acostado boca arriba", "Sentado o semi-erguido durante al menos 30 minutos", "De pie y caminando inmediatamente", "De lado en posición de recuperación"],
+      ans: 1
+    },
+    {
+      q: "¿Qué sucede con el equipo de protección contra caídas después de haber estado involucrado en un evento de detención de caída?",
+      opts: ["Se inspecciona y se devuelve al servicio si no se encuentra daño visible", "Se limpia, repara y vuelve a usar", "Se retira permanentemente del servicio — etiquételo y no lo reutilice", "Se devuelve al fabricante para recertificación"],
+      ans: 2
+    }
+  ]
+}
+};
+// ============================================================
+// ENGINE
+// ============================================================
+const ANSWER_KEY = [1,2,0,1,2];
+const FORM_URL = "https://forms.cloud.microsoft/r/YHYEJNbAMt";
+const MODULE_VERSION = "v1.0";
+const CODE_PREFIX = "FP26-";
+const PASS_PCT = 80;
+let lang = 'en', userName = '', currentScreen = 'splash', sectionIdx = 0, completionCode = null;
+let quizIdx = 0, quizScore = 0, quizAnswers = [], quizLocked = false;
+
+function L() { return LANG[lang]; }
+function setLang(l) {
+  lang = l;
+  document.querySelectorAll('.lang-btn').forEach(b => b.classList.toggle('active', b.textContent.trim() === (l==='en'?'English':'Español')));
+  render();
+}
+function genCode() {
+  const c = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  let r = ''; for (let i=0;i<5;i++) r += c[Math.floor(Math.random()*c.length)];
+  return CODE_PREFIX + r;
+}
+function render() {
+  const l = L();
+  document.getElementById('headerTitle').textContent = l.headerTitle;
+  document.getElementById('headerSub').textContent = l.headerSub;
+  document.getElementById('progBanner').textContent = l.progBanner;
+  document.title = l.headerTitle + ' — WKO Inc.';
+  const c = document.getElementById('appContainer');
+  if (currentScreen === 'splash') renderSplash(c, l);
+  else if (currentScreen === 'section') renderSection(c, l);
+  else if (currentScreen === 'quiz') renderQuiz(c, l);
+  else if (currentScreen === 'results') renderResults(c, l);
+}
+function renderSplash(c, l) {
+  c.innerHTML = `<div class="card active">
+    <div class="splash-title">${l.splashTitle}</div>
+    <p>${l.splashText}</p>
+    <div class="info" style="margin:12px 0">${l.splashNote}</div>
+    <p style="margin-top:14px"><strong>${l.enterName}</strong></p>
+    <input type="text" id="nameInput" placeholder="${l.namePlaceholder}" style="margin:8px 0">
+    <div id="nameErr" class="hidden" style="color:#dc3545;font-size:.9em">${l.nameError}</div>
+    <div><button class="btn btn-primary" onclick="startTraining()">${l.beginBtn}</button></div>
+  </div>`;
+  const inp = document.getElementById('nameInput');
+  if (inp) { inp.value = userName; inp.addEventListener('keydown', e => { if (e.key === 'Enter') startTraining(); }); }
+}
+function startTraining() {
+  const v = document.getElementById('nameInput').value.trim();
+  if (!v || v.split(/\s+/).length < 2) { document.getElementById('nameErr').classList.remove('hidden'); return; }
+  userName = v; currentScreen = 'section'; sectionIdx = 0; render();
+}
+function renderSection(c, l) {
+  const sec = l.sections[sectionIdx];
+  const totalSteps = l.sections.length + 1;
+  const pct = Math.round((sectionIdx / totalSteps) * 100);
+  let html = `<div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div>`;
+  html += `<div class="card active"><div style="color:#666;font-size:.85em;margin-bottom:6px">${l.secLabel} ${sectionIdx+1} ${l.ofLabel} ${l.sections.length}</div><h2>${sec.title}</h2>${sec.content}`;
+  if (sec.kc) {
+    html += `<div style="margin-top:16px;padding-top:12px;border-top:2px solid #e0e0e0">
+      <h3 style="color:#1F4E79">✓ ${lang==='en'?'Knowledge Check':'Verificación de Conocimiento'}</h3>
+      <p style="margin:8px 0"><strong>${sec.kc.question}</strong></p>`;
+    sec.kc.options.forEach((o, i) => {
+      html += `<button class="quiz-option" id="kc-opt-${i}" onclick="selectKC(${i})">${o}</button>`;
+    });
+    html += `<div id="kcFeedback"></div>
+      <div id="kcBtnRow" class="hidden"><button class="btn btn-primary" onclick="kcContinue()">${l.continueBtn}</button></div>
+    </div>`;
+  }
+  html += `<div class="nav-row">`;
+  if (sectionIdx > 0) html += `<button class="btn btn-secondary" onclick="prevSection()">${l.prevBtn}</button>`;
+  else html += `<span></span>`;
+  if (!sec.kc) {
+    if (sectionIdx < l.sections.length - 1) html += `<button class="btn btn-primary" onclick="nextSection()">${l.nextBtn}</button>`;
+    else html += `<button class="btn btn-success" onclick="goQuiz()">${l.startQuiz}</button>`;
+  }
+  html += `</div></div>`;
+  c.innerHTML = html;
+  window.scrollTo(0, 0);
+}
+let kcAnswered = false;
+function selectKC(i) {
+  if (kcAnswered) return;
+  kcAnswered = true;
+  const sec = L().sections[sectionIdx];
+  const correct = sec.kc.correct;
+  document.getElementById(`kc-opt-${i}`).classList.add(i===correct?'correct':'incorrect');
+  if (i !== correct) document.getElementById(`kc-opt-${correct}`).classList.add('correct');
+  document.querySelectorAll('.quiz-option').forEach(b => b.disabled = true);
+  const fb = document.getElementById('kcFeedback');
+  fb.innerHTML = `<div class="kc-feedback ${i===correct?'kc-correct':'kc-incorrect'}">${i===correct?sec.kc.rightMsg:sec.kc.wrongMsg}</div>`;
+  document.getElementById('kcBtnRow').classList.remove('hidden');
+}
+function kcContinue() {
+  kcAnswered = false;
+  if (sectionIdx < L().sections.length - 1) nextSection();
+  else goQuiz();
+}
+function prevSection() { if (sectionIdx > 0) { sectionIdx--; kcAnswered = false; render(); } }
+function nextSection() { sectionIdx++; kcAnswered = false; render(); }
+function goQuiz() { currentScreen = 'quiz'; quizIdx = 0; quizScore = 0; quizAnswers = []; quizLocked = false; completionCode = null; render(); }
+function renderQuiz(c, l) {
+  const qs = l.quizQuestions;
+  const q = qs[quizIdx];
+  const totalSteps = l.sections.length + 1;
+  const prog = Math.round(((l.sections.length + quizIdx/qs.length) / totalSteps) * 100);
+  let html = `<div class="card active"><h2>${l.quizTitle}</h2>`;
+  if (quizIdx === 0) html += `<p style="font-size:.9em;color:#444;margin-bottom:8px">${l.quizIntro} ${l.quizDetail||''}</p>`;
+  html += `
+    <div class="progress-bar"><div class="progress-fill" style="width:${prog}%"></div></div>
+    <p style="font-size:.9em;color:#666;margin-bottom:4px">${l.questionOf.replace('{n}',quizIdx+1).replace('{t}',qs.length)}</p>
+    <p style="margin:12px 0"><strong>${q.q}</strong></p>`;
+  q.opts.forEach((o, i) => {
+    html += `<button class="quiz-option" id="q-opt-${i}" onclick="selectQuizOpt(${i})">${o}</button>`;
+  });
+  html += `<div id="quizBtnRow"><button class="btn btn-primary" id="quizSubmitBtn" onclick="submitQuizAnswer()" disabled>${l.submitAnswer}</button></div></div>`;
+  c.innerHTML = html;
+  window.scrollTo(0, 0);
+}
+let selectedQuizOpt = -1;
+function selectQuizOpt(i) {
+  if (quizLocked) return;
+  selectedQuizOpt = i;
+  document.querySelectorAll('.quiz-option').forEach((b, j) => b.classList.toggle('selected', j===i));
+  document.getElementById('quizSubmitBtn').disabled = false;
+}
+function submitQuizAnswer() {
+  if (quizLocked || selectedQuizOpt < 0) return;
+  quizLocked = true;
+  const correct = ANSWER_KEY[quizIdx];
+  quizAnswers.push(selectedQuizOpt);
+  if (selectedQuizOpt === correct) quizScore++;
+  document.getElementById(`q-opt-${selectedQuizOpt}`).classList.add(selectedQuizOpt===correct?'correct':'incorrect');
+  if (selectedQuizOpt !== correct) document.getElementById(`q-opt-${correct}`).classList.add('correct');
+  document.querySelectorAll('.quiz-option').forEach(b => b.disabled = true);
+  const l = L();
+  const isLast = quizIdx >= l.quizQuestions.length - 1;
+  document.getElementById('quizBtnRow').innerHTML = isLast
+    ? `<button class="btn btn-success" onclick="showResults()">${l.seeResults}</button>`
+    : `<button class="btn btn-primary" onclick="nextQuizQ()">${l.nextQuestion}</button>`;
+}
+function nextQuizQ() { quizIdx++; quizLocked = false; selectedQuizOpt = -1; render(); }
+function showResults() { currentScreen = 'results'; render(); }
+function renderResults(c, l) {
+  const needed = Math.ceil(l.quizQuestions.length * PASS_PCT / 100);
+  const passed = quizScore >= needed;
+  const totalQ = l.quizQuestions.length;
+  const pct = Math.round(quizScore / totalQ * 100);
+  const today = new Date().toLocaleDateString(lang==='es'?'es-US':'en-US', {year:'numeric',month:'long',day:'numeric'});
+  let html = '';
+  if (passed) {
+    if (!completionCode) completionCode = genCode();
+    html += '<div class="card active"><p style="font-size:1.15em;font-weight:bold;color:#28a745">'+l.passH+'</p></div>';
+    html += '<div class="cert">';
+    html += '<div style="font-size:.95em;color:#666">'+l.passSub+'</div>';
+    html += '<div style="font-size:1.5em;font-weight:bold;color:#1F4E79;margin:10px 0">'+userName+'</div>';
+    html += '<div>'+l.passModule+'</div>';
+    html += '<div style="margin:8px 0">'+l.scoreLabel+': <b>'+quizScore+'/'+totalQ+' ('+pct+'%)</b> &middot; '+l.dateLabel+': <b>'+today+'</b></div>';
+    html += '<div style="margin-top:10px">'+l.codeLabel+':</div>';
+    html += '<div class="code">'+completionCode+'</div>';
+    html += '</div>';
+    html += '<div class="card active" style="margin-top:12px"><p>'+l.passInstr+'</p>';
+    html += '<div style="text-align:center;margin:12px 0"><a href="'+FORM_URL+'" target="_blank" class="btn btn-success" style="text-decoration:none;color:#fff">'+l.recordBtn+'</a></div>';
+    html += '</div>';
+  } else {
+    html += '<div class="card active">';
+    html += '<p style="font-size:1.15em;font-weight:bold;color:#dc3545">'+l.failH+'</p>';
+    html += '<p style="margin:8px 0">'+l.yourScore+': <b>'+quizScore+'/'+totalQ+' ('+pct+'%)</b></p>';
+    html += '<p style="margin:8px 0;font-size:.95em">'+(l.failDetail||'')+'</p>';
+    html += '<div style="margin-top:14px;display:flex;gap:10px;flex-wrap:wrap">';
+    html += '<button class="btn btn-secondary" onclick="retryFromSections()">'+l.reviewBtn+'</button>';
+    html += '<button class="btn btn-primary" onclick="retakeQuiz()">'+l.retakeBtn+'</button>';
+    html += '</div></div>';
+  }
+  c.innerHTML = html;
+  window.scrollTo(0, 0);
+}
+function retryFromSections() { currentScreen = 'section'; sectionIdx = 0; render(); }
+function retakeQuiz() { currentScreen = 'quiz'; quizIdx = 0; quizScore = 0; quizAnswers = []; quizLocked = false; selectedQuizOpt = -1; render(); }
+render();
+</script>
+</body>
+</html>

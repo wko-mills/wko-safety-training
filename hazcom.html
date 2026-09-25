@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WKO Inc. — Hazard Communication Training v1.0</title>
+<style>
+  :root { --blue:#2E75B6; --dark:#1F4E79; --light:#F2F2F2; --gray:#666666; --red:#C00000; --green:#2E7D32; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { font-family: Arial, Helvetica, sans-serif; background:#f7f9fb; color:#222; line-height:1.5; }
+  .wrap { max-width:760px; margin:0 auto; padding:16px; }
+  header.bar { background:var(--dark); color:#fff; padding:14px 20px; }
+  header.bar .co { font-weight:bold; font-size:1.05em; letter-spacing:.5px; }
+  header.bar .sub { font-size:.85em; margin-top:2px; opacity:.9; }
+  .splash { text-align:center; padding:34px 22px; }
+  .splash .co { color:var(--gray); font-size:.85em; letter-spacing:2px; font-weight:bold; }
+  .splash .ti-en { color:var(--dark); font-size:1.6em; font-weight:bold; margin:10px 0 4px; }
+  .splash .ti-es { color:var(--blue); font-size:1.4em; font-weight:bold; margin-bottom:18px; }
+  .splash .choose { margin-bottom:16px; }
+  .splash .langbtns { display:flex; gap:14px; justify-content:center; flex-wrap:wrap; }
+  .splash .langbtns button { font-family:Arial; background:var(--blue); color:#fff; border:none; border-radius:6px; padding:14px 0; width:240px; max-width:45%; font-size:1.05em; font-weight:bold; cursor:pointer; }
+  .langbar { text-align:right; padding:10px 16px 0; }
+  .langbar button { font-family:Arial; border:2px solid var(--blue); background:#fff; color:var(--blue); padding:6px 14px; font-weight:bold; cursor:pointer; border-radius:4px; margin-left:6px; font-size:.95em; }
+  .langbar button.active { background:var(--blue); color:#fff; }
+  .card { background:#fff; border:1px solid #d9e2ec; border-radius:8px; padding:22px; margin:16px 0; box-shadow:0 1px 3px rgba(0,0,0,.06); }
+  h1 { color:var(--dark); font-size:1.35em; margin-bottom:12px; }
+  h2 { color:var(--blue); font-size:1.1em; margin:16px 0 8px; }
+  p, li { margin-bottom:10px; }
+  ul { padding-left:22px; }
+  .progress { background:#e1e8f0; border-radius:6px; height:10px; overflow:hidden; margin:4px 0 14px; }
+  .progress > div { background:var(--blue); height:100%; width:0; transition:width .3s; }
+  .btn { font-family:Arial; display:inline-block; background:var(--blue); color:#fff; border:none; padding:12px 26px; font-size:1em; font-weight:bold; border-radius:6px; cursor:pointer; margin-top:14px; }
+  .btn:disabled { background:#9db8d2; cursor:not-allowed; }
+  .btn.secondary { background:#fff; color:var(--blue); border:2px solid var(--blue); }
+  input[type=text] { font-family:Arial; width:100%; padding:12px; font-size:1em; border:2px solid #b8c7d9; border-radius:6px; margin-top:6px; }
+  input[type=text]:focus { border-color:var(--blue); outline:none; }
+  .kc { background:var(--light); border-left:4px solid var(--blue); padding:16px; border-radius:0 6px 6px 0; margin-top:16px; }
+  .kc .kct { font-weight:bold; color:var(--dark); margin-bottom:8px; }
+  .opt { display:block; background:#fff; border:2px solid #c9d6e4; border-radius:6px; padding:10px 12px; margin:8px 0; cursor:pointer; }
+  .opt input { margin-right:10px; }
+  .opt.correct { border-color:var(--green); background:#eef7ee; }
+  .opt.wrong { border-color:var(--red); background:#fdecec; }
+  .fb { font-weight:bold; margin-top:8px; display:none; }
+  .fb.ok { color:var(--green); display:block; }
+  .fb.bad { color:var(--red); display:block; }
+  .picto-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(210px,1fr)); gap:12px; margin:12px 0; }
+  .picto { border:1px solid #d9e2ec; border-radius:8px; padding:12px; text-align:center; background:#fff; }
+  .picto svg { width:64px; height:64px; }
+  .picto .pn { font-weight:bold; color:var(--dark); margin-top:6px; }
+  .picto .pm { font-size:.85em; color:#444; }
+  .qnum { color:var(--gray); font-size:.85em; }
+  .quizq { border-bottom:1px solid #e4eaf1; padding:14px 0; }
+  .quizq .qt { font-weight:bold; margin-bottom:6px; }
+  .cert { border:3px solid var(--dark); border-radius:10px; padding:26px; text-align:center; background:#fff; }
+  .cert .big { font-size:1.5em; color:var(--dark); font-weight:bold; margin:10px 0; }
+  .cert .code { font-size:1.6em; letter-spacing:2px; font-weight:bold; color:var(--blue); background:var(--light); display:inline-block; padding:8px 20px; border-radius:6px; margin:10px 0; }
+  .passmsg { color:var(--green); font-weight:bold; font-size:1.2em; }
+  .failmsg { color:var(--red); font-weight:bold; font-size:1.2em; }
+  .notice { background:#fff8e1; border-left:4px solid #f0a500; padding:12px; border-radius:0 6px 6px 0; margin:12px 0; font-size:.95em; }
+  .phone { font-weight:bold; color:var(--dark); }
+  table.mini { border-collapse:collapse; width:100%; margin:10px 0; font-size:.95em; }
+  table.mini th { background:var(--blue); color:#fff; padding:8px; text-align:left; }
+  table.mini td { border:1px solid #d9e2ec; padding:8px; }
+  table.mini tr:nth-child(even) td { background:var(--light); }
+  footer { text-align:center; color:var(--gray); font-size:.8em; padding:20px 0 30px; }
+  .hidden { display:none !important; }
+</style>
+</head>
+<body>
+<header class="bar">
+  <div class="co">WKO INC.</div>
+  <div class="sub">Hazard Communication Training &mdash; WAC 296-901</div>
+</header>
+<div class="langbar hidden" id="langBar">
+  <button id="btnEN" onclick="setLang('en')">English</button>
+  <button id="btnES" onclick="setLang('es')">Español</button>
+</div>
+<div class="wrap">
+  <div class="progress" id="progWrap"><div id="progBar"></div></div>
+  <div id="app"></div>
+</div>
+<footer id="ftr">WKO Inc. &middot; Carson, WA &middot; WAC 296-901 &middot; Module v1.0 (2026)</footer>
+<script>
+"use strict";
+var FORM_URL = "https://forms.cloud.microsoft/r/YHYEJNbAMt";
+var MODULE_VERSION = "v1.0";
+var CODE_PREFIX = "HC26-";
+var PASS_PCT = 80;
+
+/* ------------ SVG pictograms (simplified training illustrations) ------------ */
+function diamond(inner){return '<svg viewBox="0 0 100 100" aria-hidden="true"><rect x="18" y="18" width="64" height="64" transform="rotate(45 50 50)" fill="#fff" stroke="#C00000" stroke-width="6"/>'+inner+'</svg>';}
+var PICTO_SVG = {
+  flame: diamond('<path d="M50 30 C58 40 62 46 60 56 C66 52 66 46 66 46 C72 56 70 68 50 72 C34 68 30 58 36 48 C38 54 42 56 42 56 C38 44 44 36 50 30 Z" fill="#C00000"/>'),
+  exclam: diamond('<text x="50" y="66" font-size="46" font-weight="bold" text-anchor="middle" fill="#C00000">!</text>'),
+  skull: diamond('<circle cx="50" cy="44" r="12" fill="#C00000"/><circle cx="45" cy="42" r="3" fill="#fff"/><circle cx="55" cy="42" r="3" fill="#fff"/><rect x="47" y="52" width="6" height="5" fill="#C00000"/><line x1="34" y1="62" x2="66" y2="70" stroke="#C00000" stroke-width="5"/><line x1="66" y1="62" x2="34" y2="70" stroke="#C00000" stroke-width="5"/>'),
+  cylinder: diamond('<rect x="42" y="36" width="16" height="34" rx="6" fill="#C00000"/><rect x="46" y="30" width="8" height="8" fill="#C00000"/>'),
+  corrosion: diamond('<rect x="34" y="34" width="12" height="8" fill="#C00000" transform="rotate(30 40 38)"/><path d="M46 44 Q48 50 46 54" stroke="#C00000" stroke-width="3" fill="none"/><path d="M52 44 Q54 50 52 54" stroke="#C00000" stroke-width="3" fill="none"/><rect x="36" y="60" width="30" height="6" fill="#C00000"/>'),
+  health: diamond('<circle cx="50" cy="38" r="6" fill="#C00000"/><path d="M42 48 h16 v14 h-16 z" fill="#C00000"/><path d="M50 44 l4 6 -4 6 -4 -6 z" fill="#fff"/>'),
+  bomb: diamond('<circle cx="52" cy="56" r="10" fill="#C00000"/><line x1="52" y1="36" x2="52" y2="46" stroke="#C00000" stroke-width="4"/><line x1="38" y1="42" x2="45" y2="49" stroke="#C00000" stroke-width="4"/><line x1="66" y1="42" x2="59" y2="49" stroke="#C00000" stroke-width="4"/>'),
+  oxidizer: diamond('<path d="M50 30 C56 38 60 42 58 50 C62 47 62 43 62 43 C66 51 64 58 50 61 C39 58 37 51 41 45 C42 49 45 51 45 51 C42 42 46 36 50 30 Z" fill="#C00000"/><circle cx="50" cy="66" r="6" fill="none" stroke="#C00000" stroke-width="4"/>'),
+  environ: diamond('<path d="M36 56 Q46 46 58 52 L64 46 L64 60 L58 56 Q46 64 36 58 Z" fill="#C00000"/><circle cx="42" cy="54" r="2" fill="#fff"/>')
+};
+
+/* ------------ Language packs ------------ */
+var STR = {
+en: {
+  basedOn: "Based on the WKO Inc. Hazard Communication Program v2.1 (WAC 296-901 / 29 CFR 1910.1200). Questions? Contact the Environmental Compliance and Safety Lead.",
+  introH: "Welcome — Your Right to Know",
+  introP1: "Every employee at WKO Inc. has the right to know about the hazardous chemicals in their work area and how to protect themselves. This training covers chemical labels, Safety Data Sheets (SDS), and what to do in a chemical emergency.",
+  introP2: "The training takes about 15–20 minutes. You must score 80% or better on the final quiz to receive credit. You may retake the quiz if needed.",
+  nameLabel: "Enter your full name to begin:",
+  namePh: "First and last name",
+  startBtn: "Start Training",
+  continueBtn: "Continue",
+  checkBtn: "Check Answer",
+  kcOk: "Correct — well done.",
+  kcBad: "Not quite — the correct answer is highlighted. Review it, then continue.",
+  secLabel: "Section",
+  ofLabel: "of",
+  sections: [
+    { h:"1. Why Hazard Communication Matters", body:
+      "<p>WKO Inc. uses hazardous chemicals every day: lubricants and hydraulic fluids in the sawmill and planer mill, anti-sapstain products at the dry kilns, water treatment chemicals at the boiler, solvents, paints and welding materials in the shops, cleaning products, and fuels in the yard.</p>"+
+      "<p>Washington's Hazard Communication rule (WAC 296-901) — the <b>\"Right to Know\"</b> law — requires WKO Inc. to tell you what these chemicals are, what their hazards are, and how to protect yourself. Our written <b>Hazard Communication Program</b> explains how we do that. It is kept in the <b>Safety Office</b> and you may read it at any time.</p>" },
+    { h:"2. The Chemical Inventory", body:
+      "<p>WKO Inc. keeps a <b>chemical inventory list</b> — one line for every hazardous chemical product on site, organized by work area. The list uses the same product name that appears on the label and the SDS, so you can always match them up.</p>"+
+      "<p>The inventory is maintained by the Environmental Compliance and Safety Lead and is kept in the <b>Safety Office</b>. You may ask to see it at any time.</p>"+
+      "<div class='notice'><b>Important:</b> Before any <u>new</u> chemical is used at WKO Inc., its Safety Data Sheet must be received and put on file. If you want to bring a new product on site, talk to your supervisor first.</div>" },
+    { h:"3. Reading a GHS Label", body:
+      "<p>Every container of hazardous chemical shipped to us must have a <b>GHS label</b> with six parts:</p>"+
+      "<ul><li><b>Product identifier</b> — the chemical or product name (matches the SDS)</li>"+
+      "<li><b>Signal word</b> — <b style='color:#C00000'>DANGER</b> for more severe hazards, <b>WARNING</b> for less severe hazards</li>"+
+      "<li><b>Hazard statements</b> — what the hazard is (e.g., \"Highly flammable liquid and vapor\")</li>"+
+      "<li><b>Pictograms</b> — red diamond symbols (next section)</li>"+
+      "<li><b>Precautionary statements</b> — how to protect yourself</li>"+
+      "<li><b>Supplier information</b> — who makes it and their phone number</li></ul>"+
+      "<p><b>Never remove or deface the label</b> on a shipped container. If you find a container with a missing or damaged label, report it to your supervisor.</p>",
+      kc:{ q:"Which signal word tells you a chemical has the MORE severe hazard?", opts:["WARNING","DANGER","CAUTION","NOTICE"], a:1 } },
+    { h:"4. The Nine GHS Pictograms", body:
+      "<p>Pictograms are symbols in a red diamond that warn you of the hazard type at a glance. Learn to recognize all nine (simplified illustrations shown for training):</p>"+
+      "<div class='picto-grid' id="+'"pictoGrid"'+"></div>"+
+      "<p>The ones you will see most often at WKO Inc. are <b>Flame</b> (solvents, fuels), <b>Exclamation Mark</b> (cleaners, adhesives), <b>Corrosion</b> (boiler water treatment chemicals), and <b>Gas Cylinder</b> (welding gases).</p>",
+      kc:{ q:"You see a red diamond with a gas cylinder symbol. What does it warn you about?", opts:["A flammable liquid","A gas under pressure","A corrosive acid","An oxidizer"], a:1 } },
+    { h:"5. Safety Data Sheets (SDS)", body:
+      "<p>Every hazardous chemical on site has a <b>Safety Data Sheet</b> — a standardized document with <b>16 sections</b>, always in the same order. The sections most useful to you:</p>"+
+      "<table class='mini'><tr><th>Section</th><th>What it tells you</th></tr>"+
+      "<tr><td><b>1 – Identification</b></td><td>Product name and emergency phone number</td></tr>"+
+      "<tr><td><b>2 – Hazards</b></td><td>The hazards, pictograms, and signal word</td></tr>"+
+      "<tr><td><b>4 – First aid</b></td><td>What to do if exposed (skin, eyes, breathing, swallowed)</td></tr>"+
+      "<tr><td><b>8 – Exposure controls / PPE</b></td><td>What protective equipment to wear</td></tr></table>"+
+      "<p><b>Where to find an SDS:</b> the master SDS file and the chemical inventory are kept in the <b>Safety Office</b>, and they are available to you during every work shift. Your supervisor can also help you get the SDS for any chemical in your area. If an SDS is missing, report it — the chemical should not be used until the SDS is on file.</p>",
+      kc:{ q:"Which WKO section tells you what to do if a chemical gets on your skin or in your eyes?", opts:["Section 1 – Identification","Section 4 – First-aid measures","Section 9 – Physical properties","Section 14 – Transport"], a:1 } },
+    { h:"6. Secondary Containers", body:
+      "<p>If you transfer a chemical from its original container into another container (a spray bottle, a pail, a squeeze bottle), that <b>secondary container must be labeled</b> with:</p>"+
+      "<ul><li>The <b>product identifier</b> (same name as the SDS), and</li><li><b>Hazard information</b> — words, symbols, or pictures showing the hazards</li></ul>"+
+      "<p><b>One exemption:</b> if you fill a container for your <u>own immediate use</u>, keep it under your control, and empty it <u>within your shift</u>, it does not need a label. If it leaves your hands or outlasts your shift — it needs a label.</p>"+
+      "<p>Never put a chemical in a food or drink container. Report any unlabeled container you find.</p>" },
+    { h:"7. Pipes and Non-Routine Tasks", body:
+      "<p>Some pipes at WKO Inc. carry hazardous materials and are not individually labeled — <b>steam lines</b> (burn hazard), <b>boiler water treatment lines</b>, <b>fuel lines</b> (diesel, propane), and <b>hydraulic lines</b>. <b>Before working on or near any pipe, ask your supervisor what it carries and what the hazards are.</b></p>"+
+      "<p><b>Non-routine tasks</b> — jobs you don't do every day, like boiler chemical treatment, applying wood treatment products, or painting — can expose you to unfamiliar chemicals. Your supervisor must brief you on the hazards, required PPE, and emergency procedures <b>before the work begins</b>. If you haven't been briefed, ask.</p>"+
+      "<p><b>Contractors</b> working on site exchange chemical hazard information with us. If a contractor's work near you involves chemicals, you have the right to know about them too.</p>" },
+    { h:"8. Chemical Spills and Emergencies", body:
+      "<p>If a chemical spills, leaks, or is released:</p>"+
+      "<ul><li><b>Alert</b> nearby coworkers and <b>leave the area</b> if there is immediate danger</li>"+
+      "<li><b>Tell your supervisor</b> immediately</li>"+
+      "<li>Check the <b>SDS</b> before any cleanup — it tells you the right PPE and method</li>"+
+      "<li>Small, routine spills may be cleaned up only by <b>trained</b> employees with proper PPE</li>"+
+      "<li><b>Large spills, unknown chemicals, or anything creating a fire or breathing hazard: evacuate and notify your supervisor — the supervisor will call 911 if outside help is needed</b></li>"+
+      "<li>Report every spill to the Environmental Compliance and Safety Lead</li></ul>"+
+      "<h2>Emergency Numbers</h2>"+
+      "<p>Report emergencies to your supervisor first — the supervisor calls 911 and coordinates outside responders as needed.</p>"+
+      "<p>Emergency (fire / medical / hazmat): <span class='phone'>911</span><br>"+
+      "Nearest hospital ER: <span class='phone'>see posted emergency contact sheet</span><br>"+
+      "Poison Control: <span class='phone'>1-800-222-1222</span><br>"+
+      "CHEMTREC (chemical emergency info): <span class='phone'>1-800-424-9300</span></p>",
+      kc:{ q:"A drum is leaking an unknown chemical and there are strong fumes. What do you do first?", opts:["Find rags and start cleaning it up","Alert others, leave the area, and notify your supervisor","Call 911 yourself without telling anyone","Move the drum outside yourself"], a:1 } }
+  ],
+  pictos: [
+    {k:"flame", n:"Flame", m:"Flammable — solvents, fuels, paints"},
+    {k:"exclam", n:"Exclamation Mark", m:"Irritant, harmful — cleaners, adhesives"},
+    {k:"corrosion", n:"Corrosion", m:"Burns skin/eyes — acids, boiler chemicals"},
+    {k:"cylinder", n:"Gas Cylinder", m:"Gas under pressure — welding gases"},
+    {k:"health", n:"Health Hazard", m:"Serious health effects — some treatments, solvents"},
+    {k:"skull", n:"Skull & Crossbones", m:"Acute toxicity — can be fatal or toxic"},
+    {k:"bomb", n:"Exploding Bomb", m:"Explosives — not typical at WKO Inc."},
+    {k:"oxidizer", n:"Flame Over Circle", m:"Oxidizers — certain bleaches, peroxides"},
+    {k:"environ", n:"Environment", m:"Harms aquatic life — some wood treatments"}
+  ],
+  quizH: "Final Quiz",
+  quizIntro: "Answer all 10 questions. You need 8 correct (80%) to pass. Take your time — you can review your answers before submitting.",
+  submitBtn: "Submit Quiz",
+  answerAll: "Please answer every question before submitting.",
+  quiz: [
+    { q:"Which signal word appears on labels for the MORE severe hazards?", opts:["WARNING","DANGER","CAUTION","ALERT"], a:1 },
+    { q:"Where are the master SDS file and the chemical inventory kept at WKO Inc.?", opts:["The break room","The Safety Office","The main gate shack","The dry kiln control room"], a:1 },
+    { q:"How many sections does every Safety Data Sheet have?", opts:["8","12","16","20"], a:2 },
+    { q:"A red diamond with a flame symbol means the chemical…", opts:["is corrosive to skin","can catch fire (flammable)","is a gas under pressure","harms aquatic life"], a:1 },
+    { q:"You pour degreaser into a spray bottle that will stay at your workstation for the week. The bottle must have…", opts:["no label — it came from a labeled drum","the product identifier and hazard information","just your name on it","a green sticker"], a:1 },
+    { q:"A brand-new chemical product arrives on site. Before anyone uses it…", opts:["its Safety Data Sheet must be on file","it must be poured into a smaller container","it must be stored for 30 days","the old product must be used up first"], a:0 },
+    { q:"You need to work near an unlabeled pipe. What should you do first?", opts:["Assume it is only water","Tap it to hear what is inside","Ask your supervisor what it carries and what the hazards are","Wrap it in tape"], a:2 },
+    { q:"The skull-and-crossbones pictogram warns that a chemical…", opts:["is flammable","can be fatal or toxic even in small amounts","is under pressure","is an irritant only"], a:1 },
+    { q:"There is a large spill of an unknown chemical creating strong fumes. You should…", opts:["evacuate the area and notify your supervisor right away","clean it up quickly with rags","dilute it with water","block it with sawdust and keep working"], a:0 },
+    { q:"When do WKO Inc. employees receive hazard communication training?", opts:["Only once, at hire","At hire, when a new chemical hazard is introduced, and annually","Only after an incident","Every five years"], a:1 }
+  ],
+  passH:"Congratulations — You Passed!",
+  passSub:"Certificate of Completion",
+  passModule:"Hazard Communication — Employee Training " + MODULE_VERSION,
+  scoreLabel:"Score",
+  dateLabel:"Date",
+  codeLabel:"Your completion code",
+  passInstr:"<b>Final step — record your completion:</b> tap the button below and submit the completion form. Enter your name, select <b>\"Hazard Communication / Comunicación de Peligros\"</b> from the module list, and enter the completion code shown above. Your training is not recorded until the form is submitted.",
+  recordBtn:"Record My Completion",
+  failH:"Not Quite — Keep Going",
+  failMsg:"You scored below 80%. Review the material — especially labels, WKO sections, and emergency steps — and try again. There is no limit on retakes.",
+  reviewBtn:"Review the Material",
+  retakeBtn:"Retake the Quiz",
+  yourScore:"Your score"
+},
+es: {
+  basedOn: "Basado en el Programa de Comunicación de Peligros de WKO Inc. v2.1 (WAC 296-901 / 29 CFR 1910.1200). ¿Preguntas? Comuníquese con el Líder de Cumplimiento Ambiental y Seguridad.",
+  introH: "Bienvenido — Su Derecho a Saber",
+  introP1: "Todo empleado de WKO Inc. tiene derecho a saber qué productos químicos peligrosos hay en su área de trabajo y cómo protegerse. Esta capacitación cubre las etiquetas químicas, las Hojas de Datos de Seguridad (SDS) y qué hacer en una emergencia química.",
+  introP2: "La capacitación toma de 15 a 20 minutos. Debe obtener 80% o más en el examen final para recibir crédito. Puede repetir el examen si es necesario.",
+  nameLabel: "Escriba su nombre completo para comenzar:",
+  namePh: "Nombre y apellido",
+  startBtn: "Comenzar la Capacitación",
+  continueBtn: "Continuar",
+  checkBtn: "Verificar Respuesta",
+  kcOk: "Correcto — bien hecho.",
+  kcBad: "No es correcto — la respuesta correcta está resaltada. Revísela y luego continúe.",
+  secLabel: "Sección",
+  ofLabel: "de",
+  sections: [
+    { h:"1. Por Qué Importa la Comunicación de Peligros", body:
+      "<p>WKO Inc. usa productos químicos peligrosos todos los días: lubricantes y fluidos hidráulicos en el aserradero y el cepillo, productos anti-mancha en los hornos de secado, químicos de tratamiento de agua en la caldera, solventes, pinturas y materiales de soldadura en los talleres, productos de limpieza y combustibles en el patio.</p>"+
+      "<p>La regla de Comunicación de Peligros de Washington (WAC 296-901) — la ley del <b>\"Derecho a Saber\"</b> — exige que WKO Inc. le informe qué son estos químicos, cuáles son sus peligros y cómo protegerse. Nuestro <b>Programa de Comunicación de Peligros</b> escrito explica cómo lo hacemos. Se guarda en la <b>Oficina de Seguridad</b> y usted puede leerlo en cualquier momento.</p>" },
+    { h:"2. El Inventario de Productos Químicos", body:
+      "<p>WKO Inc. mantiene una <b>lista de inventario químico</b> — una línea por cada producto químico peligroso en el sitio, organizada por área de trabajo. La lista usa el mismo nombre de producto que aparece en la etiqueta y en la WKO, para que siempre pueda relacionarlos.</p>"+
+      "<p>El inventario lo mantiene el Líder de Cumplimiento Ambiental y Seguridad y se guarda en la <b>Oficina de Seguridad</b>. Puede pedir verlo en cualquier momento.</p>"+
+      "<div class='notice'><b>Importante:</b> Antes de usar cualquier químico <u>nuevo</u> en WKO Inc., su Hoja de Datos de Seguridad debe recibirse y archivarse. Si desea traer un producto nuevo al sitio, hable primero con su supervisor.</div>" },
+    { h:"3. Cómo Leer una Etiqueta GHS", body:
+      "<p>Todo recipiente de químico peligroso que nos llega debe tener una <b>etiqueta GHS</b> con seis partes:</p>"+
+      "<ul><li><b>Identificador del producto</b> — el nombre del químico o producto (coincide con la SDS)</li>"+
+      "<li><b>Palabra de advertencia</b> — <b style='color:#C00000'>PELIGRO (DANGER)</b> para peligros más severos, <b>ATENCIÓN (WARNING)</b> para peligros menos severos</li>"+
+      "<li><b>Indicaciones de peligro</b> — cuál es el peligro (ej., \"Líquido y vapores muy inflamables\")</li>"+
+      "<li><b>Pictogramas</b> — símbolos en rombo rojo (próxima sección)</li>"+
+      "<li><b>Consejos de prudencia</b> — cómo protegerse</li>"+
+      "<li><b>Información del proveedor</b> — quién lo fabrica y su teléfono</li></ul>"+
+      "<p><b>Nunca quite ni dañe la etiqueta</b> de un recipiente enviado por el fabricante. Si encuentra un recipiente con etiqueta faltante o dañada, repórtelo a su supervisor.</p>",
+      kc:{ q:"¿Cuál palabra de advertencia le indica que un químico tiene el peligro MÁS severo?", opts:["ATENCIÓN (WARNING)","PELIGRO (DANGER)","CUIDADO (CAUTION)","AVISO (NOTICE)"], a:1 } },
+    { h:"4. Los Nueve Pictogramas GHS", body:
+      "<p>Los pictogramas son símbolos en un rombo rojo que le advierten del tipo de peligro de un vistazo. Aprenda a reconocer los nueve (se muestran ilustraciones simplificadas para la capacitación):</p>"+
+      "<div class='picto-grid' id="+'"pictoGrid"'+"></div>"+
+      "<p>Los que verá con más frecuencia en WKO Inc. son <b>Llama</b> (solventes, combustibles), <b>Signo de Exclamación</b> (limpiadores, adhesivos), <b>Corrosión</b> (químicos de tratamiento de la caldera) y <b>Cilindro de Gas</b> (gases de soldadura).</p>",
+      kc:{ q:"Ve un rombo rojo con el símbolo de un cilindro de gas. ¿De qué le advierte?", opts:["Un líquido inflamable","Un gas bajo presión","Un ácido corrosivo","Un oxidante"], a:1 } },
+    { h:"5. Hojas de Datos de Seguridad (SDS)", body:
+      "<p>Cada químico peligroso en el sitio tiene una <b>Hoja de Datos de Seguridad</b> — un documento estandarizado con <b>16 secciones</b>, siempre en el mismo orden. Las secciones más útiles para usted:</p>"+
+      "<table class='mini'><tr><th>Sección</th><th>Qué le dice</th></tr>"+
+      "<tr><td><b>1 – Identificación</b></td><td>Nombre del producto y teléfono de emergencia</td></tr>"+
+      "<tr><td><b>2 – Peligros</b></td><td>Los peligros, pictogramas y palabra de advertencia</td></tr>"+
+      "<tr><td><b>4 – Primeros auxilios</b></td><td>Qué hacer en caso de exposición (piel, ojos, respiración, ingestión)</td></tr>"+
+      "<tr><td><b>8 – Controles de exposición / EPP</b></td><td>Qué equipo de protección usar</td></tr></table>"+
+      "<p><b>Dónde encontrar una SDS:</b> el archivo maestro de WKO y el inventario químico se guardan en la <b>Oficina de Seguridad</b>, y están disponibles para usted durante cada turno de trabajo. Su supervisor también puede ayudarle a obtener la WKO de cualquier químico en su área. Si falta una WKO, repórtelo — el químico no debe usarse hasta que la WKO esté archivada.</p>",
+      kc:{ q:"¿Cuál sección de la WKO le dice qué hacer si un químico le cae en la piel o en los ojos?", opts:["Sección 1 – Identificación","Sección 4 – Primeros auxilios","Sección 9 – Propiedades físicas","Sección 14 – Transporte"], a:1 } },
+    { h:"6. Recipientes Secundarios", body:
+      "<p>Si transfiere un químico de su recipiente original a otro recipiente (una botella rociadora, una cubeta, una botella exprimible), ese <b>recipiente secundario debe etiquetarse</b> con:</p>"+
+      "<ul><li>El <b>identificador del producto</b> (el mismo nombre que la SDS), y</li><li><b>Información de peligros</b> — palabras, símbolos o imágenes que muestren los peligros</li></ul>"+
+      "<p><b>Una excepción:</b> si llena un recipiente para su <u>propio uso inmediato</u>, lo mantiene bajo su control y lo vacía <u>dentro de su turno</u>, no necesita etiqueta. Si sale de sus manos o dura más que su turno — necesita etiqueta.</p>"+
+      "<p>Nunca ponga un químico en un recipiente de comida o bebida. Reporte cualquier recipiente sin etiqueta que encuentre.</p>" },
+    { h:"7. Tuberías y Tareas No Rutinarias", body:
+      "<p>Algunas tuberías en WKO Inc. transportan materiales peligrosos y no están etiquetadas individualmente — <b>líneas de vapor</b> (peligro de quemadura), <b>líneas de tratamiento de agua de la caldera</b>, <b>líneas de combustible</b> (diésel, propano) y <b>líneas hidráulicas</b>. <b>Antes de trabajar en o cerca de cualquier tubería, pregunte a su supervisor qué transporta y cuáles son los peligros.</b></p>"+
+      "<p><b>Las tareas no rutinarias</b> — trabajos que no hace todos los días, como el tratamiento químico de la caldera, aplicar productos de tratamiento de madera o pintar — pueden exponerlo a químicos desconocidos. Su supervisor debe informarle sobre los peligros, el EPP requerido y los procedimientos de emergencia <b>antes de comenzar el trabajo</b>. Si no le han informado, pregunte.</p>"+
+      "<p><b>Los contratistas</b> que trabajan en el sitio intercambian información de peligros químicos con nosotros. Si el trabajo de un contratista cerca de usted involucra químicos, usted también tiene derecho a saberlo.</p>" },
+    { h:"8. Derrames Químicos y Emergencias", body:
+      "<p>Si un químico se derrama, gotea o se libera:</p>"+
+      "<ul><li><b>Alerte</b> a los compañeros cercanos y <b>salga del área</b> si hay peligro inmediato</li>"+
+      "<li><b>Avise a su supervisor</b> de inmediato</li>"+
+      "<li>Consulte la <b>SDS</b> antes de cualquier limpieza — le indica el EPP y el método correctos</li>"+
+      "<li>Los derrames pequeños y rutinarios solo pueden limpiarlos empleados <b>capacitados</b> con el EPP adecuado</li>"+
+      "<li><b>Derrames grandes, químicos desconocidos o cualquier cosa que cree peligro de incendio o para respirar: evacúe y avise a su supervisor — el supervisor llamará al 911 si se necesita ayuda externa</b></li>"+
+      "<li>Reporte todo derrame al Líder de Cumplimiento Ambiental y Seguridad</li></ul>"+
+      "<h2>Números de Emergencia</h2>"+
+      "<p>Reporte las emergencias primero a su supervisor — el supervisor llama al 911 y coordina a los servicios de emergencia según sea necesario.</p>"+
+      "<p>Emergencia (incendio / médica / materiales peligrosos): <span class='phone'>911</span><br>"+
+      "Sala de Emergencias del su hospital más cercano: <span class='phone'>see posted emergency contact sheet</span><br>"+
+      "Control de Envenenamientos: <span class='phone'>1-800-222-1222</span><br>"+
+      "CHEMTREC (información de emergencias químicas): <span class='phone'>1-800-424-9300</span></p>",
+      kc:{ q:"Un tambor está goteando un químico desconocido y hay vapores fuertes. ¿Qué hace primero?", opts:["Buscar trapos y empezar a limpiarlo","Alertar a los demás, salir del área y avisar a su supervisor","Llamar al 911 usted mismo sin avisar a nadie","Mover el tambor afuera usted mismo"], a:1 } }
+  ],
+  pictos: [
+    {k:"flame", n:"Llama", m:"Inflamable — solventes, combustibles, pinturas"},
+    {k:"exclam", n:"Signo de Exclamación", m:"Irritante, nocivo — limpiadores, adhesivos"},
+    {k:"corrosion", n:"Corrosión", m:"Quema piel/ojos — ácidos, químicos de caldera"},
+    {k:"cylinder", n:"Cilindro de Gas", m:"Gas bajo presión — gases de soldadura"},
+    {k:"health", n:"Peligro para la Salud", m:"Efectos graves a la salud — algunos tratamientos, solventes"},
+    {k:"skull", n:"Calavera y Tibias", m:"Toxicidad aguda — puede ser mortal o tóxico"},
+    {k:"bomb", n:"Bomba Explotando", m:"Explosivos — no típico en WKO Inc."},
+    {k:"oxidizer", n:"Llama Sobre Círculo", m:"Oxidantes — ciertos blanqueadores, peróxidos"},
+    {k:"environ", n:"Medio Ambiente", m:"Daña la vida acuática — algunos tratamientos de madera"}
+  ],
+  quizH: "Examen Final",
+  quizIntro: "Responda las 10 preguntas. Necesita 8 correctas (80%) para aprobar. Tómese su tiempo — puede revisar sus respuestas antes de enviar.",
+  submitBtn: "Enviar Examen",
+  answerAll: "Por favor responda todas las preguntas antes de enviar.",
+  quiz: [
+    { q:"¿Cuál palabra de advertencia aparece en las etiquetas para los peligros MÁS severos?", opts:["ATENCIÓN (WARNING)","PELIGRO (DANGER)","CUIDADO (CAUTION)","ALERTA (ALERT)"], a:1 },
+    { q:"¿Dónde se guardan el archivo maestro de WKO y el inventario químico en WKO Inc.?", opts:["El comedor","La Oficina de Seguridad","La caseta de la entrada principal","La sala de control de los hornos"], a:1 },
+    { q:"¿Cuántas secciones tiene toda Hoja de Datos de Seguridad?", opts:["8","12","16","20"], a:2 },
+    { q:"Un rombo rojo con el símbolo de una llama significa que el químico…", opts:["es corrosivo para la piel","puede incendiarse (inflamable)","es un gas bajo presión","daña la vida acuática"], a:1 },
+    { q:"Usted vierte desengrasante en una botella rociadora que quedará en su estación de trabajo toda la semana. La botella debe tener…", opts:["ninguna etiqueta — vino de un tambor etiquetado","el identificador del producto e información de peligros","solo su nombre","una calcomanía verde"], a:1 },
+    { q:"Llega al sitio un producto químico completamente nuevo. Antes de que alguien lo use…", opts:["su Hoja de Datos de Seguridad debe estar archivada","debe vaciarse en un recipiente más pequeño","debe almacenarse por 30 días","debe agotarse primero el producto anterior"], a:0 },
+    { q:"Necesita trabajar cerca de una tubería sin etiqueta. ¿Qué debe hacer primero?", opts:["Suponer que solo lleva agua","Golpearla para escuchar qué hay adentro","Preguntar a su supervisor qué transporta y cuáles son los peligros","Envolverla con cinta"], a:2 },
+    { q:"El pictograma de calavera y tibias advierte que un químico…", opts:["es inflamable","puede ser mortal o tóxico incluso en pequeñas cantidades","está bajo presión","es solo un irritante"], a:1 },
+    { q:"Hay un derrame grande de un químico desconocido que crea vapores fuertes. Usted debe…", opts:["evacuar el área y avisar a su supervisor de inmediato","limpiarlo rápido con trapos","diluirlo con agua","bloquearlo con aserrín y seguir trabajando"], a:0 },
+    { q:"¿Cuándo reciben capacitación de comunicación de peligros los empleados de WKO Inc.?", opts:["Solo una vez, al ser contratados","Al ser contratados, cuando se introduce un nuevo peligro químico, y anualmente","Solo después de un incidente","Cada cinco años"], a:1 }
+  ],
+  passH:"¡Felicidades — Aprobó!",
+  passSub:"Certificado de Finalización",
+  passModule:"Comunicación de Peligros — Capacitación para Empleados " + MODULE_VERSION,
+  scoreLabel:"Puntaje",
+  dateLabel:"Fecha",
+  codeLabel:"Su código de finalización",
+  passInstr:"<b>Último paso — registre su finalización:</b> toque el botón de abajo y envíe el formulario de finalización. Escriba su nombre, seleccione <b>\"Hazard Communication / Comunicación de Peligros\"</b> en la lista de módulos e ingrese el código de finalización que aparece arriba. Su capacitación no queda registrada hasta que envíe el formulario.",
+  recordBtn:"Registrar Mi Finalización",
+  failH:"Todavía No — Siga Adelante",
+  failMsg:"Obtuvo menos del 80%. Revise el material — especialmente las etiquetas, las secciones de la WKO y los pasos de emergencia — e intente de nuevo. No hay límite de intentos.",
+  reviewBtn:"Revisar el Material",
+  retakeBtn:"Repetir el Examen",
+  yourScore:"Su puntaje"
+}
+};
+
+var ANSWER_KEY = STR.en.quiz.map(function(q){ return q.a; });
+
+/* ------------ State ------------ */
+var state = { lang:null, screen:"lang", section:0, name:"", kcDone:{}, quizAnswers:{}, lastScore:null, code:null };
+
+/* ------------ Helpers ------------ */
+function T(){ return STR[state.lang]; }
+function $(id){ return document.getElementById(id); }
+function esc(s){ var d=document.createElement("div"); d.appendChild(document.createTextNode(s)); return d.innerHTML; }
+
+function generateCode(){
+  var chars="ABCDEFGHJKMNPQRSTUVWXYZ23456789", out="";
+  for(var i=0;i<5;i++){ out+=chars.charAt(Math.floor(Math.random()*chars.length)); }
+  return CODE_PREFIX+out;
+}
+function gradeQuiz(answers){
+  var correct=0;
+  for(var i=0;i<ANSWER_KEY.length;i++){ if(answers[i]===ANSWER_KEY[i]) correct++; }
+  var pct=Math.round(correct/ANSWER_KEY.length*100);
+  return { correct:correct, total:ANSWER_KEY.length, pct:pct, pass: pct>=PASS_PCT };
+}
+
+/* ------------ Rendering ------------ */
+function setLang(l){
+  state.lang=l;
+  if(state.screen==="lang") state.screen="intro";
+  $("langBar").className="langbar";
+  $("btnEN").className = l==="en"?"active":"";
+  $("btnES").className = l==="es"?"active":"";
+  render();
+}
+function progress(){
+  if(state.screen==="lang"){ $("progBar").style.width="0%"; return; }
+  var total = T().sections.length + 2; // intro + sections + quiz
+  var pos = state.screen==="intro"?0 : state.screen==="quiz"?total-1 : state.screen==="pass"||state.screen==="fail"?total : state.section+1;
+  $("progBar").style.width = Math.round(pos/total*100)+"%";
+}
+function renderLang(){
+  $("app").innerHTML =
+    '<div class="card splash">'+
+    '<div class="co">WKO INC.</div>'+
+    '<div class="ti-en">Hazard Communication Training</div>'+
+    '<div class="ti-es">Capacitación sobre Comunicación de Peligros</div>'+
+    '<div class="choose">Choose your language / Elija su idioma:</div>'+
+    '<div class="langbtns">'+
+    '<button id="langBtnEN">English</button>'+
+    '<button id="langBtnES">Español</button>'+
+    '</div></div>';
+  $("langBtnEN").addEventListener("click", function(){ setLang("en"); });
+  $("langBtnES").addEventListener("click", function(){ setLang("es"); });
+}
+function render(){
+  progress();
+  if(state.screen==="lang") renderLang();
+  else if(state.screen==="intro") renderIntro();
+  else if(state.screen==="section") renderSection();
+  else if(state.screen==="quiz") renderQuiz();
+  else if(state.screen==="pass") renderPass();
+  else if(state.screen==="fail") renderFail();
+}
+function renderIntro(){
+  var t=T();
+  $("app").innerHTML =
+    '<div class="card"><h1>'+t.introH+'</h1><p>'+t.introP1+'</p><p>'+t.introP2+'</p>'+
+    '<h2>'+t.nameLabel+'</h2>'+
+    '<input type="text" id="nameInput" placeholder="'+t.namePh+'" value="'+esc(state.name)+'" autocomplete="name">'+
+    '<br><button class="btn" id="startBtn" disabled>'+t.startBtn+'</button>'+
+    '<p style="color:var(--gray);font-size:.85em;margin-top:16px">'+t.basedOn+'</p></div>';
+  var inp=$("nameInput"), btn=$("startBtn");
+  function gate(){ state.name=inp.value.trim(); btn.disabled = state.name.length<2; }
+  inp.addEventListener("input", gate); gate();
+  btn.addEventListener("click", function(){ if(state.name.length>=2){ state.screen="section"; state.section=0; render(); window.scrollTo(0,0);} });
+}
+function renderSection(){
+  var t=T(), s=t.sections[state.section];
+  var html = '<div class="card"><div class="qnum">'+t.secLabel+' '+(state.section+1)+' '+t.ofLabel+' '+t.sections.length+'</div><h1>'+s.h+'</h1>'+s.body;
+  var kcPassed = !!state.kcDone[state.section];
+  if(s.kc){
+    html += '<div class="kc"><div class="kct">✔ '+s.kc.q+'</div>';
+    for(var i=0;i<s.kc.opts.length;i++){
+      html += '<label class="opt" id="kcOpt'+i+'"><input type="radio" name="kc" value="'+i+'"'+(kcPassed?' disabled':'')+'>'+s.kc.opts[i]+'</label>';
+    }
+    html += '<div class="fb" id="kcFb"></div>';
+    if(!kcPassed) html += '<button class="btn secondary" id="kcCheck">'+t.checkBtn+'</button>';
+    html += '</div>';
+  }
+  html += '<br><button class="btn" id="contBtn"'+((s.kc&&!kcPassed)?' disabled':'')+'>'+t.continueBtn+'</button></div>';
+  $("app").innerHTML = html;
+  if($("pictoGrid")) renderPictos();
+  if(s.kc && !kcPassed){
+    $("kcCheck").addEventListener("click", function(){
+      var sel=document.querySelector('input[name="kc"]:checked');
+      if(!sel) return;
+      var v=parseInt(sel.value,10), fb=$("kcFb");
+      if(v===s.kc.a){
+        state.kcDone[state.section]=true;
+        $("kcOpt"+v).className="opt correct";
+        fb.className="fb ok"; fb.textContent=t.kcOk;
+        $("contBtn").disabled=false; $("kcCheck").disabled=true;
+      } else {
+        $("kcOpt"+v).className="opt wrong";
+        $("kcOpt"+s.kc.a).className="opt correct";
+        fb.className="fb bad"; fb.textContent=t.kcBad;
+        state.kcDone[state.section]=true;
+        $("contBtn").disabled=false; $("kcCheck").disabled=true;
+      }
+    });
+  }
+  $("contBtn").addEventListener("click", function(){
+    if(state.section < t.sections.length-1){ state.section++; } else { state.screen="quiz"; }
+    render(); window.scrollTo(0,0);
+  });
+}
+function renderPictos(){
+  var t=T(), g=$("pictoGrid"), html="";
+  for(var i=0;i<t.pictos.length;i++){
+    var p=t.pictos[i];
+    html += '<div class="picto">'+PICTO_SVG[p.k]+'<div class="pn">'+p.n+'</div><div class="pm">'+p.m+'</div></div>';
+  }
+  g.innerHTML=html;
+}
+function renderQuiz(){
+  var t=T();
+  var html='<div class="card"><h1>'+t.quizH+'</h1><p>'+t.quizIntro+'</p>';
+  for(var i=0;i<t.quiz.length;i++){
+    var q=t.quiz[i];
+    html+='<div class="quizq"><div class="qt">'+(i+1)+'. '+q.q+'</div>';
+    for(var j=0;j<q.opts.length;j++){
+      var checked = state.quizAnswers[i]===j ? ' checked' : '';
+      html+='<label class="opt"><input type="radio" name="q'+i+'" value="'+j+'"'+checked+'>'+q.opts[j]+'</label>';
+    }
+    html+='</div>';
+  }
+  html+='<div class="fb bad" id="quizWarn" style="display:none">'+t.answerAll+'</div>';
+  html+='<button class="btn" id="quizSubmit">'+t.submitBtn+'</button></div>';
+  $("app").innerHTML=html;
+  var radios=document.querySelectorAll('#app input[type=radio]');
+  for(var r=0;r<radios.length;r++){
+    radios[r].addEventListener("change", function(e){
+      var name=e.target.name, idx=parseInt(name.substring(1),10);
+      state.quizAnswers[idx]=parseInt(e.target.value,10);
+    });
+  }
+  $("quizSubmit").addEventListener("click", function(){
+    var answers=[];
+    for(var i=0;i<t.quiz.length;i++){
+      if(typeof state.quizAnswers[i]==="undefined"){ $("quizWarn").style.display="block"; return; }
+      answers.push(state.quizAnswers[i]);
+    }
+    var res=gradeQuiz(answers);
+    state.lastScore=res;
+    if(res.pass){ state.code=generateCode(); state.screen="pass"; }
+    else { state.screen="fail"; }
+    render(); window.scrollTo(0,0);
+  });
+}
+function fmtDate(){
+  var d=new Date();
+  var m=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+  var mes=["ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic"];
+  return state.lang==="es" ? d.getDate()+" "+mes[d.getMonth()]+" "+d.getFullYear() : m[d.getMonth()]+" "+d.getDate()+", "+d.getFullYear();
+}
+function renderPass(){
+  var t=T(), r=state.lastScore;
+  $("app").innerHTML =
+    '<div class="card"><p class="passmsg">'+t.passH+'</p></div>'+
+    '<div class="cert" id="certBox">'+
+      '<div>'+t.passSub+'</div>'+
+      '<div class="big" id="certName">'+esc(state.name)+'</div>'+
+      '<div>'+t.passModule+'</div>'+
+      '<div style="margin:8px 0">'+t.scoreLabel+': <b>'+r.correct+'/'+r.total+' ('+r.pct+'%)</b> &nbsp;·&nbsp; '+t.dateLabel+': <b id="certDate">'+fmtDate()+'</b></div>'+
+      '<div>'+t.codeLabel+':</div>'+
+      '<div class="code" id="certCode">'+state.code+'</div>'+
+    '</div>'+
+    '<div class="card"><p>'+t.passInstr+'</p>'+
+    '<a class="btn" id="recordLink" href="'+FORM_URL+'" target="_blank" rel="noopener">'+t.recordBtn+'</a></div>';
+}
+function renderFail(){
+  var t=T(), r=state.lastScore;
+  $("app").innerHTML =
+    '<div class="card" id="failBox"><p class="failmsg">'+t.failH+'</p>'+
+    '<p>'+t.yourScore+': <b>'+r.correct+'/'+r.total+' ('+r.pct+'%)</b></p>'+
+    '<p>'+t.failMsg+'</p>'+
+    '<button class="btn secondary" id="reviewBtn">'+t.reviewBtn+'</button> '+
+    '<button class="btn" id="retakeBtn">'+t.retakeBtn+'</button></div>';
+  $("reviewBtn").addEventListener("click", function(){ state.quizAnswers={}; state.screen="section"; state.section=0; render(); window.scrollTo(0,0); });
+  $("retakeBtn").addEventListener("click", function(){ state.quizAnswers={}; state.screen="quiz"; render(); window.scrollTo(0,0); });
+}
+
+/* ------------ Test hooks ------------ */
+window.APP = { STR:STR, state:state, gradeQuiz:gradeQuiz, generateCode:generateCode, ANSWER_KEY:ANSWER_KEY, FORM_URL:FORM_URL, PASS_PCT:PASS_PCT, MODULE_VERSION:MODULE_VERSION, CODE_PREFIX:CODE_PREFIX, setLang:setLang, render:render };
+window.setLang = setLang;
+
+render();
+</script>
+</body>
+</html>

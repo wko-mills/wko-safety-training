@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WKO Inc. — Wildfire Smoke Training / Capacitación sobre Humo de Incendios</title>
+<style>
+  :root { --blue:#2E75B6; --dark:#1F4E79; --gray:#666; --light:#F2F2F2;
+          --green:#2E8B57; --amber:#E8A317; --orange:#D2691E; --red:#B22222; --maroon:#701C1C; }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:Arial,Helvetica,sans-serif; background:var(--light); color:#222; line-height:1.5; -webkit-text-size-adjust:100%; }
+  .wrap { max-width:640px; margin:0 auto; min-height:100vh; display:flex; flex-direction:column; background:#fff; box-shadow:0 0 24px rgba(0,0,0,.08); }
+  header { background:var(--dark); color:#fff; padding:14px 20px; }
+  header .co { font-weight:bold; font-size:15px; letter-spacing:.5px; }
+  header .prog { font-size:12px; color:#cfe0f0; }
+  .bar { height:6px; background:#dce7f2; } .bar span { display:block; height:100%; background:var(--blue); width:0%; transition:width .3s; }
+  main { flex:1; padding:24px 20px 32px; }
+  h1 { color:var(--dark); font-size:24px; margin-bottom:12px; }
+  p { margin-bottom:12px; font-size:16px; }
+  ul { margin:0 0 12px 22px; } li { margin-bottom:7px; font-size:16px; }
+  .eyebrow { text-transform:uppercase; letter-spacing:1.5px; font-size:11px; color:var(--gray); font-weight:bold; margin-bottom:6px; }
+  .card { background:var(--light); border-left:4px solid var(--blue); padding:12px 14px; margin:14px 0; border-radius:0 6px 6px 0; font-size:15px; }
+  .card.warn { border-left-color:var(--red); }
+  .btn { display:block; width:100%; background:var(--blue); color:#fff; border:none; border-radius:8px; padding:15px; font-size:17px; font-weight:bold; font-family:inherit; cursor:pointer; margin-top:18px; }
+  .btn:active { background:var(--dark); } .btn:disabled { background:#b9c8d6; cursor:default; }
+  a.btn { text-decoration:none; text-align:center; box-sizing:border-box; }
+  .btn.secondary { background:#fff; color:var(--blue); border:2px solid var(--blue); }
+  input[type=text] { width:100%; padding:13px; font-size:17px; font-family:inherit; border:2px solid #c6d4e2; border-radius:8px; margin-top:6px; }
+  input[type=text]:focus { outline:none; border-color:var(--blue); }
+  label { font-weight:bold; font-size:14px; color:var(--dark); }
+  .ladder { margin:16px 0; }
+  .rung { display:flex; border-radius:8px; overflow:hidden; margin-bottom:8px; }
+  .rung .lvl { flex:0 0 112px; color:#fff; font-weight:bold; padding:10px 8px; font-size:13px; text-align:center; display:flex; flex-direction:column; justify-content:center; }
+  .rung .lvl small { font-weight:normal; font-size:11px; opacity:.9; }
+  .rung .act { flex:1; background:var(--light); padding:10px 12px; font-size:14px; display:flex; align-items:center; }
+  .opt { display:block; width:100%; text-align:left; background:#fff; border:2px solid #c6d4e2; border-radius:8px; padding:13px 14px; font-size:16px; font-family:inherit; margin-top:10px; cursor:pointer; }
+  .opt.sel { border-color:var(--blue); background:#eaf2fa; }
+  .opt.right { border-color:var(--green); background:#e8f5ee; }
+  .opt.wrong { border-color:var(--red); background:#fbeaea; }
+  .feedback { margin-top:12px; padding:12px 14px; border-radius:8px; font-size:15px; display:none; }
+  .feedback.good { background:#e8f5ee; border-left:4px solid var(--green); display:block; }
+  .feedback.bad { background:#fbeaea; border-left:4px solid var(--red); display:block; }
+  .qnum { font-size:12px; color:var(--gray); font-weight:bold; text-transform:uppercase; letter-spacing:1px; margin-bottom:4px; }
+  .cert { border:3px solid var(--dark); border-radius:10px; padding:22px; text-align:center; margin-top:16px; }
+  .cert .big { font-size:22px; font-weight:bold; color:var(--dark); margin:8px 0; }
+  .cert .code { font-size:26px; letter-spacing:3px; font-weight:bold; color:var(--blue); background:var(--light); border-radius:8px; padding:10px; margin:12px 0; }
+  .score-pill { display:inline-block; background:var(--green); color:#fff; border-radius:999px; padding:6px 18px; font-weight:bold; font-size:18px; }
+  .score-pill.fail { background:var(--red); }
+  .langbtns { display:flex; gap:12px; margin-top:20px; }
+  .langbtns .btn { margin-top:0; }
+  footer { padding:12px 20px; font-size:11px; color:var(--gray); text-align:center; border-top:1px solid #e4e9ef; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="co">WKO INC.</div>
+    <div class="prog" id="hdrSub">Wildfire Smoke Safety Training — WAC 296-820</div>
+  </header>
+  <div class="bar"><span id="prog"></span></div>
+  <main id="main"></main>
+  <footer id="ftr">WKO Inc. · Carson, WA · WAC 296-820-825 · Module v1.3 (2026)</footer>
+</div>
+
+<script>
+// ================= CONFIG =================
+const FORM_URL = "https://forms.cloud.microsoft/r/YHYEJNbAMt";
+
+// ================= LANGUAGE PACKS =================
+const L = {
+en: {
+ hdrSub: 'Wildfire Smoke Safety Training — WAC 296-820',
+ startEyebrow:'WKO Inc. · Safety Department',
+ startTitle:'Wildfire Smoke Safety Training',
+ startP:'Annual required training under Washington\u2019s Wildfire Smoke Rule (WAC 296-820). About 15 minutes, on your phone or a computer.',
+ startCard:'Complete all sections and pass the final quiz with <b>80% or better</b>. When you finish, you\u2019ll get a completion code — <b>screenshot your completion screen</b> and submit it as instructed by your supervisor.',
+ nameLabel:'Enter your full name to begin', namePH:'First and last name', startBtn:'Start Training',
+ cont:'Continue', kc:'Knowledge Check', kcTitle:'Quick Question', wrongTry:'Not quite — take another look and try again.',
+ quizEyebrow:'Final Quiz', quizReady:'Ready, ', quizP:'10 questions. You need <b>8 correct (80%)</b> to pass. If you don\u2019t pass, you can review the material and retake the quiz.',
+ begin:'Begin Quiz', review:'Review Material First', qOf:'Question', of:'of', submit:'Submit Answer',
+ doneEyebrow:'Training Complete', congrats:'Congratulations!', score:'Score',
+ certTitle:'Certificate of Completion', certHas:'has completed', certCourse:'Wildfire Smoke Safety Training',
+ certReg:'per WAC 296-820-825 / Appendix A (WAC 296-820-850)',
+ certFinal:'<b>Final step — record your completion:</b> Tap the button below to open the SDS Training Completion form. Enter your name, the module (Wildfire Smoke), today\u2019s date, your score, and the completion code shown above — then submit. Also take a screenshot of this screen for your own records. Your training is not documented until the form is submitted.',
+ recordBtn:'Record My Completion',
+ failTitle:'Not Quite — Let\u2019s Try Again',
+ failP:'You need 80% to pass. No sweat — review the material and take the quiz again. The goal is that you know this material when the smoke rolls in, not that you get it on the first try.',
+ reviewBtn:'Review Material', retryBtn:'Retake Quiz Now',
+ slides:[
+ { t:'content', eyebrow:'Section 1 of 8', title:'Why You Are Taking This Training', html:`
+   <p>Washington State requires wildfire smoke training for all employees who may be exposed to smoke at work — <b>before exposure occurs, and every year after that</b> (WAC 296-820).</p>
+   <p>Wildfire smoke is a serious health hazard, and here in the Columbia River Gorge, smoke events are a regular part of late summer.</p>
+   <p>This rule applies to outdoor work areas like the log yard, lumber stacking areas, kiln loading/unloading, and exterior grounds. Work inside closed buildings or filtered-cab vehicles, and exposures of one hour or less per shift, are exempt.</p>
+   <div class="card">This training takes about 15 minutes. You\u2019ll answer questions along the way and complete a short quiz at the end. You need <b>80% or better</b> to pass. You can retake the quiz if needed.</div>`},
+ { t:'content', eyebrow:'Section 2 of 8', title:'What Is Wildfire Smoke? What Is PM2.5?', html:`
+   <p>Wildfire smoke is a mix of gases and fine particles from burning trees, brush, and structures. The most dangerous component is <b>PM2.5</b> — fine particulate matter 2.5 micrometers or smaller.</p>
+   <p>How small is that? A human hair is about <b>30 times wider</b> than a PM2.5 particle. These particles pass deep into your lungs and can enter your bloodstream.</p>
+   <div class="card">PM2.5 is measured in micrograms per cubic meter of air (µg/m³). The higher the number, the more smoke you\u2019re breathing.</div>`},
+ { t:'content', eyebrow:'Section 3 of 8', title:'Health Effects and Symptoms', html:`
+   <p>Watch for these <b>symptoms of smoke exposure</b> in yourself and your coworkers:</p>
+   <ul><li>Eye, nose, or throat irritation — burning, watery eyes</li>
+   <li>Persistent coughing, phlegm, wheezing</li>
+   <li>Difficulty breathing or shortness of breath</li>
+   <li>Chest tightness or pain</li>
+   <li>Headache, dizziness, fatigue</li></ul>
+   <p><b>Some people are at higher risk</b>: those with heart or lung disease, asthma, diabetes, tobacco users, workers who are pregnant, and older or very young workers.</p>
+   <div class="card warn"><b>Severe symptoms — get help immediately:</b> severe difficulty breathing, chest pain, dizziness or confusion. Tell your supervisor and seek medical attention right away.</div>`},
+ { t:'check', q:'A coworker on the log deck has burning eyes, a cough, and tightness in his chest during a smoky afternoon. What should he do?',
+   opts:['Tough it out until the end of shift','Tell his supervisor he is having symptoms','Take a break without telling anyone','Go home without telling anyone'], a:1,
+   why:'Right. Reporting symptoms to your supervisor triggers SDS\u2019s response plan — and you cannot be punished for reporting.' },
+ { t:'content', eyebrow:'Section 4 of 8', title:'Smoke Action Levels', html:`
+   <p>WKO follows a 6-level response system based on the current PM2.5:</p>
+   <div class="ladder">
+     <div class="rung"><div class="lvl" style="background:var(--amber)">Level 1<small>20.5 µg/m³ · AQI ~72</small></div><div class="act">Rule kicks in. Training, two-way hazard communication, N95/KN95 available on request.</div></div>
+     <div class="rung"><div class="lvl" style="background:var(--orange)">Level 2<small>35.5 µg/m³ · AQI ~101</small></div><div class="act">Respirators provided to ALL employees for voluntary use.</div></div>
+     <div class="rung"><div class="lvl" style="background:var(--red)">Level 3<small>55.5 µg/m³ · AQI ~151</small></div><div class="act">Feasible exposure controls required — moving work, schedule changes, more breaks.</div></div>
+     <div class="rung"><div class="lvl" style="background:var(--red)">Level 4<small>150.5 µg/m³ · AQI ~201</small></div><div class="act">Additional exposure controls; close monitoring of conditions and workers.</div></div>
+     <div class="rung"><div class="lvl" style="background:var(--maroon)">Level 5<small>250.5 µg/m³ · AQI ~351</small></div><div class="act">A respirator is handed DIRECTLY to every exposed employee. Anyone with symptoms needing medical attention is moved to clean air.</div></div>
+     <div class="rung"><div class="lvl" style="background:#4A1010">Level 6<small>500.4 µg/m³ · AQI 849+</small></div><div class="act">Respirator use MANDATORY under the full Respiratory Protection Program. Above 555 µg/m³, heavier P100 respirators are required.</div></div>
+   </div>`},
+ { t:'content', eyebrow:'Section 5 of 8', title:'How WKO Monitors Smoke Levels', html:`
+   <p>WKO Inc.\u2019s <b>official method</b> is the <b>EPA AirNow reading (airnow.gov)</b> \u2014 the NowCast PM2.5 and AQI for the <b>Carson/Stevenson area</b>. That is the number WKO uses to decide which protections apply.</p>
+   <p>WKO also runs an <b>on-site particulate sensor</b> at the mill for real-time awareness. It helps us act early when smoke rolls in, but the AirNow reading is the official one.</p>
+   <p>Levels are checked before each outdoor shift, and at least every two hours when PM2.5 is 20.5 µg/m³ or more.</p>
+   <p><b>How you will know the current level:</b></p>
+   <ul><li>Crew safety meeting announcements at the start of shift during smoke events, and updates when conditions change</li>
+   <li>Posted air quality updates at the <b>break rooms and time clocks</b></li>
+   <li>Radio or verbal communication during the shift</li>
+   <li>You can ask your supervisor or the Safety Lead for the current PM2.5 at any time</li></ul>`},
+ { t:'check', q:'What is WKO Inc.\u2019s OFFICIAL method for determining the current PM2.5?',
+   opts:['A guess based on visibility','The EPA AirNow reading for Carson/Stevenson','The nightly news','A coin flip'], a:1,
+   why:'Correct. EPA AirNow (airnow.gov) for the Carson/Stevenson area is the official number. The on-site sensor is a helpful extra.' },
+ { t:'content', eyebrow:'Section 6 of 8', title:'How WKO Reduces Your Exposure', html:`
+   <p>Starting at Level 3 (55.5 µg/m³), WKO implements feasible exposure controls — and uses them earlier when practical:</p>
+   <ul><li>Relocating work indoors or enclosing work areas where possible</li>
+   <li>Clean-air break areas (filtered buildings, enclosed filtered cabs)</li>
+   <li>Rescheduling outdoor work to periods of better air quality; adjusting shift times</li>
+   <li>Reducing work intensity, rotating tasks, adding rest breaks</li></ul>
+   <p>Not every job at a sawmill can move indoors — that\u2019s why respirators and symptom monitoring matter too.</p>`},
+ { t:'content', eyebrow:'Section 7 of 8', title:'N95 / KN95 Respirators', html:`
+   <p><b>N95 and KN95 filtering-facepiece respirators are stocked on-site</b> and available at no cost — ask your supervisor. At Level 2 (35.5 µg/m³) and above, WKO provides them to all employees for voluntary use.</p>
+   <p>At <b>Level 5 (250.5 µg/m³)</b> and above, a respirator must be placed <b>directly in your hand</b> — you won't have to go looking for one. Wearing it is still your choice until Level 6.</p>
+   <p><b>Using one correctly (voluntary use):</b></p>
+   <ul><li>Cover your nose and mouth; mold the metal strip to your nose bridge</li>
+   <li>Both straps on — one above the ears, one below</li>
+   <li><b>Perform a user seal check each time you put it on</b>: cover the respirator with your hands, exhale gently, and feel for air leaking at the edges. Adjust until it seals.</li>
+   <li>Facial hair at the seal reduces protection</li>
+   <li>Replace it when breathing gets difficult, it\u2019s damaged, or the inside is soiled. Don\u2019t wash or share them.</li></ul>
+   <div class="card">Voluntary use does not require fit testing or a medical evaluation. If smoke ever reaches 500.4 µg/m³, respirator use becomes mandatory under the full Respiratory Protection Program — with fit testing, medical evaluation, and additional training.</div>`},
+ { t:'check', q:'True or False: You have to pay for an N95/KN95 if you want one during a smoke event.',
+   opts:['True','False'], a:1,
+   why:'False — respirators are provided by WKO at no cost. Just ask your supervisor.' },
+ { t:'content', eyebrow:'Section 8 of 8', title:'Your Rights: Report Symptoms Without Fear', html:`
+   <p>If you experience symptoms of smoke exposure, <b>tell your supervisor right away</b>. WKO will:</p>
+   <ul><li>Move you to a clean-air environment and monitor your condition</li>
+   <li>Allow you to seek medical attention and follow medical advice you\u2019ve been given</li>
+   <li>Arrange medical care if symptoms persist or worsen (your nearest hospital is 3–4 minutes away; call 911 in an emergency)</li></ul>
+   <div class="card"><b>You cannot be retaliated against</b> for reporting symptoms or seeking medical attention. No discipline, no lost hours, no reprisal. That is your legal right — and it\u2019s how we keep each other safe.</div>
+   <p>The complete written <b>Wildfire Smoke Response Program</b> is available from your supervisor and the Environmental Compliance and Safety Lead.</p>
+   <p>That\u2019s the material. Next up: the final quiz — 10 questions, 80% to pass. You\u2019ve got this.</p>`},
+ ],
+ quiz:[
+  { q:'The most hazardous component of wildfire smoke is:', opts:['Carbon dioxide','PM2.5 fine particles','Water vapor','Pollen'], a:1 },
+  { q:'At what PM2.5 level does the wildfire smoke rule kick in (training, communication, respirators on request)?', opts:['20.5 µg/m³','100 µg/m³','250.5 µg/m³','500.4 µg/m³'], a:0 },
+  { q:'Which of these is a symptom of wildfire smoke exposure?', opts:['Chest tightness and trouble breathing','Burning, watery eyes','Persistent cough and wheezing','All of these'], a:3 },
+  { q:'What is WKO Inc.\u2019s official method for determining the current PM2.5?', opts:['The EPA AirNow reading for the Carson/Stevenson area','Guessing from how hazy it looks','The weather channel','Whatever the radio says'], a:0 },
+  { q:'How will you find out the current smoke level during a smoke event?', opts:['Shift-start crew meeting announcements and postings at break rooms/time clocks','You have to figure it out yourself','It is a secret','Posted once a month'], a:0 },
+  { q:'At Level 2 (35.5 µg/m³), WKO must:', opts:['Send everyone home immediately','Provide N95/KN95 respirators to ALL employees for voluntary use','Do nothing until 500 µg/m³','Only protect office workers'], a:1 },
+  { q:'Feasible exposure controls (relocating work, schedule changes, more breaks) are formally required starting at:', opts:['Level 3 — 55.5 µg/m³','Level 1 — 20.5 µg/m³','Only at 500.4 µg/m³','Never'], a:0 },
+  { q:'Voluntary use of an N95/KN95 during smoke events requires:', opts:['Fit testing and a medical evaluation','A doctor\u2019s note','No fit testing or medical evaluation — but do a user seal check every time','A $20 deposit'], a:2 },
+  { q:'At 500.4 µg/m³ or higher, respirator use becomes:', opts:['Optional','Prohibited','Mandatory, under the full Respiratory Protection Program','Only for supervisors'], a:2 },
+  { q:'If you report smoke exposure symptoms or seek medical attention, WKO may:', opts:['Discipline you','Dock your pay','Never retaliate against you — reporting is your protected right','Send you home without pay as punishment'], a:2 },
+ ],
+},
+es: {
+ hdrSub: 'Capacitación sobre Humo de Incendios Forestales — WAC 296-820',
+ startEyebrow:'WKO Inc. · Departamento de Seguridad',
+ startTitle:'Capacitación de Seguridad sobre Humo de Incendios Forestales',
+ startP:'Capacitación anual obligatoria según la Regla de Humo de Incendios Forestales del Estado de Washington (WAC 296-820). Dura unos 15 minutos, en su teléfono o computadora.',
+ startCard:'Complete todas las secciones y apruebe el examen final con <b>80% o más</b>. Al terminar, recibirá un código de finalización — <b>tome una captura de pantalla</b> y entréguela según le indique su supervisor.',
+ nameLabel:'Escriba su nombre completo para comenzar', namePH:'Nombre y apellido', startBtn:'Comenzar la Capacitación',
+ cont:'Continuar', kc:'Verificación de Conocimiento', kcTitle:'Pregunta Rápida', wrongTry:'No es correcto — revise de nuevo e intente otra vez.',
+ quizEyebrow:'Examen Final', quizReady:'¿Listo, ', quizP:'10 preguntas. Necesita <b>8 correctas (80%)</b> para aprobar. Si no aprueba, puede repasar el material y volver a tomar el examen.',
+ begin:'Comenzar el Examen', review:'Repasar el Material Primero', qOf:'Pregunta', of:'de', submit:'Enviar Respuesta',
+ doneEyebrow:'Capacitación Completada', congrats:'¡Felicidades!', score:'Puntaje',
+ certTitle:'Certificado de Finalización', certHas:'ha completado', certCourse:'Capacitación de Seguridad sobre Humo de Incendios Forestales',
+ certReg:'según WAC 296-820-825 / Apéndice A (WAC 296-820-850)',
+ certFinal:'<b>Último paso — registre su finalización:</b> Toque el botón de abajo para abrir el formulario de Registro de Capacitación de WKO. Escriba su nombre, el módulo (Humo de Incendios), la fecha de hoy, su puntaje y el código de finalización que aparece arriba — y envíelo. También tome una captura de pantalla de esta página para sus registros. Su capacitación no queda documentada hasta que envíe el formulario.',
+ recordBtn:'Registrar Mi Finalización',
+ failTitle:'Casi — Intentemos de Nuevo',
+ failP:'Necesita 80% para aprobar. No se preocupe — repase el material y vuelva a tomar el examen. La meta es que usted sepa este material cuando llegue el humo, no que lo apruebe al primer intento.',
+ reviewBtn:'Repasar el Material', retryBtn:'Volver a Tomar el Examen',
+ slides:[
+ { t:'content', eyebrow:'Sección 1 de 8', title:'Por Qué Está Tomando Esta Capacitación', html:`
+   <p>El Estado de Washington exige capacitación sobre humo de incendios forestales para todos los empleados que puedan estar expuestos al humo en el trabajo — <b>antes de la exposición, y cada año después</b> (WAC 296-820).</p>
+   <p>El humo de incendios forestales es un peligro grave para la salud, y aquí en la Garganta del Río Columbia, los eventos de humo son parte habitual del final del verano.</p>
+   <p>Esta regla aplica a las áreas de trabajo al aire libre como el patio de troncos, las áreas de apilado de madera, la carga y descarga de los hornos de secado, y los terrenos exteriores. El trabajo dentro de edificios cerrados o vehículos con cabina filtrada, y las exposiciones de una hora o menos por turno, están exentos.</p>
+   <div class="card">Esta capacitación dura unos 15 minutos. Responderá preguntas en el camino y completará un examen corto al final. Necesita <b>80% o más</b> para aprobar. Puede volver a tomar el examen si es necesario.</div>`},
+ { t:'content', eyebrow:'Sección 2 de 8', title:'¿Qué Es el Humo de Incendios? ¿Qué Es el PM2.5?', html:`
+   <p>El humo de incendios forestales es una mezcla de gases y partículas finas de árboles, maleza y estructuras en llamas. El componente más peligroso es el <b>PM2.5</b> — material particulado de 2.5 micrómetros o menos.</p>
+   <p>¿Qué tan pequeño es eso? Un cabello humano es unas <b>30 veces más ancho</b> que una partícula de PM2.5. Estas partículas penetran profundamente en los pulmones y pueden entrar al torrente sanguíneo.</p>
+   <div class="card">El PM2.5 se mide en microgramos por metro cúbico de aire (µg/m³). Cuanto más alto el número, más humo está respirando.</div>`},
+ { t:'content', eyebrow:'Sección 3 de 8', title:'Efectos en la Salud y Síntomas', html:`
+   <p>Esté atento a estos <b>síntomas de exposición al humo</b> en usted y sus compañeros:</p>
+   <ul><li>Irritación de ojos, nariz o garganta — ojos ardientes y llorosos</li>
+   <li>Tos persistente, flema, sibilancias (silbido al respirar)</li>
+   <li>Dificultad para respirar o falta de aire</li>
+   <li>Opresión o dolor en el pecho</li>
+   <li>Dolor de cabeza, mareo, fatiga</li></ul>
+   <p><b>Algunas personas corren mayor riesgo</b>: quienes tienen enfermedades del corazón o de los pulmones, asma, diabetes, fumadores, trabajadoras embarazadas, y trabajadores de mayor o muy corta edad.</p>
+   <div class="card warn"><b>Síntomas graves — busque ayuda de inmediato:</b> dificultad severa para respirar, dolor de pecho, mareo o confusión. Avise a su supervisor y busque atención médica de inmediato.</div>`},
+ { t:'check', q:'Un compañero en el patio de troncos tiene ojos ardientes, tos y opresión en el pecho durante una tarde con humo. ¿Qué debe hacer?',
+   opts:['Aguantar hasta el final del turno','Avisar a su supervisor que tiene síntomas','Tomar un descanso sin avisar a nadie','Irse a casa sin avisar a nadie'], a:1,
+   why:'Correcto. Reportar los síntomas a su supervisor activa el plan de respuesta de WKO — y no puede ser castigado por reportar.' },
+ { t:'content', eyebrow:'Sección 4 de 8', title:'Niveles de Acción por Humo', html:`
+   <p>WKO sigue un sistema de respuesta de 6 niveles basado en el PM2.5 actual:</p>
+   <div class="ladder">
+     <div class="rung"><div class="lvl" style="background:var(--amber)">Nivel 1<small>20.5 µg/m³ · AQI ~72</small></div><div class="act">Aplica la regla. Capacitación, comunicación de peligros, N95/KN95 disponibles a solicitud.</div></div>
+     <div class="rung"><div class="lvl" style="background:var(--orange)">Nivel 2<small>35.5 µg/m³ · AQI ~101</small></div><div class="act">Respiradores proporcionados a TODOS los empleados para uso voluntario.</div></div>
+     <div class="rung"><div class="lvl" style="background:var(--red)">Nivel 3<small>55.5 µg/m³ · AQI ~151</small></div><div class="act">Controles de exposición factibles requeridos — reubicar trabajo, cambios de horario, más descansos.</div></div>
+     <div class="rung"><div class="lvl" style="background:var(--red)">Nivel 4<small>150.5 µg/m³ · AQI ~201</small></div><div class="act">Controles adicionales; monitoreo constante de las condiciones y de los trabajadores.</div></div>
+     <div class="rung"><div class="lvl" style="background:var(--maroon)">Nivel 5<small>250.5 µg/m³ · AQI ~351</small></div><div class="act">Se entrega un respirador DIRECTAMENTE a cada empleado expuesto. Quien tenga síntomas que requieran atención médica es trasladado a aire limpio.</div></div>
+     <div class="rung"><div class="lvl" style="background:#4A1010">Nivel 6<small>500.4 µg/m³ · AQI 849+</small></div><div class="act">Uso de respirador OBLIGATORIO bajo el Programa completo de Protección Respiratoria. Por encima de 555 µg/m³ se requieren respiradores más pesados (filtros P100).</div></div>
+   </div>`},
+ { t:'content', eyebrow:'Sección 5 de 8', title:'Cómo WKO Monitorea los Niveles de Humo', html:`
+   <p>El <b>método oficial</b> de WKO Inc. es la <b>lectura de EPA AirNow (airnow.gov)</b> — el PM2.5 y AQI NowCast para el área de <b>Carson/Stevenson</b>. Ese es el número que WKO usa para decidir qué protecciones aplican.</p>
+   <p>WKO también tiene un <b>sensor de partículas en el sitio</b> para conocer las condiciones en tiempo real. Ayuda a actuar antes cuando llega el humo, pero la lectura de AirNow es la oficial.</p>
+   <p>Los niveles se verifican antes de cada turno al aire libre, y al menos cada dos horas cuando el PM2.5 es de 20.5 µg/m³ o más.</p>
+   <p><b>Cómo sabrá usted el nivel actual:</b></p>
+   <ul><li>Anuncios en la reunión de seguridad al inicio del turno durante eventos de humo, y actualizaciones cuando cambian las condiciones</li>
+   <li>Avisos publicados en los <b>comedores y relojes de entrada</b></li>
+   <li>Comunicación por radio o verbal durante el turno</li>
+   <li>Puede preguntar a su supervisor o al Líder de Seguridad el PM2.5 actual en cualquier momento</li></ul>`},
+ { t:'check', q:'¿Cuál es el método OFICIAL de WKO Inc. para determinar el PM2.5 actual?',
+   opts:['Adivinar según la visibilidad','La lectura de EPA AirNow para Carson/Stevenson','Las noticias de la noche','Lanzar una moneda'], a:1,
+   why:'Correcto. EPA AirNow (airnow.gov) para el área de Carson/Stevenson es el número oficial. El sensor en el sitio es una ayuda adicional.' },
+ { t:'content', eyebrow:'Sección 6 de 8', title:'Cómo WKO Reduce Su Exposición', html:`
+   <p>A partir del Nivel 3 (55.5 µg/m³), WKO implementa controles de exposición factibles — y los usa antes cuando es práctico:</p>
+   <ul><li>Reubicar el trabajo bajo techo o encerrar áreas de trabajo cuando sea posible</li>
+   <li>Áreas de descanso con aire limpio (edificios con filtración, cabinas cerradas con filtro)</li>
+   <li>Reprogramar el trabajo al aire libre a períodos de mejor calidad de aire; ajustar horarios de turno</li>
+   <li>Reducir la intensidad del trabajo, rotar tareas, agregar descansos</li></ul>
+   <p>No todo trabajo en un aserradero puede hacerse bajo techo — por eso también importan los respiradores y la vigilancia de síntomas.</p>`},
+ { t:'content', eyebrow:'Sección 7 de 8', title:'Respiradores N95 / KN95', html:`
+   <p><b>Los respiradores N95 y KN95 están disponibles en el sitio</b> sin costo — pídalos a su supervisor. En el Nivel 2 (35.5 µg/m³) y superior, WKO los proporciona a todos los empleados para uso voluntario.</p>
+   <p>En el <b>Nivel 5 (250.5 µg/m³)</b> y superior, se le debe entregar un respirador <b>directamente en la mano</b> — no tendrá que ir a buscarlo. Usarlo sigue siendo su decisión hasta el Nivel 6.</p>
+   <p><b>Cómo usarlo correctamente (uso voluntario):</b></p>
+   <ul><li>Cubra su nariz y boca; moldee la tira metálica sobre el puente de la nariz</li>
+   <li>Ambas bandas puestas — una arriba de las orejas, otra abajo</li>
+   <li><b>Haga una verificación de sello cada vez que se lo ponga</b>: cubra el respirador con las manos, exhale suavemente, y sienta si escapa aire por los bordes. Ajústelo hasta que selle.</li>
+   <li>El vello facial en el área del sello reduce la protección</li>
+   <li>Reemplácelo cuando cueste respirar, esté dañado o sucio por dentro. No los lave ni los comparta.</li></ul>
+   <div class="card">El uso voluntario no requiere prueba de ajuste ni evaluación médica. Si el humo llega a 500.4 µg/m³, el uso del respirador se vuelve obligatorio bajo el Programa completo de Protección Respiratoria — con prueba de ajuste, evaluación médica y capacitación adicional.</div>`},
+ { t:'check', q:'¿Verdadero o Falso? Usted tiene que pagar por un N95/KN95 si quiere uno durante un evento de humo.',
+   opts:['Verdadero','Falso'], a:1,
+   why:'Falso — WKO proporciona los respiradores sin costo. Solo pídalo a su supervisor.' },
+ { t:'content', eyebrow:'Sección 8 de 8', title:'Sus Derechos: Reporte Síntomas Sin Miedo', html:`
+   <p>Si tiene síntomas de exposición al humo, <b>avise a su supervisor de inmediato</b>. WKO hará lo siguiente:</p>
+   <ul><li>Trasladarlo a un ambiente con aire limpio y vigilar su condición</li>
+   <li>Permitirle buscar atención médica y seguir las indicaciones médicas que le hayan dado</li>
+   <li>Coordinar atención médica si los síntomas persisten o empeoran (el su hospital más cercano está cercano; llame al 911 en una emergencia)</li></ul>
+   <div class="card"><b>No pueden tomar represalias contra usted</b> por reportar síntomas o buscar atención médica. Sin disciplina, sin horas perdidas, sin represalias. Es su derecho legal — y así nos cuidamos entre todos.</div>
+   <p>El <b>Programa escrito de Respuesta al Humo de Incendios Forestales</b> completo está disponible con su supervisor y con el Líder de Cumplimiento Ambiental y Seguridad.</p>
+   <p>Eso es todo el material. Sigue el examen final — 10 preguntas, 80% para aprobar. ¡Usted puede!</p>`},
+ ],
+ quiz:[
+  { q:'El componente más peligroso del humo de incendios forestales es:', opts:['Dióxido de carbono','Las partículas finas PM2.5','Vapor de agua','Polen'], a:1 },
+  { q:'¿A qué nivel de PM2.5 empieza a aplicar la regla de humo (capacitación, comunicación, respiradores a solicitud)?', opts:['20.5 µg/m³','100 µg/m³','250.5 µg/m³','500.4 µg/m³'], a:0 },
+  { q:'¿Cuál de estos es un síntoma de exposición al humo de incendios?', opts:['Opresión en el pecho y dificultad para respirar','Ojos ardientes y llorosos','Tos persistente y sibilancias','Todos los anteriores'], a:3 },
+  { q:'¿Cuál es el método oficial de WKO Inc. para determinar el PM2.5 actual?', opts:['La lectura de EPA AirNow para el área de Carson/Stevenson','Adivinar por lo brumoso que se ve','El canal del clima','Lo que diga la radio'], a:0 },
+  { q:'¿Cómo sabrá usted el nivel actual de humo durante un evento de humo?', opts:['Anuncios en la reunión de inicio de turno y avisos en comedores/relojes de entrada','Tiene que averiguarlo usted solo','Es un secreto','Se publica una vez al mes'], a:0 },
+  { q:'En el Nivel 2 (35.5 µg/m³), WKO debe:', opts:['Mandar a todos a casa de inmediato','Proporcionar respiradores N95/KN95 a TODOS los empleados para uso voluntario','No hacer nada hasta 500 µg/m³','Proteger solo al personal de oficina'], a:1 },
+  { q:'Los controles de exposición factibles (reubicar trabajo, cambios de horario, más descansos) se exigen formalmente a partir de:', opts:['Nivel 3 — 55.5 µg/m³','Nivel 1 — 20.5 µg/m³','Solo a 500.4 µg/m³','Nunca'], a:0 },
+  { q:'El uso voluntario de un N95/KN95 durante eventos de humo requiere:', opts:['Prueba de ajuste y evaluación médica','Una nota del médico','Ninguna prueba de ajuste ni evaluación médica — pero haga una verificación de sello cada vez','Un depósito de $20'], a:2 },
+  { q:'A 500.4 µg/m³ o más, el uso del respirador se vuelve:', opts:['Opcional','Prohibido','Obligatorio, bajo el Programa completo de Protección Respiratoria','Solo para supervisores'], a:2 },
+  { q:'Si usted reporta síntomas de exposición al humo o busca atención médica, WKO puede:', opts:['Disciplinarlo','Descontarle el pago','Nunca tomar represalias — reportar es su derecho protegido','Mandarlo a casa sin pago como castigo'], a:2 },
+ ],
+}
+};
+
+// ================= STATE =================
+let S = null;           // active language pack
+let langCode = 'en';
+let empName = '';
+let slideIdx = 0, quizIdx = 0, quizScore = 0;
+
+const main = document.getElementById('main');
+const progEl = document.getElementById('prog');
+function totalSteps(){ return S ? S.slides.length + S.quiz.length + 2 : 10; }
+function setProg(step){ progEl.style.width = Math.min(100, Math.round(step/totalSteps()*100)) + '%'; }
+function esc(s){ const d=document.createElement('div'); d.textContent=s; return d.innerHTML; }
+
+// ================= SCREENS =================
+function showLang(){
+  setProg(0);
+  main.innerHTML = `
+    <div class="eyebrow">WKO Inc.</div>
+    <h1>Wildfire Smoke Safety Training<br><span style="color:var(--blue)">Capacitación sobre Humo de Incendios Forestales</span></h1>
+    <p>Choose your language / Elija su idioma:</p>
+    <div class="langbtns">
+      <button class="btn" id="enBtn">English</button>
+      <button class="btn" id="esBtn">Español</button>
+    </div>`;
+  document.getElementById('enBtn').addEventListener('click', ()=>{ langCode='en'; S=L.en; applyChrome(); showStart(); });
+  document.getElementById('esBtn').addEventListener('click', ()=>{ langCode='es'; S=L.es; applyChrome(); showStart(); });
+}
+
+function applyChrome(){ document.getElementById('hdrSub').textContent = S.hdrSub; }
+
+function showStart(){
+  setProg(0);
+  main.innerHTML = `
+    <div class="eyebrow">${S.startEyebrow}</div>
+    <h1>${S.startTitle}</h1>
+    <p>${S.startP}</p>
+    <div class="card">${S.startCard}</div>
+    <label for="nm">${S.nameLabel}</label>
+    <input type="text" id="nm" autocomplete="name" placeholder="${S.namePH}">
+    <button class="btn" id="startBtn" disabled>${S.startBtn}</button>`;
+  const nm = document.getElementById('nm'), btn = document.getElementById('startBtn');
+  nm.addEventListener('input', ()=>{ btn.disabled = nm.value.trim().split(/\s+/).length < 2; });
+  btn.addEventListener('click', ()=>{ empName = nm.value.trim(); slideIdx = 0; showSlide(); });
+}
+
+function showSlide(){
+  if (slideIdx >= S.slides.length){ quizIdx=0; quizScore=0; showQuizIntro(); return; }
+  setProg(1 + slideIdx);
+  const s = S.slides[slideIdx];
+  if (s.t === 'content'){
+    main.innerHTML = `<div class="eyebrow">${esc(s.eyebrow)}</div><h1>${esc(s.title)}</h1>${s.html}
+      <button class="btn" id="nextBtn">${S.cont}</button>`;
+    document.getElementById('nextBtn').addEventListener('click', ()=>{ slideIdx++; showSlide(); window.scrollTo(0,0); });
+  } else {
+    main.innerHTML = `<div class="eyebrow">${S.kc}</div><h1>${S.kcTitle}</h1><p><b>${esc(s.q)}</b></p>
+      <div id="opts"></div><div class="feedback" id="fb"></div>
+      <button class="btn" id="nextBtn" style="display:none">${S.cont}</button>`;
+    const optsEl = document.getElementById('opts');
+    s.opts.forEach((o,i)=>{
+      const b = document.createElement('button');
+      b.className='opt'; b.textContent=o;
+      b.addEventListener('click', ()=>{
+        const fb = document.getElementById('fb');
+        [...optsEl.children].forEach(c=>c.disabled=true);
+        if (i === s.a){
+          b.classList.add('right'); fb.className='feedback good'; fb.textContent=s.why;
+          document.getElementById('nextBtn').style.display='block';
+        } else {
+          b.classList.add('wrong'); fb.className='feedback bad'; fb.textContent=S.wrongTry;
+          setTimeout(()=>{ [...optsEl.children].forEach(c=>{c.disabled=false; c.classList.remove('wrong');}); fb.className='feedback'; },1600);
+        }
+      });
+      optsEl.appendChild(b);
+    });
+    document.getElementById('nextBtn').addEventListener('click', ()=>{ slideIdx++; showSlide(); window.scrollTo(0,0); });
+  }
+}
+
+function showQuizIntro(){
+  setProg(1 + S.slides.length);
+  main.innerHTML = `<div class="eyebrow">${S.quizEyebrow}</div>
+    <h1>${S.quizReady}${esc(empName.split(' ')[0])}?</h1>
+    <p>${S.quizP}</p>
+    <button class="btn" id="goBtn">${S.begin}</button>
+    <button class="btn secondary" id="revBtn">${S.review}</button>`;
+  document.getElementById('goBtn').addEventListener('click', ()=>{ showQuizQ(); window.scrollTo(0,0); });
+  document.getElementById('revBtn').addEventListener('click', ()=>{ slideIdx=0; showSlide(); window.scrollTo(0,0); });
+}
+
+function showQuizQ(){
+  if (quizIdx >= S.quiz.length){ showResult(); return; }
+  setProg(1 + S.slides.length + quizIdx);
+  const qq = S.quiz[quizIdx];
+  main.innerHTML = `<div class="qnum">${S.qOf} ${quizIdx+1} ${S.of} ${S.quiz.length}</div>
+    <h1 style="font-size:20px">${esc(qq.q)}</h1><div id="opts"></div>
+    <button class="btn" id="subBtn" disabled>${S.submit}</button>`;
+  const optsEl = document.getElementById('opts');
+  let sel = -1;
+  qq.opts.forEach((o,i)=>{
+    const b = document.createElement('button');
+    b.className='opt'; b.textContent=o;
+    b.addEventListener('click', ()=>{
+      sel = i;
+      [...optsEl.children].forEach(c=>c.classList.remove('sel'));
+      b.classList.add('sel');
+      document.getElementById('subBtn').disabled=false;
+    });
+    optsEl.appendChild(b);
+  });
+  document.getElementById('subBtn').addEventListener('click', ()=>{
+    if (sel === qq.a) quizScore++;
+    quizIdx++; showQuizQ(); window.scrollTo(0,0);
+  });
+}
+
+function completionCode(){
+  const d = new Date();
+  const ds = d.getFullYear() + String(d.getMonth()+1).padStart(2,'0') + String(d.getDate()).padStart(2,'0');
+  let h = 0; const src = empName.toUpperCase() + ds + quizScore + langCode;
+  for (let i=0;i<src.length;i++){ h = ((h<<5)-h + src.charCodeAt(i))|0; }
+  return 'WFS26-' + Math.abs(h).toString(36).toUpperCase().slice(0,5).padStart(5,'0');
+}
+
+function showResult(){
+  setProg(totalSteps());
+  const pct = Math.round(quizScore/S.quiz.length*100);
+  const passed = pct >= 80;
+  const d = new Date();
+  const dateStr = d.toLocaleDateString(langCode==='es'?'es-MX':'en-US', {year:'numeric', month:'long', day:'numeric'});
+  if (passed){
+    main.innerHTML = `<div class="eyebrow">${S.doneEyebrow}</div><h1>${S.congrats}</h1>
+      <p style="text-align:center"><span class="score-pill">${S.score}: ${pct}%</span></p>
+      <div class="cert">
+        <div class="eyebrow">${S.certTitle}</div>
+        <div class="big">${esc(empName)}</div>
+        <p>${S.certHas} <b>${S.certCourse}</b><br>${S.certReg}</p>
+        <p><b>${dateStr}</b> · ${S.score}: <b>${quizScore}/${S.quiz.length} (${pct}%)</b> · ${langCode.toUpperCase()}</p>
+        <div class="code">${completionCode()}</div>
+        <p style="font-size:13px;color:var(--gray)">WKO Inc. · Carson, WA</p>
+      </div>
+      <div class="card">${S.certFinal}</div>
+      <a class="btn" href="${FORM_URL}" target="_blank" rel="noopener">${S.recordBtn}</a>`;
+  } else {
+    main.innerHTML = `<div class="eyebrow">${S.quizEyebrow}</div><h1>${S.failTitle}</h1>
+      <p style="text-align:center"><span class="score-pill fail">${S.score}: ${pct}%</span></p>
+      <p>${S.failP}</p>
+      <button class="btn" id="revBtn">${S.reviewBtn}</button>
+      <button class="btn secondary" id="retryBtn">${S.retryBtn}</button>`;
+    document.getElementById('revBtn').addEventListener('click', ()=>{ slideIdx=0; showSlide(); window.scrollTo(0,0); });
+    document.getElementById('retryBtn').addEventListener('click', ()=>{ quizIdx=0; quizScore=0; showQuizQ(); window.scrollTo(0,0); });
+  }
+}
+
+showLang();
+</script>
+</body>
+</html>

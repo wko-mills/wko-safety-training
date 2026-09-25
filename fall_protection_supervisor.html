@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WKO Inc. — Fall Protection SUPERVISOR Training</title>
+<style>
+  :root { --blue:#2E75B6; --dark:#1F4E79; --gray:#666; --light:#F2F2F2;
+          --green:#2E8B57; --amber:#E8A317; --orange:#D2691E; --red:#B22222; --maroon:#701C1C; }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:Arial,Helvetica,sans-serif; background:var(--light); color:#222; line-height:1.5; -webkit-text-size-adjust:100%; }
+  .wrap { max-width:640px; margin:0 auto; min-height:100vh; display:flex; flex-direction:column; background:#fff; box-shadow:0 0 24px rgba(0,0,0,.08); }
+  header { background:var(--dark); color:#fff; padding:14px 20px; }
+  header .co { font-weight:bold; font-size:15px; letter-spacing:.5px; }
+  header .prog { font-size:12px; color:#cfe0f0; }
+  .badge { display:inline-block; background:var(--amber); color:#2b1c00; font-weight:bold; font-size:11px; letter-spacing:1px; padding:2px 8px; border-radius:999px; margin-top:5px; }
+  .bar { height:6px; background:#dce7f2; } .bar span { display:block; height:100%; background:var(--blue); width:0%; transition:width .3s; }
+  main { flex:1; padding:24px 20px 32px; }
+  h1 { color:var(--dark); font-size:24px; margin-bottom:12px; }
+  p { margin-bottom:12px; font-size:16px; }
+  ul, ol { margin:0 0 12px 22px; } li { margin-bottom:7px; font-size:16px; }
+  .eyebrow { text-transform:uppercase; letter-spacing:1.5px; font-size:11px; color:var(--gray); font-weight:bold; margin-bottom:6px; }
+  .card { background:var(--light); border-left:4px solid var(--blue); padding:12px 14px; margin:14px 0; border-radius:0 6px 6px 0; font-size:15px; }
+  .card.warn { border-left-color:var(--red); }
+  .card.do { border-left-color:var(--green); }
+  .notice { background:#fff8e1; border-left:4px solid var(--amber); padding:12px 14px; margin:14px 0; border-radius:0 6px 6px 0; font-size:15px; }
+  .btn { display:block; width:100%; background:var(--blue); color:#fff; border:none; border-radius:8px; padding:15px; font-size:17px; font-weight:bold; font-family:inherit; cursor:pointer; margin-top:18px; }
+  .btn:active { background:var(--dark); } .btn:disabled { background:#b9c8d6; cursor:default; }
+  .btn.secondary { background:#fff; color:var(--blue); border:2px solid var(--blue); }
+  a.btn { text-decoration:none; text-align:center; box-sizing:border-box; }
+  input[type=text] { width:100%; padding:13px; font-size:17px; font-family:inherit; border:2px solid #c6d4e2; border-radius:8px; margin-top:6px; }
+  input[type=text]:focus { outline:none; border-color:var(--blue); }
+  label { font-weight:bold; font-size:14px; color:var(--dark); }
+  .opt { display:block; width:100%; text-align:left; background:#fff; border:2px solid #c6d4e2; border-radius:8px; padding:13px 14px; font-size:16px; font-family:inherit; margin-top:10px; cursor:pointer; }
+  .opt.sel { border-color:var(--blue); background:#eaf2fa; }
+  .opt.right { border-color:var(--green); background:#e8f5ee; }
+  .opt.wrong { border-color:var(--red); background:#fbeaea; }
+  .feedback { margin-top:12px; padding:12px 14px; border-radius:8px; font-size:15px; display:none; }
+  .feedback.good { background:#e8f5ee; border-left:4px solid var(--green); display:block; }
+  .feedback.bad { background:#fbeaea; border-left:4px solid var(--red); display:block; }
+  .qnum { font-size:12px; color:var(--gray); font-weight:bold; text-transform:uppercase; letter-spacing:1px; margin-bottom:4px; }
+  .cert { border:3px solid var(--dark); border-radius:10px; padding:22px; text-align:center; margin-top:16px; }
+  .cert .big { font-size:22px; font-weight:bold; color:var(--dark); margin:8px 0; }
+  .cert .code { font-size:26px; letter-spacing:3px; font-weight:bold; color:var(--blue); background:var(--light); border-radius:8px; padding:10px; margin:12px 0; }
+  .score-pill { display:inline-block; background:var(--green); color:#fff; border-radius:999px; padding:6px 18px; font-weight:bold; font-size:18px; }
+  .score-pill.fail { background:var(--red); }
+  table.mini { border-collapse:collapse; width:100%; margin:12px 0; font-size:14px; }
+  table.mini th { background:var(--blue); color:#fff; padding:8px; text-align:left; }
+  table.mini td { border:1px solid #d9e2ec; padding:8px; vertical-align:top; }
+  table.mini tr:nth-child(even) td { background:var(--light); }
+  footer { padding:12px 20px; font-size:11px; color:var(--gray); text-align:center; border-top:1px solid #e4e9ef; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="co">WKO INC.</div>
+    <div class="prog">Fall Protection Program · WAC 296-880 · 29 CFR 1910 Subpart D</div>
+    <div class="badge">SUPERVISOR MODULE</div>
+  </header>
+  <div class="bar"><span id="prog"></span></div>
+  <main id="main"></main>
+  <footer>WKO Inc. · Carson, WA · WAC 296-880 · Supervisor Module v1.0 (2026)</footer>
+</div>
+
+<script>
+const FORM_URL = "https://forms.cloud.microsoft/r/YHYEJNbAMt";
+
+let empName = "", slideIdx = 0, quizIdx = 0, quizScore = 0;
+
+const slides = [
+{ t:'content', eyebrow:'Section 1 of 6', title:'What This Module Covers', html:
+  `<p>This module carries the <b>supervisor-specific knowledge</b> for fall protection at WKO Inc. It does not replace the employee fall protection module (which you must also complete) or the annual hands-on training provided by the company's contracted fall-protection and rescue trainer.</p>
+  <div class="notice"><b>WAC 296-880-10015 requires fall protection training by a competent person.</b> This module covers knowledge. The competent person demonstration — showing that an employee can actually use fall protection properly — is satisfied through your annual the company's contracted fall-protection and rescue trainer training and on-the-job verification.</div>
+  <p><b>What you owe as a supervisor:</b></p>
+  <table class="mini">
+  <tr><th>Duty</th><th>Source</th></tr>
+  <tr><td>Conduct pre-work fall hazard assessments</td><td>Program §3, WAC 296-880</td></tr>
+  <tr><td>Ensure a rescue plan is in place before any fall arrest work</td><td>Program §16.4</td></tr>
+  <tr><td>Verify equipment is inspected before each use</td><td>Program §13</td></tr>
+  <tr><td>Stop work for unsafe conditions or non-compliance</td><td>Program §2.3</td></tr>
+  <tr><td>Retrain when workplace changes, equipment changes, or employee knowledge is inadequate</td><td>WAC 296-880-10015(4)</td></tr>
+  <tr><td>Report fall incidents, near-misses, and equipment issues immediately</td><td>Program §17</td></tr>
+  </table>` },
+
+{ t:'content', eyebrow:'Section 2 of 6', title:'Competent Person Responsibilities', html:
+  `<p>A <b>competent person</b> under WAC 296-880-095 can identify existing and predictable fall hazards and has the authority to take prompt corrective action. At WKO Inc., competent persons for fall protection include the Safety Lead and designated supervisors who have completed competent person training.</p>
+  <p><b>As a competent person, you are responsible for:</b></p>
+  <ul>
+  <li>Inspecting fall protection systems and equipment</li>
+  <li>Identifying fall hazards and determining appropriate protection methods</li>
+  <li>Authorizing the use of warning line systems and safety monitoring systems</li>
+  <li>Supervising the installation and use of horizontal lifeline systems</li>
+  <li>Conducting post-fall equipment inspections and incident assessments</li>
+  </ul>
+  <div class="card warn"><b>You have stop-work authority.</b> If you see an employee exposed to a fall hazard without protection, or using equipment incorrectly, stop the work. Correct the situation before work resumes. This authority is not optional — it is a regulatory duty.</div>` },
+
+{ t:'content', eyebrow:'Section 3 of 6', title:'Pre-Work Rescue Plan — Your #1 Duty', html:
+  `<p>This is the single most important supervisor duty in fall protection:</p>
+  <div class="card warn"><b>Before any employee works in a personal fall arrest system, you must identify and document the rescue plan for that specific work area.</b> No rescue plan = no work at height. Period.</div>
+  <p><b>The rescue plan must answer these five questions:</b></p>
+  <ol>
+  <li><b>How</b> would the worker be rescued if a fall occurred? (specific method and equipment)</li>
+  <li><b>Where</b> is the rescue equipment? (boom lift, ladder, retrieval device — location and availability)</li>
+  <li><b>Who</b> is rescue-capable and on-site during the work?</li>
+  <li><b>How</b> will rescue be summoned? (radio, phone, voice)</li>
+  <li><b>How long</b> will rescue take? (must be within <b>15 minutes</b> — the suspension trauma window)</li>
+  </ol>
+  <p><b>WKO Inc.'s three-tier rescue system:</b></p>
+  <table class="mini">
+  <tr><th>Tier</th><th>Method</th><th>Who</th></tr>
+  <tr><td>1 — Self-rescue</td><td>Suspension relief straps, reach a surface</td><td>The suspended worker</td></tr>
+  <tr><td>2 — Assisted rescue</td><td>Boom lift rescue (primary), ladder, retrieval devices</td><td>Trained co-workers (the company's contracted fall-protection and rescue trainer trained)</td></tr>
+  <tr><td>3 — EMS</td><td>911 / the local fire department (911)</td><td>Emergency services (backup, not primary)</td></tr>
+  </table>
+  <div class="notice"><b>EMS is Tier 3, not Tier 1.</b> Response times may exceed the 15-minute suspension trauma window. That is why WKO Inc. trains its own people for Tier 2 assisted rescue — you cannot rely solely on calling 911.</div>
+  <p>Use the <b>Fall Hazard Assessment Form (Appendix B)</b> in the program to document the rescue plan for each work area where fall arrest systems are used.</p>` },
+
+{ t:'content', eyebrow:'Section 4 of 6', title:'Total Fall Distance &amp; Aerial Lifts', html:
+  `<h1 style="font-size:20px">Total Fall Distance</h1>
+  <p>Before any employee works in a fall arrest system, the total fall distance must be calculated to ensure the worker will not contact any lower level or obstruction. As the supervisor, you are responsible for verifying this.</p>
+  <p><b>The calculation includes:</b></p>
+  <ul>
+  <li><b>Lanyard length</b> — typically 6 feet</li>
+  <li><b>Shock absorber deployment</b> — typically 3.5 feet</li>
+  <li><b>Harness stretch / shift</b> — approximately 1 foot</li>
+  <li><b>Safety clearance</b> — minimum 3 feet below the worker's feet after full arrest</li>
+  <li><b>Anchorage position</b> — always anchor overhead when possible; a lower anchorage increases free fall distance</li>
+  </ul>
+  <div class="card"><b>Example:</b> 6 ft lanyard + 3.5 ft absorber + 1 ft harness stretch + 3 ft clearance = <b>13.5 feet minimum</b> below the anchorage point. If the work area does not provide this clearance, use a shorter lanyard or an SRD.</div>
+  <h1 style="font-size:20px;margin-top:20px">Aerial Lift Requirements</h1>
+  <p>WKO Inc. uses boom lifts and scissor lifts for maintenance. The rules differ:</p>
+  <table class="mini">
+  <tr><th>Lift Type</th><th>Fall Protection Required?</th></tr>
+  <tr><td><b>Boom lifts</b> (articulating / telescopic)</td><td><b>Yes — always.</b> Personal fall arrest or restraint system, attached to the manufacturer-designated anchorage on the lift</td></tr>
+  <tr><td><b>Scissor lifts</b> with guardrails on all sides</td><td><b>No</b> — unless the worker leans beyond or stands on the guardrails. If guardrails are removed, fall arrest is required</td></tr>
+  </table>
+  <p><b>Additional requirements:</b></p>
+  <ul>
+  <li>Only trained and authorized employees may operate aerial lifts</li>
+  <li>Do not belt off to adjacent structures unless the lift is designed for it</li>
+  <li>An employee must be stationed at ground level when a boom lift is in use, able to lower the platform in an emergency</li>
+  <li>Set brakes and position outriggers before use</li>
+  </ul>` },
+
+{ t:'content', eyebrow:'Section 5 of 6', title:'Post-Fall Response &amp; Investigation', html:
+  `<p>When a fall event occurs, your immediate role as supervisor includes:</p>
+  <ol>
+  <li><b>Direct the rescue</b> — execute the pre-established rescue plan. If no plan exists (it should), default to Tier 2 boom lift rescue and call 911 simultaneously</li>
+  <li><b>Call 911</b> for any injury, loss of consciousness, or suspension over 5 minutes</li>
+  <li><b>Enforce the suspension trauma position</b> — keep the rescued person <b>seated or semi-upright for 30 minutes.</b> NEVER flat. Brief your crew on this now, before a fall happens</li>
+  <li><b>Secure the area</b> — barricade the fall zone. Do not disturb the fall protection equipment or the fall area until the investigation is complete</li>
+  <li><b>Retire all involved equipment</b> — tag everything "OUT OF SERVICE — INVOLVED IN FALL EVENT." No exceptions, no inspecting and returning to service. It is permanently retired</li>
+  </ol>
+  <div class="card warn"><b>Investigation:</b> The Safety Lead investigates every fall event and significant near-miss. Your role is to preserve the scene, secure the equipment, and provide a detailed account of the work plan, the rescue plan, and what happened. Root cause analysis and corrective actions follow.</div>
+  <h1 style="font-size:20px;margin-top:20px">Retraining Triggers</h1>
+  <p>WAC 296-880-10015(4) requires retraining when you have reason to believe an employee's understanding or skills are inadequate. Watch for:</p>
+  <ul>
+  <li>Changes in the workplace that affect fall hazards</li>
+  <li>Changes in fall protection equipment types</li>
+  <li>An employee not inspecting equipment before use</li>
+  <li>An employee using equipment incorrectly</li>
+  <li>An employee ignoring fall hazards or bypassing protection</li>
+  <li>After any fall incident or near-miss involving the employee</li>
+  </ul>` },
+
+{ t:'content', eyebrow:'Section 6 of 6', title:'Equipment Management', html:
+  `<p>As a supervisor, you share responsibility with the Safety Lead for the condition and readiness of fall protection equipment.</p>
+  <h1 style="font-size:20px">Pre-Use Inspection Oversight</h1>
+  <p>Every employee must inspect their own equipment before each use. Your job is to <b>verify this is happening</b> — not to do the inspections for them. If you see an employee skip a pre-use inspection, stop the work and retrain.</p>
+  <h1 style="font-size:20px;margin-top:16px">Equipment Retirement</h1>
+  <p>Fall protection equipment is permanently removed from service when:</p>
+  <ul>
+  <li>It has been subjected to fall arrest forces (deployed)</li>
+  <li>Inspection reveals damage, defects, or excessive wear</li>
+  <li>It has exceeded the manufacturer's recommended service life</li>
+  <li>It has been recalled by the manufacturer</li>
+  <li>A competent person determines it is no longer safe</li>
+  </ul>
+  <div class="card do"><b>Hole and opening covers</b> are part of your area's fall protection. Covers must be secured against displacement, marked "HOLE" or "COVER," and capable of supporting twice the maximum load. If a cover must be removed for work, you must provide an alternate form of fall protection or station an employee at the opening until the cover is replaced.</div>
+  <h1 style="font-size:20px;margin-top:16px">Fixed Ladder Phase-In</h1>
+  <p>Under the OSHA 2017 Walking-Working Surfaces rule, all existing fixed ladder cages and wells must be replaced with ladder safety systems or personal fall arrest systems by <b>November 18, 2036</b>. New ladders and replacement sections installed after November 2018 must already have these systems. The Safety Lead maintains the fixed ladder inventory — if you identify a ladder that needs attention, report it.</p>` }
+];
+
+const quiz = [
+{ q:'Before any employee works in a personal fall arrest system, what must you as the supervisor have in place?',
+  opts:['A signed work order from maintenance','A documented rescue plan specific to the work area','Verbal approval from the Safety Lead','A minimum of two other employees in the area'], a:1 },
+{ q:'In a boom lift, what fall protection is required?',
+  opts:['None — the guardrails are sufficient','A hard hat and safety glasses only','A personal fall arrest or restraint system attached to the manufacturer-designated anchorage','Fall protection is optional if the lift is under 10 feet'], a:2 },
+{ q:'The rescue plan must ensure rescue can be completed within what timeframe?',
+  opts:['60 minutes','30 minutes','15 minutes — the suspension trauma window','There is no specific timeframe'], a:2 },
+{ q:'After a fall event, what happens to the fall protection equipment involved?',
+  opts:['It is inspected by a competent person and returned to service if undamaged','It is permanently retired — tag it OUT OF SERVICE and do not reuse','It is sent to the manufacturer for recertification','It is set aside for 30 days then reinspected'], a:1 },
+{ q:'Which of the following is NOT a valid trigger for retraining an employee on fall protection?',
+  opts:['Changes in workplace conditions that affect fall hazards','An employee not inspecting equipment before use','The employee has been with the company for more than one year','After a fall incident or near-miss involving the employee'], a:2 }
+];
+
+const main = document.getElementById('main');
+const progEl = document.getElementById('prog');
+const totalSteps = slides.length + quiz.length + 2;
+function setProg(n){ progEl.style.width = Math.min(100, Math.round(n/totalSteps*100)) + '%'; }
+function esc(s){ const d=document.createElement('div'); d.textContent=s; return d.innerHTML; }
+
+function showStart(){
+  setProg(0);
+  main.innerHTML = `
+    <h1>Fall Protection — Supervisor Training</h1>
+    <p>This module covers what supervisors must know and do under WKO Inc.'s Fall Protection Program and WAC 296-880. It builds on the employee module — complete that first.</p>
+    <div class="card">Pass the 5-question quiz with <b>80% or better</b> to finish. You'll get a completion code and a button to record it.</div>
+    <label for="nm">Your full name</label>
+    <input type="text" id="nm" placeholder="First and Last Name">
+    <div id="nmErr" style="color:var(--red);font-size:14px;margin-top:6px;display:none">Enter your first and last name.</div>
+    <button class="btn" id="goBtn">Begin</button>`;
+  document.getElementById('goBtn').addEventListener('click', ()=>{
+    const v = document.getElementById('nm').value.trim();
+    if (!v || v.split(/\s+/).length < 2){ document.getElementById('nmErr').style.display='block'; return; }
+    empName = v; slideIdx = 0; showSlide(); window.scrollTo(0,0);
+  });
+  const inp = document.getElementById('nm');
+  inp.addEventListener('keydown', e=>{ if(e.key==='Enter') document.getElementById('goBtn').click(); });
+}
+
+function showSlide(){
+  if (slideIdx >= slides.length){ quizIdx=0; quizScore=0; showQuizIntro(); return; }
+  setProg(1+slideIdx);
+  const s = slides[slideIdx];
+  main.innerHTML = `<div class="eyebrow">${s.eyebrow}</div><h1>${s.title}</h1>${s.html}
+    <div style="display:flex;gap:10px;margin-top:18px">
+      ${slideIdx>0?'<button class="btn secondary" id="prevBtn">Back</button>':''}
+      <button class="btn" id="nextBtn">${slideIdx<slides.length-1?'Next':'Start Quiz'}</button>
+    </div>`;
+  document.getElementById('nextBtn').addEventListener('click', ()=>{ slideIdx++; showSlide(); window.scrollTo(0,0); });
+  if (slideIdx>0) document.getElementById('prevBtn').addEventListener('click', ()=>{ slideIdx--; showSlide(); window.scrollTo(0,0); });
+}
+
+function showQuizIntro(){
+  setProg(1+slides.length);
+  main.innerHTML = `<h1>Knowledge Quiz</h1>
+    <p>5 questions — you need 4 correct (80%) to pass.</p>
+    <button class="btn" id="startQ">Start Quiz</button>`;
+  document.getElementById('startQ').addEventListener('click', ()=>{ quizIdx=0; quizScore=0; showQuizQ(); window.scrollTo(0,0); });
+}
+
+function showQuizQ(){
+  if (quizIdx >= quiz.length){ showResult(); return; }
+  setProg(1+slides.length+quizIdx);
+  const qq = quiz[quizIdx];
+  main.innerHTML = `<div class="qnum">Question ${quizIdx+1} of ${quiz.length}</div>
+    <p style="font-size:18px;font-weight:bold;margin-bottom:14px">${qq.q}</p>
+    ${qq.opts.map((o,i)=>`<button class="opt" data-i="${i}">${o}</button>`).join('')}
+    <div id="fb"></div>
+    <button class="btn" id="subBtn" disabled>Submit Answer</button>`;
+  let sel = -1;
+  document.querySelectorAll('.opt').forEach(b=>{
+    b.addEventListener('click', ()=>{
+      if (sel === -2) return;
+      sel = +b.dataset.i;
+      document.querySelectorAll('.opt').forEach(x=>x.classList.toggle('sel', +x.dataset.i===sel));
+      document.getElementById('subBtn').disabled = false;
+    });
+  });
+  document.getElementById('subBtn').addEventListener('click', ()=>{
+    if (sel < 0 || sel === -2) return;
+    document.querySelectorAll('.opt').forEach(b=>{ const i=+b.dataset.i; if(i===qq.a) b.classList.add('right'); else if(i===sel) b.classList.add('wrong'); b.style.pointerEvents='none'; });
+    const ok = sel===qq.a;
+    if (ok) quizScore++;
+    document.getElementById('fb').innerHTML = `<div class="feedback ${ok?'good':'bad'}">${ok?'Correct.':'Incorrect — the correct answer is highlighted.'}</div>`;
+    sel = -2;
+    const btn = document.getElementById('subBtn');
+    btn.textContent = quizIdx < quiz.length-1 ? 'Next Question' : 'See Results';
+    btn.disabled = false;
+    btn.onclick = ()=>{ quizIdx++; showQuizQ(); window.scrollTo(0,0); };
+  });
+}
+
+let completionCode = null;
+function genCode(){
+  const ds = new Date().toISOString().slice(0,10);
+  let h=0; const src=empName.toUpperCase()+ds+quizScore+'SUP';
+  for(let i=0;i<src.length;i++){ h=((h<<5)-h)+src.charCodeAt(i); h|=0; }
+  return 'FP26S-' + Math.abs(h).toString(36).toUpperCase().slice(0,5).padStart(5,'0');
+}
+
+function showResult(){
+  setProg(totalSteps);
+  const pct = Math.round(quizScore/quiz.length*100);
+  const passed = quizScore >= Math.ceil(quiz.length*80/100);
+  const dateStr = new Date().toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'});
+  if (passed){
+    if (!completionCode) completionCode = genCode();
+    main.innerHTML = `
+      <div class="score-pill">${quizScore}/${quiz.length} — ${pct}%</div>
+      <div class="cert">
+        <div style="font-size:14px;color:var(--gray)">CERTIFICATE OF COMPLETION</div>
+        <div class="big">${esc(empName)}</div>
+        <div>Fall Protection — Supervisor Training v1.0</div>
+        <p><b>${dateStr}</b> · Score: <b>${quizScore}/${quiz.length} (${pct}%)</b></p>
+        <div style="font-size:14px;margin-top:8px">Your completion code:</div>
+        <div class="code">${completionCode}</div>
+      </div>
+      <p style="margin-top:16px"><b>Last step — record your completion:</b> tap the button below, select <b>"Fall Protection / Protección contra Caídas"</b>, enter your completion code, and submit. Your training is not on record until you submit the form.</p>
+      <a href="${FORM_URL}" target="_blank" class="btn" style="background:var(--green)">Record Your Completion</a>`;
+  } else {
+    main.innerHTML = `
+      <div class="score-pill fail">${quizScore}/${quiz.length} — ${pct}%</div>
+      <p style="margin-top:14px">You need 80% to pass. Review the material and take the quiz again — your crew depends on you knowing this.</p>
+      <button class="btn secondary" id="retryBtn">Review &amp; Try Again</button>`;
+    document.getElementById('retryBtn').addEventListener('click', ()=>{ quizIdx=0; quizScore=0; slideIdx=0; showSlide(); window.scrollTo(0,0); });
+  }
+}
+
+// expose for testing
+window.APP = { slides, quiz, FORM_URL, completionCode, showStart,
+  get empName(){ return empName; }, set empName(v){ empName=v; },
+  get slideIdx(){ return slideIdx; }, set slideIdx(v){ slideIdx=v; },
+  get quizIdx(){ return quizIdx; }, set quizIdx(v){ quizIdx=v; },
+  get quizScore(){ return quizScore; }, set quizScore(v){ quizScore=v; },
+  get currentCode(){ return completionCode; }
+};
+showStart();
+</script>
+</body>
+</html>

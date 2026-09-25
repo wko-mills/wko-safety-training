@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WKO Inc. — Lockout/Tagout SUPERVISOR Training</title>
+<style>
+  :root { --blue:#2E75B6; --dark:#1F4E79; --gray:#666; --light:#F2F2F2;
+          --green:#2E8B57; --amber:#E8A317; --orange:#D2691E; --red:#B22222; --maroon:#701C1C; }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:Arial,Helvetica,sans-serif; background:var(--light); color:#222; line-height:1.5; -webkit-text-size-adjust:100%; }
+  .wrap { max-width:640px; margin:0 auto; min-height:100vh; display:flex; flex-direction:column; background:#fff; box-shadow:0 0 24px rgba(0,0,0,.08); }
+  header { background:var(--dark); color:#fff; padding:14px 20px; }
+  header .co { font-weight:bold; font-size:15px; letter-spacing:.5px; }
+  header .prog { font-size:12px; color:#cfe0f0; }
+  .badge { display:inline-block; background:var(--amber); color:#2b1c00; font-weight:bold; font-size:11px; letter-spacing:1px; padding:2px 8px; border-radius:999px; margin-top:5px; }
+  .bar { height:6px; background:#dce7f2; } .bar span { display:block; height:100%; background:var(--blue); width:0%; transition:width .3s; }
+  main { flex:1; padding:24px 20px 32px; }
+  h1 { color:var(--dark); font-size:24px; margin-bottom:12px; }
+  p { margin-bottom:12px; font-size:16px; }
+  ul, ol { margin:0 0 12px 22px; } li { margin-bottom:7px; font-size:16px; }
+  .eyebrow { text-transform:uppercase; letter-spacing:1.5px; font-size:11px; color:var(--gray); font-weight:bold; margin-bottom:6px; }
+  .card { background:var(--light); border-left:4px solid var(--blue); padding:12px 14px; margin:14px 0; border-radius:0 6px 6px 0; font-size:15px; }
+  .card.warn { border-left-color:var(--red); }
+  .card.do { border-left-color:var(--green); }
+  .btn { display:block; width:100%; background:var(--blue); color:#fff; border:none; border-radius:8px; padding:15px; font-size:17px; font-weight:bold; font-family:inherit; cursor:pointer; margin-top:18px; }
+  .btn:active { background:var(--dark); } .btn:disabled { background:#b9c8d6; cursor:default; }
+  .btn.secondary { background:#fff; color:var(--blue); border:2px solid var(--blue); }
+  a.btn { text-decoration:none; text-align:center; box-sizing:border-box; }
+  input[type=text] { width:100%; padding:13px; font-size:17px; font-family:inherit; border:2px solid #c6d4e2; border-radius:8px; margin-top:6px; }
+  input[type=text]:focus { outline:none; border-color:var(--blue); }
+  label { font-weight:bold; font-size:14px; color:var(--dark); }
+  .ladder { margin:16px 0; }
+  .rung { display:flex; border-radius:8px; overflow:hidden; margin-bottom:8px; }
+  .rung .lvl { flex:0 0 112px; color:#fff; font-weight:bold; padding:10px 8px; font-size:13px; text-align:center; display:flex; flex-direction:column; justify-content:center; }
+  .rung .lvl small { font-weight:normal; font-size:11px; opacity:.9; }
+  .rung .act { flex:1; background:var(--light); padding:10px 12px; font-size:14px; display:flex; align-items:center; }
+  .opt { display:block; width:100%; text-align:left; background:#fff; border:2px solid #c6d4e2; border-radius:8px; padding:13px 14px; font-size:16px; font-family:inherit; margin-top:10px; cursor:pointer; }
+  .opt.sel { border-color:var(--blue); background:#eaf2fa; }
+  .opt.right { border-color:var(--green); background:#e8f5ee; }
+  .opt.wrong { border-color:var(--red); background:#fbeaea; }
+  .feedback { margin-top:12px; padding:12px 14px; border-radius:8px; font-size:15px; display:none; }
+  .feedback.good { background:#e8f5ee; border-left:4px solid var(--green); display:block; }
+  .feedback.bad { background:#fbeaea; border-left:4px solid var(--red); display:block; }
+  .qnum { font-size:12px; color:var(--gray); font-weight:bold; text-transform:uppercase; letter-spacing:1px; margin-bottom:4px; }
+  .cert { border:3px solid var(--dark); border-radius:10px; padding:22px; text-align:center; margin-top:16px; }
+  .cert .big { font-size:22px; font-weight:bold; color:var(--dark); margin:8px 0; }
+  .cert .code { font-size:26px; letter-spacing:3px; font-weight:bold; color:var(--blue); background:var(--light); border-radius:8px; padding:10px; margin:12px 0; }
+  .score-pill { display:inline-block; background:var(--green); color:#fff; border-radius:999px; padding:6px 18px; font-weight:bold; font-size:18px; }
+  .score-pill.fail { background:var(--red); }
+  .steps { counter-reset:s; list-style:none; margin-left:0; }
+  .steps li { counter-increment:s; position:relative; padding-left:34px; margin-bottom:10px; }
+  .steps li:before { content:counter(s); position:absolute; left:0; top:1px; background:var(--blue); color:#fff; width:24px; height:24px; border-radius:50%; text-align:center; font-weight:bold; font-size:14px; line-height:24px; }
+  table.mini { border-collapse:collapse; width:100%; margin:12px 0; font-size:14px; }
+  table.mini th { background:var(--blue); color:#fff; padding:8px; text-align:left; }
+  table.mini td { border:1px solid #d9e2ec; padding:8px; vertical-align:top; }
+  table.mini tr:nth-child(even) td { background:var(--light); }
+  footer { padding:12px 20px; font-size:11px; color:var(--gray); text-align:center; border-top:1px solid #e4e9ef; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="co">WKO INC.</div>
+    <div class="prog">Lockout/Tagout Training — chapter 296-803 WAC</div>
+    <div class="badge">SUPERVISOR MODULE</div>
+  </header>
+  <div class="bar"><span id="prog"></span></div>
+  <main id="main"></main>
+  <footer>WKO Inc. · Carson, WA · chapter 296-803 WAC · Supervisor Module v1.0 (2026)</footer>
+</div>
+
+<script>
+const FORM_URL = "https://forms.cloud.microsoft/r/YHYEJNbAMt";
+
+let empName = "", slideIdx = 0, quizIdx = 0, quizScore = 0;
+
+const slides = [
+{ t:'content', eyebrow:'Section 1 of 9', title:'What This Module Does Not Do', html:
+  `<p>This module carries the <b>knowledge</b> half of authorized-employee training. It does not, by itself, make anyone authorized to lock out anything.</p>
+  <div class="notice"><b>WAC 296-803-70005 requires an annual periodic review</b> — a person other than the one using the procedure must <b>observe each authorized employee actually performing the lockout</b> on equipment they lock out, and document it. A passing quiz score does not discharge that duty, exactly as a passing respiratory score does not clear anyone to wear a respirator.</div>
+  <p><b>What you owe as a supervisor:</b></p>
+  <table style="width:100%;border-collapse:collapse;margin:8px 0">
+  <tr><th style="text-align:left;padding:6px;border-bottom:2px solid #2E75B6">Duty</th><th style="text-align:left;padding:6px;border-bottom:2px solid #2E75B6">Where it comes from</th></tr>
+  <tr><td style="padding:6px;border-bottom:1px solid #ddd">Annual observed periodic review of each authorized employee</td><td style="padding:6px;border-bottom:1px solid #ddd">296-803-70005, -70010</td></tr>
+  <tr><td style="padding:6px;border-bottom:1px solid #ddd">Review with each authorized <i>and affected</i> employee where <b>tagout</b> is used — individually, not in a group</td><td style="padding:6px;border-bottom:1px solid #ddd">296-803-70015</td></tr>
+  <tr><td style="padding:6px;border-bottom:1px solid #ddd">Retrain on job change, equipment change, procedure change, or observed deviation</td><td style="padding:6px;border-bottom:1px solid #ddd">296-803-60015</td></tr>
+  <tr><td style="padding:6px;border-bottom:1px solid #ddd">Authorize emergency lock removal, following the documented procedure</td><td style="padding:6px;border-bottom:1px solid #ddd">296-803-50035, Program §9</td></tr>
+  <tr><td style="padding:6px;border-bottom:1px solid #ddd">Coordinate with outside employers before they service our equipment</td><td style="padding:6px;border-bottom:1px solid #ddd">296-803-50060, Program §13</td></tr></table>
+  <p>Lockout reviews using <b>locks only</b> may be done as a group meeting. Anything involving <b>tags</b> must be done with each employee individually.</p>` },
+
+{ t:'content', eyebrow:'Section 2 of 9', title:'The Six Steps, In Order', html:
+  `<p>Order is not stylistic — each step depends on the one before it.</p>
+  <table style="width:100%;border-collapse:collapse;margin:8px 0">
+  <tr><th style="text-align:left;padding:6px;border-bottom:2px solid #2E75B6">Step</th><th style="text-align:left;padding:6px;border-bottom:2px solid #2E75B6">What it means here</th></tr>
+  <tr><td style="padding:6px;border-bottom:1px solid #ddd"><b>1. Prepare</b></td><td style="padding:6px;border-bottom:1px solid #ddd">Know every energy type and magnitude, every isolating device and its location, and the hazards. Pull the written procedure — do not work from memory.</td></tr>
+  <tr><td style="padding:6px;border-bottom:1px solid #ddd"><b>2. Notify</b></td><td style="padding:6px;border-bottom:1px solid #ddd">Tell affected employees before locks go on. On the log decks that includes the infeed forklift driver.</td></tr>
+  <tr><td style="padding:6px;border-bottom:1px solid #ddd"><b>3. Machine stop</b></td><td style="padding:6px;border-bottom:1px solid #ddd">Orderly shutdown using normal controls. <b>Always perform a machine stop before locking out the disconnect</b> — pulling a disconnect under load is how gear gets destroyed and people get hurt.</td></tr>
+  <tr><td style="padding:6px;border-bottom:1px solid #ddd"><b>4. Isolate</b></td><td style="padding:6px;border-bottom:1px solid #ddd">Operate every energy-isolating device the procedure lists — disconnects, remotes, hydraulic and air quarter-turn valves.</td></tr>
+  <tr><td style="padding:6px;border-bottom:1px solid #ddd"><b>5. Lock and tag</b></td><td style="padding:6px;border-bottom:1px solid #ddd">A personal lock on <b>each</b> device, applied only by the employee doing the work (296-803-50010(5)).</td></tr>
+  <tr><td style="padding:6px;border-bottom:1px solid #ddd"><b>6. Dissipate, then VERIFY</b></td><td style="padding:6px;border-bottom:1px solid #ddd">Release or restrain stored energy, then prove zero energy before a hand goes in.</td></tr></table>
+  <div class="notice"><b>At the disconnect:</b> do not stand in front of it. Stand to one side and look away as you operate it. They have been known to blow apart.</div>` },
+
+{ t:'check', q:'An authorized employee reaches the disconnect and finds the machine still running. What is correct?',
+  opts:['Pull the disconnect — it stops the machine either way','Perform the machine stop first, then lock out the disconnect','Lock the disconnect, then hit stop','Have the operator stop it after isolation'], a:1,
+  why:'Always perform a machine stop before locking out the disconnect. Opening a disconnect under load risks arc flash and equipment damage — and standing in front of it while doing so is how people get burned.' },
+
+{ t:'content', eyebrow:'Section 3 of 9', title:'Reading the Procedure Sheet', html:
+  `<p>Every machine center has a written procedure. Each row is one isolation point, and four things must match before a lock goes on: <b>MCC number, bucket position, color, and sticker description</b>.</p>
+  <div style="border:1px solid #CCCCCC;border-radius:8px;margin:10px 0;overflow:hidden;background:#fff"><div style="background:#1F4E79;color:#fff;padding:8px 12px"><b>Log Decks — Stud Mill (excerpt)</b><span style="float:right;background:#C00000;border-radius:12px;padding:2px 10px;font-size:.82em;font-weight:bold">&#128274; 15 locks/tags required</span></div><div style="background:#fff3cd;color:#7a5c00;padding:6px 12px;font-size:.85em"><b>&#9888;&#65039; Always perform a machine stop before locking out disconnect</b></div><table style="width:100%;border-collapse:collapse"><tr><td style="width:26px;padding:6px 4px 6px 8px;border-top:1px solid #eee;vertical-align:top"><div style="width:20px;height:20px;border-radius:50%;background:#1F4E79;color:#fff;font-size:.8em;font-weight:bold;text-align:center;line-height:20px">1</div></td><td style="padding:6px 8px;border-top:1px solid #eee;vertical-align:top;white-space:nowrap"><span style="display:inline-block;padding:3px 9px;border-radius:4px;font-weight:bold;font-size:.85em;white-space:nowrap;background:#f5d90a;color:#333">MCC-1 &middot; 8A or 8Aa &middot; YELLOW</span></td><td style="padding:6px 8px;border-top:1px solid #eee;vertical-align:top;font-size:.88em">Stud Block Roll Case &middot; 214.100 &mdash; Basement, North Wall <i>(remote 8Aa: East of Computer Rm catwalk)</i></td></tr><tr><td style="width:26px;padding:6px 4px 6px 8px;border-top:1px solid #eee;vertical-align:top"><div style="width:20px;height:20px;border-radius:50%;background:#1F4E79;color:#fff;font-size:.8em;font-weight:bold;text-align:center;line-height:20px">2</div></td><td style="padding:6px 8px;border-top:1px solid #eee;vertical-align:top;white-space:nowrap"><span style="display:inline-block;padding:3px 9px;border-radius:4px;font-weight:bold;font-size:.85em;white-space:nowrap;background:#f28c28;color:#fff">MCC-4 &middot; 7G or 7Ga &middot; ORANGE</span></td><td style="padding:6px 8px;border-top:1px solid #eee;vertical-align:top;font-size:.88em">Incline 2nd Sec Block Conv Storage to Mill &middot; 213.000 &mdash; MCC Room between Break Room and Log Decks</td></tr><tr><td style="width:26px;padding:6px 4px 6px 8px;border-top:1px solid #eee;vertical-align:top"><div style="width:20px;height:20px;border-radius:50%;background:#1F4E79;color:#fff;font-size:.8em;font-weight:bold;text-align:center;line-height:20px">3</div></td><td style="padding:6px 8px;border-top:1px solid #eee;vertical-align:top;white-space:nowrap"><span style="display:inline-block;padding:3px 9px;border-radius:4px;font-weight:bold;font-size:.85em;white-space:nowrap;background:#9acd32;color:#333">MCC-7 &middot; 3E &middot; LIME GREEN</span></td><td style="padding:6px 8px;border-top:1px solid #eee;vertical-align:top;font-size:.88em">HPU #6 &middot; 500.600 &mdash; Basement, South Wall</td></tr><tr><td style="width:26px;padding:6px 4px 6px 8px;border-top:1px solid #eee;vertical-align:top"><div style="width:20px;height:20px;border-radius:50%;background:#1F4E79;color:#fff;font-size:.8em;font-weight:bold;text-align:center;line-height:20px">4</div></td><td style="padding:6px 8px;border-top:1px solid #eee;vertical-align:top;white-space:nowrap"><span style="display:inline-block;padding:3px 9px;border-radius:4px;font-weight:bold;font-size:.85em;white-space:nowrap;background:#2E75B6;color:#fff">MCC-8 &middot; 1A or 1Aa &middot; BLUE</span></td><td style="padding:6px 8px;border-top:1px solid #eee;vertical-align:top;font-size:.88em">1st Sec log deck RH I/F LH Headrig &middot; 502.100 &mdash; Basement, South Wall</td></tr><tr><td style="width:26px;padding:6px 4px 6px 8px;border-top:1px solid #eee;vertical-align:top"><div style="width:20px;height:20px;border-radius:50%;background:#1F4E79;color:#fff;font-size:.8em;font-weight:bold;text-align:center;line-height:20px">5</div></td><td style="padding:6px 8px;border-top:1px solid #eee;vertical-align:top;white-space:nowrap"><span style="display:inline-block;padding:3px 9px;border-radius:4px;font-weight:bold;font-size:.85em;white-space:nowrap;background:#8a8f98;color:#fff">REMOTE 15a &middot; GRAY</span></td><td style="padding:6px 8px;border-top:1px solid #eee;vertical-align:top;font-size:.88em">Remote Disconnect 15a &mdash; North of Head Rig, on wall</td></tr><tr><td style="width:26px;padding:6px 4px 6px 8px;border-top:1px solid #eee;vertical-align:top"><div style="width:20px;height:20px;border-radius:50%;background:#1F4E79;color:#fff;font-size:.8em;font-weight:bold;text-align:center;line-height:20px">6</div></td><td style="padding:6px 8px;border-top:1px solid #eee;vertical-align:top;white-space:nowrap"><span style="display:inline-block;padding:3px 9px;border-radius:4px;font-weight:bold;font-size:.85em;white-space:nowrap;background:#5a5a5a;color:#fff">HYD VALVE 3</span></td><td style="padding:6px 8px;border-top:1px solid #eee;vertical-align:top;font-size:.88em">Hydraulic quarter-turn &mdash; West side of Rotary Kicker, on catwalk</td></tr><tr><td style="width:26px;padding:6px 4px 6px 8px;border-top:1px solid #eee;vertical-align:top"><div style="width:20px;height:20px;border-radius:50%;background:#1F4E79;color:#fff;font-size:.8em;font-weight:bold;text-align:center;line-height:20px">7</div></td><td style="padding:6px 8px;border-top:1px solid #eee;vertical-align:top;white-space:nowrap"><span style="display:inline-block;padding:3px 9px;border-radius:4px;font-weight:bold;font-size:.85em;white-space:nowrap;background:#5a5a5a;color:#fff">AIR VALVE 1</span></td><td style="padding:6px 8px;border-top:1px solid #eee;vertical-align:top;font-size:.88em">Air quarter-turn &mdash; North side of North headrig log loader</td></tr></table><div style="padding:7px 12px;background:#F2F2F2;font-size:.82em;color:#666">…8 further isolation points. Special instruction on this sheet: inform infeed forklift driver; place barricade in front of chain.</div></div>
+  <p><b>Read the lock count first.</b> Log Decks takes 15. South Head Rig takes 29. If an employee comes back with three locks used on a 15-lock job, the job was not locked out.</p>
+  <p><b>"Or" rows mean either device isolates that circuit</b> — <i>8A or 8Aa</i> — the bucket or its remote. Not both required; one or the other.</p>` },
+
+{ t:'content', eyebrow:'Section 4 of 9', title:'Colors Are Per-Department', html:
+  `<p>Every MCC is color coded. The color identifies a panel <b>within a department</b> — it does not carry across the facility.</p>
+  <table style="width:100%;border-collapse:collapse;margin:8px 0">
+  <tr><th style="text-align:left;padding:6px;border-bottom:2px solid #2E75B6">Panel</th><th style="text-align:left;padding:6px;border-bottom:2px solid #2E75B6">Stud Mill</th><th style="text-align:left;padding:6px;border-bottom:2px solid #2E75B6">Planer Mill</th></tr>
+  <tr><td style="padding:6px;border-bottom:1px solid #ddd"><b>MCC-1</b></td><td style="padding:6px;border-bottom:1px solid #ddd"><span style="display:inline-block;padding:3px 9px;border-radius:4px;font-weight:bold;font-size:.85em;white-space:nowrap;background:#f5d90a;color:#333">Yellow</span></td><td style="padding:6px;border-bottom:1px solid #ddd"><span style="display:inline-block;padding:3px 9px;border-radius:4px;font-weight:bold;font-size:.85em;white-space:nowrap;background:#f5d90a;color:#333">Yellow</span></td></tr>
+  <tr><td style="padding:6px;border-bottom:1px solid #ddd"><b>MCC-5</b></td><td style="padding:6px;border-bottom:1px solid #ddd"><span style="display:inline-block;padding:3px 9px;border-radius:4px;font-weight:bold;font-size:.85em;white-space:nowrap;background:#3cb371;color:#fff">Green</span></td><td style="padding:6px;border-bottom:1px solid #ddd"><span style="display:inline-block;padding:3px 9px;border-radius:4px;font-weight:bold;font-size:.85em;white-space:nowrap;background:#7a4ba0;color:#fff">Purple</span></td></tr>
+  <tr><td style="padding:6px;border-bottom:1px solid #ddd"><b>MCC-8</b></td><td style="padding:6px;border-bottom:1px solid #ddd"><span style="display:inline-block;padding:3px 9px;border-radius:4px;font-weight:bold;font-size:.85em;white-space:nowrap;background:#2E75B6;color:#fff">Blue</span></td><td style="padding:6px;border-bottom:1px solid #ddd"><span style="display:inline-block;padding:3px 9px;border-radius:4px;font-weight:bold;font-size:.85em;white-space:nowrap;background:#C00000;color:#fff">Red</span></td></tr></table>
+  <div class="notice"><b>This is the assumption that gets someone hurt.</b> An employee who learned "MCC-8 is blue" in the Stud Mill and transfers to the Planer Mill is carrying a wrong map. Teach the habit: read the sheet, match number + color + sticker text, every time.</div>
+  <p><b>Remotes:</b> some circuits have a remote disconnect near the machine, named for its bucket and wearing its color (8A &rarr; 8Aa, yellow). Stand-alone remotes fed from the transformer are <b>gray</b>. Not every machine has one.</p>
+  <p><b>Electrical enclosures:</b> opening panels and resetting MCC buckets is restricted to company electricians, qualified maintenance personnel, and others the company has trained and qualified for that work.</p>` },
+
+{ t:'check', q:'An employee moving from the Stud Mill to the Planer Mill says he already knows the color system. Your response:',
+  opts:['Fine — the codes are facility-wide','Colors identify panels within a department; he must read his new department\'s procedure sheets','Only the numbers change','Have him memorize the new colors instead'], a:1,
+  why:'MCC-8 is blue in the Stud Mill and red in the Planer Mill. The habit that transfers is reading the sheet — MCC number, color, and sticker description together — not a memorized color map.' },
+
+{ t:'content', eyebrow:'Section 5 of 9', title:'Verification — The Step That Saves People', html:
+  `<p>Isolation is an assumption until it is tested. Our procedure sheets say <b>"Verify or find someone that knows how to verify."</b> That line exists because verification know-how is uneven — closing that gap is your job.</p>
+  <div class="notice"><b>"MCCs are mechanical devices — failures should be expected, and labeling errors are inherently possible."</b> A bucket can be mislabeled. A contactor can weld shut. The lock proves the handle moved; only a test proves the energy is gone.</div>
+  <p><b>How to verify, for every device on the sheet:</b></p>
+  <table style="width:100%;border-collapse:collapse;margin:8px 0">
+  <tr><th style="text-align:left;padding:6px;border-bottom:2px solid #2E75B6">Energy</th><th style="text-align:left;padding:6px;border-bottom:2px solid #2E75B6">Verification</th></tr>
+  <tr><td style="padding:6px;border-bottom:1px solid #ddd">Electrical</td><td style="padding:6px;border-bottom:1px solid #ddd">Clear all personnel from hazardous areas, then <b>attempt to start at the named control</b> listed on the sheet. Return the control to neutral/off afterward. Where the work requires it, test with a meter.</td></tr>
+  <tr><td style="padding:6px;border-bottom:1px solid #ddd">Hydraulic / pneumatic</td><td style="padding:6px;border-bottom:1px solid #ddd">Bleed or vent after isolating; confirm at the gauge; work the control to prove no movement.</td></tr>
+  <tr><td style="padding:6px;border-bottom:1px solid #ddd">Gravity</td><td style="padding:6px;border-bottom:1px solid #ddd">Block or restrain raised decks, gates, and loads. A lock does not hold up steel.</td></tr>
+  <tr><td style="padding:6px;border-bottom:1px solid #ddd">Momentum</td><td style="padding:6px;border-bottom:1px solid #ddd">Let arbors and flywheels coast to a full stop — confirm by sight, not by clock.</td></tr>
+  <tr><td style="padding:6px;border-bottom:1px solid #ddd">Stored</td><td style="padding:6px;border-bottom:1px solid #ddd">Discharge capacitors, relieve accumulators, release spring tension.</td></tr></table>
+  <p>If energy can <b>re-accumulate</b>, verification continues periodically until the work is done (296-803-50025(2)).</p>` },
+
+{ t:'content', eyebrow:'Section 6 of 9', title:'Group Lockout and Shift Transfer', html:
+  `<p><b>Group lockout (296-803-50050).</b> Every member gets protection equal to their own personal lock:</p>
+  <ul><li>Assign a <b>primary authorized employee</b> with overall responsibility, who knows which members are exposed.</li>
+  <li>The primary attaches their device to the energy-isolating device when the equipment is de-energized, <b>before any work begins</b>.</li>
+  <li>Each member places a <b>personal lock</b> on the group device — hasp or lockbox — before starting, and removes it only when their own work is finished.</li>
+  <li>The primary is the <b>last</b> device off when the job is complete.</li></ul>
+  <p><b>More than one group (296-803-50055):</b> assign a <b>group coordinator</b> over all groups to maintain continuous protection, plus a primary authorized employee within each group.</p>
+  <p><b>Shift transfer (296-803-50045):</b> protection never lapses. The incoming employee's lock goes <b>on before</b> the outgoing employee's comes off, both present, status reviewed between them. If no one is there to receive it, the outgoing lock <b>stays on</b>.</p>` },
+
+{ t:'check', q:'A crew of six is working under a group lockbox. Four have finished and pulled their locks. Production wants the machine.',
+  opts:['Start it — most of the crew is clear','Remove the last two locks and start','The machine stays locked until the last personal lock and then the primary\'s device come off','The primary can authorize a restart'], a:2,
+  why:'Every remaining lock represents a person who may still be exposed. The primary authorized employee is the last device removed, after every member has pulled their own.' },
+
+{ t:'content', eyebrow:'Section 7 of 9', title:'Emergency Lock Removal — Your Authority, Tightly Bounded', html:
+  `<p>Only the employee who applied a lock may remove it. The single exception is documented in Program §9 and 296-803-50035(2), and <b>only a supervisor may direct it</b>.</p>
+  <table style="width:100%;border-collapse:collapse;margin:8px 0">
+  <tr><th style="text-align:left;padding:6px;border-bottom:2px solid #2E75B6">Required step</th><th style="text-align:left;padding:6px;border-bottom:2px solid #2E75B6">Detail</th></tr>
+  <tr><td style="padding:6px;border-bottom:1px solid #ddd">1. Verify absence</td><td style="padding:6px;border-bottom:1px solid #ddd">Confirm the authorized employee is <b>not at the facility</b>.</td></tr>
+  <tr><td style="padding:6px;border-bottom:1px solid #ddd">2. All reasonable contact</td><td style="padding:6px;border-bottom:1px solid #ddd">In-plant page, radio, telephone, personal visit — and document the attempts.</td></tr>
+  <tr><td style="padding:6px;border-bottom:1px solid #ddd">3. Make the equipment safe</td><td style="padding:6px;border-bottom:1px solid #ddd">Inspect the work area, confirm it is clear and ready to energize.</td></tr>
+  <tr><td style="padding:6px;border-bottom:1px solid #ddd">4. Remove under direct supervision</td><td style="padding:6px;border-bottom:1px solid #ddd">The removal happens under the authorizing supervisor's direct control.</td></tr>
+  <tr><td style="padding:6px;border-bottom:1px solid #ddd">5. Inform before return</td><td style="padding:6px;border-bottom:1px solid #ddd"><b>Mandatory.</b> The owner is told their lock was removed <b>before</b> they resume work at the facility.</td></tr></table>
+  <p><b>Authorized to direct removal:</b> Shift Supervisor on duty · Maintenance Supervisor · Environmental Compliance and Safety Lead.</p>
+  <div class="notice">Step 5 is the one that gets skipped, and it is the dangerous one. An employee who returns believing their lock is still on will put hands into a live machine.</div>` },
+
+{ t:'content', eyebrow:'Section 8 of 9', title:'Contractors and Outside Employers', html:
+  `<p>Before outside personnel service our equipment, <b>296-803-50060</b> requires a two-way exchange — and it is your job to make it happen, not assume it did:</p>
+  <ul><li><b>Inform</b> the outside employer of WKO Inc.'s lockout/tagout procedures.</li>
+  <li><b>Obtain</b> their procedures from them.</li>
+  <li><b>Confirm</b> that employees on both sides understand and will follow the other employer's restrictions.</li></ul>
+  <p>When our employees and contractor employees work the same equipment, <b>group lockout applies across both</b> — their people put personal locks on the group device the same as ours.</p>
+  <div class="notice">Verbal coordination proves nothing after an incident. Document the exchange — who, when, what was covered.</div>
+  <p><b>Tagout-only situations:</b> where a device genuinely cannot accept a lock, tagout requires additional safeguards — removing an isolating circuit element, blocking a controlling switch, opening an extra disconnect, or removing a valve handle — plus the extra training in 296-803-60010 on the limitations of tags, including that <b>tags can evoke a false sense of security</b>.</p>` },
+
+{ t:'check', q:'A contractor millwright arrives to work on the resaw and says his company has its own LOTO program.',
+  opts:['Good — his program covers it','Ours governs; his is irrelevant','Exchange procedures both ways, confirm both crews understand the other\'s restrictions, and document it','Have him use our locks only'], a:2,
+  why:'296-803-50060 requires a two-way exchange and confirmation that both employers\' employees understand and will follow the restrictions. Where both crews work the same equipment, group lockout spans both.' },
+
+{ t:'content', eyebrow:'Section 9 of 9', title:'What You Watch For on the Floor', html:
+  `<p>Most lockout failures look ordinary right up until they do not. What to correct on sight:</p>
+  <table style="width:100%;border-collapse:collapse;margin:8px 0">
+  <tr><th style="text-align:left;padding:6px;border-bottom:2px solid #2E75B6">What you see</th><th style="text-align:left;padding:6px;border-bottom:2px solid #2E75B6">Why it matters</th></tr>
+  <tr><td style="padding:6px;border-bottom:1px solid #ddd">Three locks on a fifteen-lock job</td><td style="padding:6px;border-bottom:1px solid #ddd">The machine is not isolated. Energy paths remain live.</td></tr>
+  <tr><td style="padding:6px;border-bottom:1px solid #ddd">"I'll just be a second" at a jam</td><td style="padding:6px;border-bottom:1px solid #ddd">Unjamming is service work. Reaching past a guard requires lockout.</td></tr>
+  <tr><td style="padding:6px;border-bottom:1px solid #ddd">Stop button used instead of the disconnect</td><td style="padding:6px;border-bottom:1px solid #ddd">A control device is not an energy-isolating device.</td></tr>
+  <tr><td style="padding:6px;border-bottom:1px solid #ddd">Skipping the start-test because "it's obviously dead"</td><td style="padding:6px;border-bottom:1px solid #ddd">Buckets are mislabeled and contactors weld. Verification is the point.</td></tr>
+  <tr><td style="padding:6px;border-bottom:1px solid #ddd">One person carrying a coworker's lock</td><td style="padding:6px;border-bottom:1px solid #ddd">Breaks the entire system. Locks are personal and never transferred.</td></tr>
+  <tr><td style="padding:6px;border-bottom:1px solid #ddd">An orphan lock nobody claims</td><td style="padding:6px;border-bottom:1px solid #ddd">Someone may be exposed. Investigate; never cut it casually.</td></tr>
+  <tr><td style="padding:6px;border-bottom:1px solid #ddd">Feet leaving the catwalk without lockout</td><td style="padding:6px;border-bottom:1px solid #ddd">The barker-complex absolute: if your feet leave the catwalk, lock out.</td></tr></table>
+  <p>Deviations trigger <b>retraining</b> under 296-803-60015. Violations are subject to disciplinary action under the Employee Handbook.</p>
+  <p><b>Document what you do:</b> periodic reviews (machine, date, employees, reviewer), retraining, contractor coordination, and any emergency lock removal. Records are kept a minimum of three years.</p>` },
+
+{ t:'check', q:'Your annual periodic review of an authorized employee is best satisfied by:',
+  opts:['Confirming they passed this module','A signed acknowledgement form','Observing them perform an actual lockout on equipment they lock out, and documenting it','A toolbox talk covering the six steps'], a:2,
+  why:'296-803-70005 requires a review performed by someone other than the user of the procedure, including observation of the procedure in use. A module score is knowledge, not demonstrated performance.' }
+];
+
+const quiz = [
+{ q:'Completing this module makes an employee authorized to lock out equipment.',
+   opts:['False — the annual observed periodic review is still required and cannot be discharged by a module','True — the quiz is the qualification','True, if they score 100%','Only for equipment in their own department'], a:0 },
+ { q:'Before locking out a disconnect, the authorized employee must first:',
+   opts:['Tag the control panel','Notify the safety lead','Perform a machine stop','Test with a meter'], a:2 },
+ { q:'When operating a disconnect, the correct position is:',
+   opts:['Directly in front, for leverage','To one side, looking away','Kneeling below the panel','Any position, if gloved'], a:1 },
+ { q:'The same MCC number in two different departments:',
+   opts:['Always shares one color','Is always gray','Cannot exist','May be a different color — colors identify panels within a department'], a:3 },
+ { q:'A procedure row reading "8A or 8Aa" means:',
+   opts:['Either the bucket or its remote isolates that circuit','Both must be locked','8Aa is a spare','The bucket is out of service'], a:0 },
+ { q:'Electrical verification of zero energy is accomplished by:',
+   opts:['Confirming the lock is seated','Waiting five minutes','Clearing personnel, then attempting to start at the named control, and returning it to off','Checking the sticker description'], a:2 },
+ { q:'In a group lockout, the primary authorized employee:',
+   opts:['Holds every key','Locks out on behalf of the crew','Is chosen by the crew each shift','Removes their device last, after all personal locks are off'], a:3 },
+ { q:'During shift transfer, protection is maintained by:',
+   opts:['The incoming lock going on before the outgoing lock comes off, both present','Leaving the outgoing lock until the next break','A written note at the panel','Supervisor sign-off'], a:0 },
+ { q:'The mandatory final step of emergency lock removal is:',
+   opts:['Filing an incident report','Replacing the lock','Informing the owner their lock was removed before they resume work','Notifying the shift crew'], a:2 },
+ { q:'Before a contractor services our equipment, 296-803-50060 requires:',
+   opts:['Their certificate of insurance','That they use WKO locks','A signed waiver','A two-way exchange of lockout procedures and confirmation both crews will follow the restrictions'], a:3 }
+];
+
+const main = document.getElementById('main');
+const progEl = document.getElementById('prog');
+const totalSteps = slides.length + quiz.length + 2;
+function setProg(n){ progEl.style.width = Math.min(100, Math.round(n/totalSteps*100)) + '%'; }
+function esc(s){ const d=document.createElement('div'); d.textContent=s; return d.innerHTML; }
+
+function showStart(){
+  setProg(0);
+  main.innerHTML = `
+    <div class="eyebrow">WKO Inc. · Safety Department</div>
+    <h1>Lockout/Tagout — Supervisor Training</h1>
+    <p>Required supervisor training under chapter 296-803 WAC and the SDS Lockout/Tagout Program v2.0. About 15 minutes.</p>
+    <div class="card warn"><b>Complete the employee Lockout/Tagout module first.</b> This module covers your additional duties as a supervisor — it does not replace the employee training, and both are required of you.</div>
+    <div class="card">Pass the 10-question quiz with <b>80% or better</b> to finish. You'll get a completion code and a button to record it.</div>
+    <label for="nm">Enter your full name to begin</label>
+    <input type="text" id="nm" autocomplete="name" placeholder="First and last name">
+    <button class="btn" id="startBtn" disabled>Start Supervisor Training</button>`;
+  const nm=document.getElementById('nm'), b=document.getElementById('startBtn');
+  nm.addEventListener('input', ()=>{ b.disabled = nm.value.trim().split(/\s+/).length < 2; });
+  b.addEventListener('click', ()=>{ empName=nm.value.trim(); slideIdx=0; showSlide(); });
+}
+
+function showSlide(){
+  if (slideIdx >= slides.length){ quizIdx=0; quizScore=0; showQuizIntro(); return; }
+  setProg(1+slideIdx);
+  const s = slides[slideIdx];
+  if (s.t === 'content'){
+    main.innerHTML = `<div class="eyebrow">${esc(s.eyebrow)}</div><h1>${esc(s.title)}</h1>${s.html}
+      <button class="btn" id="nextBtn">Continue</button>`;
+    document.getElementById('nextBtn').addEventListener('click', ()=>{ slideIdx++; showSlide(); window.scrollTo(0,0); });
+  } else {
+    main.innerHTML = `<div class="eyebrow">Knowledge Check</div><h1>Quick Question</h1><p><b>${esc(s.q)}</b></p>
+      <div id="opts"></div><div class="feedback" id="fb"></div>
+      <button class="btn" id="nextBtn" style="display:none">Continue</button>`;
+    const optsEl=document.getElementById('opts');
+    s.opts.forEach((o,i)=>{
+      const b=document.createElement('button');
+      b.className='opt'; b.textContent=o;
+      b.addEventListener('click', ()=>{
+        const fb=document.getElementById('fb');
+        [...optsEl.children].forEach(c=>c.disabled=true);
+        if (i===s.a){ b.classList.add('right'); fb.className='feedback good'; fb.textContent=s.why;
+          document.getElementById('nextBtn').style.display='block'; }
+        else { b.classList.add('wrong'); fb.className='feedback bad'; fb.textContent='Not quite — take another look and try again.';
+          setTimeout(()=>{ [...optsEl.children].forEach(c=>{c.disabled=false;c.classList.remove('wrong');}); fb.className='feedback'; },1600); }
+      });
+      optsEl.appendChild(b);
+    });
+    document.getElementById('nextBtn').addEventListener('click', ()=>{ slideIdx++; showSlide(); window.scrollTo(0,0); });
+  }
+}
+
+function showQuizIntro(){
+  setProg(1+slides.length);
+  main.innerHTML = `<div class="eyebrow">Final Quiz</div>
+    <h1>Ready, ${esc(empName.split(' ')[0])}?</h1>
+    <p>10 questions. You need <b>8 correct (80%)</b> to pass. If you don't pass, review the material and retake it.</p>
+    <button class="btn" id="goBtn">Begin Quiz</button>
+    <button class="btn secondary" id="revBtn">Review Material First</button>`;
+  document.getElementById('goBtn').addEventListener('click', ()=>{ showQuizQ(); window.scrollTo(0,0); });
+  document.getElementById('revBtn').addEventListener('click', ()=>{ slideIdx=0; showSlide(); window.scrollTo(0,0); });
+}
+
+function showQuizQ(){
+  if (quizIdx >= quiz.length){ showResult(); return; }
+  setProg(1+slides.length+quizIdx);
+  const qq = quiz[quizIdx];
+  main.innerHTML = `<div class="qnum">Question ${quizIdx+1} of ${quiz.length}</div>
+    <h1 style="font-size:20px">${esc(qq.q)}</h1><div id="opts"></div>
+    <button class="btn" id="subBtn" disabled>Submit Answer</button>`;
+  const optsEl=document.getElementById('opts');
+  let sel=-1;
+  qq.opts.forEach((o,i)=>{
+    const b=document.createElement('button');
+    b.className='opt'; b.textContent=o;
+    b.addEventListener('click', ()=>{ sel=i; [...optsEl.children].forEach(c=>c.classList.remove('sel')); b.classList.add('sel');
+      document.getElementById('subBtn').disabled=false; });
+    optsEl.appendChild(b);
+  });
+  document.getElementById('subBtn').addEventListener('click', ()=>{
+    if (sel===qq.a) quizScore++;
+    quizIdx++; showQuizQ(); window.scrollTo(0,0);
+  });
+}
+
+function completionCode(){
+  const d=new Date();
+  const ds=d.getFullYear()+String(d.getMonth()+1).padStart(2,'0')+String(d.getDate()).padStart(2,'0');
+  let h=0; const src=empName.toUpperCase()+ds+quizScore+'SUP';
+  for (let i=0;i<src.length;i++){ h=((h<<5)-h+src.charCodeAt(i))|0; }
+  return 'LO26S-' + Math.abs(h).toString(36).toUpperCase().slice(0,5).padStart(5,'0');
+}
+
+function showResult(){
+  setProg(totalSteps);
+  const pct = Math.round(quizScore/quiz.length*100);
+  const passed = pct >= 80;
+  const dateStr = new Date().toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'});
+  if (passed){
+    main.innerHTML = `<div class="eyebrow">Training Complete</div><h1>Congratulations!</h1>
+      <p style="text-align:center"><span class="score-pill">Score: ${pct}%</span></p>
+      <div class="cert">
+        <div class="eyebrow">Certificate of Completion</div>
+        <div class="big">${esc(empName)}</div>
+        <p>has completed <b>Lockout/Tagout SUPERVISOR Training</b><br>per chapter 296-803 WAC</p>
+        <p><b>${dateStr}</b> · Score: <b>${quizScore}/${quiz.length} (${pct}%)</b></p>
+        <div class="code">${completionCode()}</div>
+        <p style="font-size:13px;color:var(--gray)">WKO Inc. · Carson, WA</p>
+      </div>
+      <div class="card"><b>Final step — record your completion:</b> Tap the button below to open the SDS Training Completion form. Select the module <b>Lockout/Tagout — Supervisor / Bloqueo y Etiquetado — Supervisor</b>, enter today's date, your score, and the completion code above, then submit. Screenshot this screen for your own records. Your training is not documented until the form is submitted.</div>
+      <a class="btn" href="${FORM_URL}" target="_blank" rel="noopener">Record My Completion</a>`;
+  } else {
+    main.innerHTML = `<div class="eyebrow">Quiz Result</div><h1>Not Quite — Let's Try Again</h1>
+      <p style="text-align:center"><span class="score-pill fail">Score: ${pct}%</span></p>
+      <p>You need 80% to pass. Review the material and take the quiz again — your crew is counting on you knowing this cold.</p>
+      <button class="btn" id="revBtn">Review Material</button>
+      <button class="btn secondary" id="retryBtn">Retake Quiz Now</button>`;
+    document.getElementById('revBtn').addEventListener('click', ()=>{ slideIdx=0; showSlide(); window.scrollTo(0,0); });
+    document.getElementById('retryBtn').addEventListener('click', ()=>{ quizIdx=0; quizScore=0; showQuizQ(); window.scrollTo(0,0); });
+  }
+}
+
+/* test hooks */
+window.APP = { slides, quiz, FORM_URL, completionCode, showStart,
+  get state(){ return { empName, slideIdx, quizIdx, quizScore }; },
+  setName(n){ empName = n; }, setScore(s){ quizScore = s; },
+  showResult, showSlide, showQuizQ, showQuizIntro };
+
+showStart();
+</script>
+</body>
+</html>

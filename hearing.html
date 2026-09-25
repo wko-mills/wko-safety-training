@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WKO Inc. — Hearing Conservation Training v1.0</title>
+<style>
+  :root { --blue:#2E75B6; --dark:#1F4E79; --light:#F2F2F2; --gray:#666666; --red:#C00000; --green:#2E7D32; --amber:#E07B00; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { font-family: Arial, Helvetica, sans-serif; background:#f7f9fb; color:#222; line-height:1.5; }
+  .wrap { max-width:760px; margin:0 auto; padding:16px; }
+  header.bar { background:var(--dark); color:#fff; padding:14px 20px; }
+  header.bar .co { font-weight:bold; font-size:1.05em; letter-spacing:.5px; }
+  header.bar .sub { font-size:.85em; margin-top:2px; opacity:.9; }
+  .splash { text-align:center; padding:34px 22px; }
+  .splash .co { color:var(--gray); font-size:.85em; letter-spacing:2px; font-weight:bold; }
+  .splash .ti-en { color:var(--dark); font-size:1.6em; font-weight:bold; margin:10px 0 4px; }
+  .splash .ti-es { color:var(--blue); font-size:1.4em; font-weight:bold; margin-bottom:18px; }
+  .splash .choose { margin-bottom:16px; }
+  .splash .langbtns { display:flex; gap:14px; justify-content:center; flex-wrap:wrap; }
+  .splash .langbtns button { font-family:Arial; background:var(--blue); color:#fff; border:none; border-radius:6px; padding:14px 0; width:240px; max-width:45%; font-size:1.05em; font-weight:bold; cursor:pointer; }
+  .langbar { text-align:right; padding:10px 16px 0; }
+  .langbar button { font-family:Arial; border:2px solid var(--blue); background:#fff; color:var(--blue); padding:6px 14px; font-weight:bold; cursor:pointer; border-radius:4px; margin-left:6px; font-size:.95em; }
+  .langbar button.active { background:var(--blue); color:#fff; }
+  .card { background:#fff; border:1px solid #d9e2ec; border-radius:8px; padding:22px; margin:16px 0; box-shadow:0 1px 3px rgba(0,0,0,.06); }
+  h1 { color:var(--dark); font-size:1.35em; margin-bottom:12px; }
+  h2 { color:var(--blue); font-size:1.1em; margin:16px 0 8px; }
+  p, li { margin-bottom:10px; }
+  ul { padding-left:22px; }
+  .progress { background:#e1e8f0; border-radius:6px; height:10px; overflow:hidden; margin:4px 0 14px; }
+  .progress > div { background:var(--blue); height:100%; width:0; transition:width .3s; }
+  .btn { font-family:Arial; display:inline-block; background:var(--blue); color:#fff; border:none; padding:12px 26px; font-size:1em; font-weight:bold; border-radius:6px; cursor:pointer; margin-top:14px; }
+  .btn:disabled { background:#9db8d2; cursor:not-allowed; }
+  .btn.secondary { background:#fff; color:var(--blue); border:2px solid var(--blue); }
+  input[type=text] { font-family:Arial; width:100%; padding:12px; font-size:1em; border:2px solid #b8c7d9; border-radius:6px; margin-top:6px; }
+  input[type=text]:focus { border-color:var(--blue); outline:none; }
+  .kc { background:var(--light); border-left:4px solid var(--blue); padding:16px; border-radius:0 6px 6px 0; margin-top:16px; }
+  .kc .kct { font-weight:bold; color:var(--dark); margin-bottom:8px; }
+  .opt { display:block; background:#fff; border:2px solid #c9d6e4; border-radius:6px; padding:10px 12px; margin:8px 0; cursor:pointer; }
+  .opt input { margin-right:10px; }
+  .opt.correct { border-color:var(--green); background:#eef7ee; }
+  .opt.wrong { border-color:var(--red); background:#fdecec; }
+  .fb { font-weight:bold; margin-top:8px; display:none; }
+  .fb.ok { color:var(--green); display:block; }
+  .fb.bad { color:var(--red); display:block; }
+  .qnum { color:var(--gray); font-size:.85em; }
+  .quizq { border-bottom:1px solid #e4eaf1; padding:14px 0; }
+  .quizq .qt { font-weight:bold; margin-bottom:6px; }
+  .cert { border:3px solid var(--dark); border-radius:10px; padding:26px; text-align:center; background:#fff; }
+  .cert .big { font-size:1.5em; color:var(--dark); font-weight:bold; margin:10px 0; }
+  .cert .code { font-size:1.6em; letter-spacing:2px; font-weight:bold; color:var(--blue); background:var(--light); display:inline-block; padding:8px 20px; border-radius:6px; margin:10px 0; }
+  .passmsg { color:var(--green); font-weight:bold; font-size:1.2em; }
+  .failmsg { color:var(--red); font-weight:bold; font-size:1.2em; }
+  .notice { background:#fff8e1; border-left:4px solid #f0a500; padding:12px; border-radius:0 6px 6px 0; margin:12px 0; font-size:.95em; }
+  .danger { background:#fdecec; border-left:4px solid var(--red); padding:12px; border-radius:0 6px 6px 0; margin:12px 0; }
+  .phone { font-weight:bold; color:var(--dark); }
+  table.mini { border-collapse:collapse; width:100%; margin:10px 0; font-size:.95em; }
+  table.mini th { background:var(--blue); color:#fff; padding:8px; text-align:left; }
+  table.mini td { border:1px solid #d9e2ec; padding:8px; vertical-align:top; }
+  table.mini tr:nth-child(even) td { background:var(--light); }
+  .tier { border-radius:8px; padding:14px; margin:10px 0; border:1px solid #d9e2ec; }
+  .tier .tt { font-weight:bold; font-size:1.05em; margin-bottom:4px; }
+  .tier.t1 { border-left:6px solid var(--blue); }
+  .tier.t2 { border-left:6px solid var(--amber); }
+  .tier.t3 { border-left:6px solid var(--red); }
+  footer { text-align:center; color:var(--gray); font-size:.8em; padding:20px 0 30px; }
+  .hidden { display:none !important; }
+</style>
+</head>
+<body>
+<header class="bar">
+  <div class="co">WKO INC.</div>
+  <div class="sub">Hearing Conservation — Employee Training / Conservación de la Audición — Capacitación del Empleado</div>
+</header>
+<div class="langbar hidden" id="langBar">
+  <button id="btnEN" onclick="setLang('en')">English</button>
+  <button id="btnES" onclick="setLang('es')">Español</button>
+</div>
+<div class="wrap">
+  <div class="progress" id="progWrap"><div id="progBar"></div></div>
+  <div id="app"></div>
+</div>
+<footer id="ftr">WKO Inc. &middot; Carson, WA &middot; WAC 296-817 &middot; Module v1.0 (2026)</footer>
+<script>
+"use strict";
+var FORM_URL = "https://forms.cloud.microsoft/r/YHYEJNbAMt";
+var MODULE_VERSION = "v1.0";
+var CODE_PREFIX = "HC26-";
+var PASS_PCT = 80;
+
+/* ------------ Language packs ------------ */
+var STR = {
+en: {
+  basedOn: "Based on the WKO Inc. Hearing Conservation Program v2.1 (chapter 296-817 WAC). Questions? Contact the Environmental Compliance and Safety Lead.",
+  introH: "Welcome — Hearing Conservation at WKO Inc.",
+  introP1: "This training covers what noise does to your hearing, how to protect it, and what your annual hearing test is for. It takes about 20 minutes.",
+  introP2: "</p><div class='notice'><b>Why this one matters:</b> hearing loss from noise is <b>permanent</b>. There is no surgery, no hearing aid, and no treatment that restores what noise takes. Everything in this training is about keeping what you have.</div><p>Required annually for every employee whose noise exposure reaches 85 dBA TWA8 — which includes all production areas at WKO Inc.",
+  nameLabel: "Enter your full name to begin:",
+  namePh: "First and last name",
+  startBtn: "Start Training",
+  continueBtn: "Continue",
+  checkBtn: "Check Answer",
+  kcOk: "Correct — well done.",
+  kcBad: "Not quite — the correct answer is highlighted. Review it, then continue.",
+  secLabel: "Section",
+  ofLabel: "of",
+  sections: [
+    { h:"1. What Noise Actually Does to Your Ears", body:
+      "<p>Deep inside your inner ear sit about 15,000 tiny hair cells. Sound waves bend them, and that bending is what your brain reads as sound. Loud noise bends them too hard, too often, until they break.</p>"+
+      "<p><b>They do not grow back. Ever.</b> Unlike a cut or a broken bone, there is no healing process for a dead hair cell. No surgery repairs them. Hearing aids only amplify what is left — they do not restore what is gone.</p>"+
+      "<p>Noise-induced hearing loss is <b>gradual, painless, and permanent</b>. That combination is what makes it dangerous. Nothing hurts, so nothing warns you. It takes the high frequencies first — the range that carries consonants — so long before you notice sound is quieter, you notice you cannot follow conversation in a noisy room. People start saying you have the TV too loud. That is the damage already done.</p>"+
+      "<p><b>Warning signs that today was too loud:</b></p>"+
+      "<ul><li><b>Ringing in your ears</b> after a shift (tinnitus) — for many people it eventually becomes permanent</li>"+
+      "<li><b>Muffled hearing</b> that clears overnight — that is a temporary threshold shift, and it is your ears telling you they took damage</li>"+
+      "<li><b>Needing the radio or TV louder</b> than you used to</li></ul>"+
+      "<p>Report any of these to your supervisor. They are not something to tough out.</p>",
+      kc:{ q:"Your ears ring after a shift, then feel normal the next morning. What does that mean?", opts:["Nothing — it went away","Your ears are getting tougher","It is a warning sign of noise damage and should be reported","It only matters if it hurts"], a:2 } },
+
+    { h:"2. The Numbers That Matter", body:
+      "<p>Noise is measured in decibels, and the scale is not what you would expect. It is <b>logarithmic</b>: every 3 dB increase is <b>double</b> the sound energy. That is why the difference between 85 and 95 dBA is not small — it is enormous.</p>"+
+      "<p>Because damage depends on both loudness and time, exposure is measured as an <b>8-hour average, written dBA TWA8</b>. Four thresholds govern this program:</p>"+
+      "<table class='mini'><tr><th>Level</th><th>What it means</th></tr>"+
+      "<tr><td><b>85 dBA TWA8</b></td><td>Hearing protection <b>must be worn</b>. Training, hearing tests, and monitoring all begin here.</td></tr>"+
+      "<tr><td><b>90 dBA TWA8</b></td><td>The company must put in feasible engineering or administrative controls to bring the noise down.</td></tr>"+
+      "<tr><td><b>115 dBA</b></td><td>Extreme sustained noise. Warning signs required in those areas.</td></tr>"+
+      "<tr><td><b>140 dBC</b></td><td>Extreme impact or impulse noise — a single bang can damage hearing.</td></tr></table>"+
+      "<div class='notice'><b>Washington is stricter than the federal rule here.</b> Federal OSHA only requires protection to be <i>available</i> at 85 and worn at 90. Washington requires it to be <b>worn at 85</b> (WAC 296-817-20015). At WKO Inc., hearing protection is required throughout the production areas.</div>"+
+      "<p>For reference: normal conversation is about 60 dBA. A sawmill or planer runs roughly 85–95 dBA. A chainsaw is around 110.</p>",
+      kc:{ q:"At 85 dBA TWA8 in Washington, hearing protection is…", opts:["Available if you want it","Required to be worn","Only required after a hearing test","Optional until 90 dBA"], a:1 } },
+
+    { h:"3. Your Two Choices — Plugs and Muffs", body:
+      "<p>WKO Inc. offers you <b>at least two distinct types</b> of hearing protector — that is a requirement, not a courtesy (WAC 296-817-20015(2)). You get a real choice because protection you find uncomfortable is protection you will take out.</p>"+
+      "<table class='mini'><tr><th>Type</th><th>Good</th><th>Watch out for</th></tr>"+
+      "<tr><td><b>Foam earplugs</b></td><td>High protection, cheap, work under a hard hat, comfortable in heat</td><td>Only work if rolled and inserted correctly — most people do it wrong</td></tr>"+
+      "<tr><td><b>Pre-molded / reusable plugs</b></td><td>Easy to insert right, reusable, washable</td><td>Need the right size; wear out</td></tr>"+
+      "<tr><td><b>Earmuffs</b></td><td>Fast on and off, one size fits most, easy to check from a distance</td><td>Hot in summer; hard hats, glasses, and long hair break the seal</td></tr>"+
+      "<tr><td><b>Both together</b></td><td>For the loudest jobs — adds roughly 5 dB over the better one alone</td><td>Not double the ratings — they do not simply add up</td></tr></table>"+
+      "<p><b>NRR</b> — Noise Reduction Rating — is the number printed on the package. It is a laboratory figure, and real-world protection is always less because of imperfect fit. Where noise reaches 115 dBA or 140 dBC, your protector must have an NRR of at least 20 dB.</p>"+
+      "<p>If what you have is uncomfortable, does not fit, or you find yourself taking it out — <b>ask for a different type</b>. That is exactly why the choice exists.</p>",
+      kc:{ q:"Why does WKO Inc. offer more than one type of hearing protector?", opts:["To use up old stock","Because it is required, and because protection you find uncomfortable is protection you will remove","Because muffs are better for everyone","There is no reason"], a:1 } },
+
+    { h:"4. Fit Is Everything", body:
+      "<p>A poorly inserted earplug can lose most of its protection. The plug that is technically in your ear but not sealing is doing almost nothing — and you will not be able to tell by feel.</p>"+
+      "<p><b>Foam earplugs — the roll, pull, hold method:</b></p>"+
+      "<ul><li><b>Roll</b> the plug into a thin, crease-free cylinder between your fingers. Thin. Most people do not roll tight enough.</li>"+
+      "<li><b>Pull</b> your ear up and back with your opposite hand, reaching over your head. This straightens the ear canal.</li>"+
+      "<li><b>Insert</b> well into the canal and <b>hold</b> for 20 to 30 seconds while the foam expands against the walls.</li></ul>"+
+      "<p><b>Check it:</b> cup your hands over your ears and take them away. If the sound level barely changes, your plugs are sealed. If it gets noticeably quieter with your hands on, they are not — take them out and start over.</p>"+
+      "<p><b>Earmuffs:</b> the cushions must seal all the way around against skin. Push hair back, and be aware that hard hat straps, safety glasses temples, and jewelry all break the seal. Replace cushions when they harden or crack.</p>"+
+      "<p><b>Care:</b> keep reusable plugs clean and wash them; discard foam plugs when dirty or no longer springy; never share plugs with anyone. Replace anything worn, cracked, or stiff — WKO provides replacements at no cost.</p>",
+      kc:{ q:"After inserting foam earplugs, you should hold them in place for 20–30 seconds because…", opts:["It is a habit","The foam needs time to expand and seal against the canal","It keeps them clean","It is not necessary"], a:1 } },
+
+    { h:"5. Wear It the Whole Time", body:
+      "<p>This section is short because the point is simple, and it is the single most misunderstood thing about hearing protection.</p>"+
+      "<div class='danger'><b>Taking your protection out for even a few minutes in a loud area destroys most of the protection you got from the whole shift.</b></div>"+
+      "<p>Here is why. Protection is based on your whole-day dose. If you wear plugs for 8 hours at 95 dBA, your protected exposure is safe. Take them out for <b>30 minutes</b> in that same noise, and the unprotected half hour dominates the entire day's dose — it can cut your effective protection by more than half.</p>"+
+      "<p>The common moments people pull them out:</p>"+
+      "<ul><li>To talk to a co-worker or take instructions</li>"+
+      "<li>Because it is hot and they itch</li>"+
+      "<li>Walking through a loud area on the way to somewhere else</li>"+
+      "<li>\u201cJust for a minute\u201d to check a sound on a machine</li></ul>"+
+      "<p><b>If you need to talk, step out of the noise.</b> If they are uncomfortable, ask for a different type. If you need to hear a machine, that is what a supervisor and a proper diagnostic approach are for. None of these is worth your hearing.</p>",
+      kc:{ q:"You remove your earplugs for 30 minutes during an 8-hour shift in 95 dBA noise. The effect is…", opts:["Negligible — it was only 30 minutes","It cuts your effective protection for the whole day by more than half","It only matters above 100 dBA","It has no effect if you put them back"], a:1 } },
+
+    { h:"6. Your Annual Hearing Test", body:
+      "<p>WKO Inc. provides audiometric testing at no cost to you, on company time, through <b>the company's contracted audiometric testing provider</b>. It is quick, painless, and it is the only way to know whether your protection is actually working.</p>"+
+      "<p><b>Your baseline audiogram</b> is your first test — the reference every future test is compared against. Every annual test after that is measured against your baseline, not against \u201cnormal\u201d hearing. It is your own ears being tracked over time.</p>"+
+      "<p><b>Before your test:</b> avoid loud noise for at least 14 hours beforehand — including off-work noise like shooting, mowing, motorcycles, and concerts. Loud noise the night before produces a temporary shift that makes your hearing look worse than it is, and that false result can then follow you.</p>"+
+      "<p><b>What happens:</b> you sit in a quiet booth with headphones and press a button whenever you hear a tone. Different pitches, different volumes. That is all there is to it.</p>"+
+      "<p>Take the test seriously and press the button when you genuinely hear the tone — guessing in either direction only distorts the record of your own hearing.</p>",
+      kc:{ q:"Why should you avoid loud noise for 14 hours before your annual hearing test?", opts:["It makes the test faster","Recent noise causes a temporary shift that makes your hearing look worse than it is","So your ears are clean","It is not important"], a:1 } },
+
+    { h:"7. Standard Threshold Shift — What It Means", body:
+      "<p>A <b>Standard Threshold Shift (STS)</b> is an average change of 10 dB or more at 2000, 3000, and 4000 Hz in either ear, compared with your baseline. In plain terms: your hearing has measurably changed since your first test.</p>"+
+      "<div class='notice'><b>An STS is not a punishment and it is not a job threat.</b> It is an early warning — a signal to change something before more hearing is lost. Employees are never disciplined for an STS.</div>"+
+      "<p><b>What the company does when you have one:</b></p>"+
+      "<ul><li>You are notified in writing within 21 days</li>"+
+      "<li>You are refitted with hearing protection, retrained, and offered protection with greater attenuation</li>"+
+      "<li>Your protection must now reduce your exposure below 85 dBA</li>"+
+      "<li>Your work area and controls are re-evaluated</li>"+
+      "<li>If needed, you are referred for further evaluation</li>"+
+      "<li>A retest may be done within 30 days to confirm the result</li></ul>"+
+      "<p><b>Hearing protection becomes mandatory for you regardless of your exposure level</b> once you have had an STS. Ears that have already been damaged are more vulnerable to further damage.</p>",
+      kc:{ q:"An employee's annual audiogram shows a Standard Threshold Shift. What happens?", opts:["They are disciplined","They are reassigned automatically","They are notified in writing, refitted, retrained, and their exposure is re-evaluated","Nothing until the next test"], a:2 } },
+
+    { h:"8. Chemicals That Damage Hearing", body:
+      "<p>Some chemicals damage hearing on their own, and several make noise damage <b>worse</b> than either would alone. These are called <b>ototoxic</b> — literally, ear-poisoning.</p>"+
+      "<p>Ototoxic substances you may encounter at WKO Inc. include:</p>"+
+      "<ul><li><b>Solvents</b> — toluene, xylene, styrene, trichloroethylene, and n-hexane, found in some paints, thinners, degreasers, and adhesives</li>"+
+      "<li><b>Carbon monoxide</b> — engine exhaust in enclosed or poorly ventilated spaces</li>"+
+      "<li><b>Certain metals</b> — lead, mercury, manganese, including welding fume exposure</li></ul>"+
+      "<p>The practical point: if you work with solvents or around engine exhaust <b>and</b> in noise, your risk is higher than the noise level alone suggests. Follow the Hazard Communication Program for chemical handling, keep ventilation working, and be especially disciplined about hearing protection on those jobs.</p>"+
+      "<p>Some medications are also ototoxic. If a doctor prescribes something and mentions hearing or ringing as a side effect, tell the Environmental Compliance and Safety Lead so it can be considered at your next hearing test.</p>",
+      kc:{ q:"You spend the day using solvents in a noisy area. Your hearing risk is…", opts:["The same as noise alone","Lower, because solvents mask noise","Higher — ototoxic chemicals can compound noise damage","Only a concern above 100 dBA"], a:2 } },
+
+    { h:"9. Off the Clock Counts Too", body:
+      "<p>Your ears do not know whether the noise is on company time. Noise exposure is a <b>24/7/365</b> proposition, and for many people the loudest thing they do all week happens on a Saturday.</p>"+
+      "<table class='mini'><tr><th>Activity</th><th>Roughly</th></tr>"+
+      "<tr><td>Gas lawn mower</td><td>90 dBA</td></tr>"+
+      "<tr><td>Chainsaw</td><td>110 dBA</td></tr>"+
+      "<tr><td>Motorcycle / snowmobile</td><td>100 dBA</td></tr>"+
+      "<tr><td>Concert or loud stereo</td><td>110 dBA</td></tr>"+
+      "<tr><td><b>Firearm, unsuppressed</b></td><td><b>140–170 dB — a single shot can cause permanent damage</b></td></tr></table>"+
+      "<p>This matters for a practical reason beyond your own hearing: <b>if you damage your hearing at home, it shows up on your annual audiogram at work.</b> The test cannot tell where the damage came from. Protecting your hearing off the clock protects the record of your hearing on it.</p>"+
+      "<p>Keep a set of plugs in the shop at home, in the truck, and in the range bag. They cost almost nothing and they are the only hearing protection you will ever get.</p>",
+      kc:{ q:"Which of these can cause permanent hearing damage from a single exposure?", opts:["A lawn mower","A loud stereo","An unsuppressed firearm","A motorcycle"], a:2 } },
+
+    { h:"10. Your Rights and the Bottom Line", body:
+      "<p><b>What WKO Inc. owes you:</b></p>"+
+      "<ul><li>Hearing protection <b>at no cost</b>, in at least two types, replaced free when worn out</li>"+
+      "<li>Annual training and an annual hearing test at no cost, on company time</li>"+
+      "<li><b>Notification within five working days</b> if noise monitoring shows your exposure at or above 85 dBA TWA8</li>"+
+      "<li>The <b>opportunity to observe</b> any noise monitoring that is conducted</li>"+
+      "<li>Access to this written program, your noise monitoring records, and your own audiometric records on request</li>"+
+      "<li>Written notification within 21 days if you have a Standard Threshold Shift</li></ul>"+
+      "<p><b>What you owe:</b> wear your protection, the whole time you are exposed, correctly fitted. Show up for your hearing test. Say something when protection does not fit, when a machine gets louder, or when your ears ring after a shift.</p>"+
+      "<h2>The bottom line</h2>"+
+      "<p>Every other injury at this mill can heal. This one cannot. The hearing you have when you start here is the most you will ever have — the only question is how much of it you still have when you retire. A pair of earplugs costs pennies and takes fifteen seconds to put in correctly.</p>"+
+      "<p>The written Hearing Conservation Program v2.1 is available in the Safety Office, and the Environmental Compliance and Safety Lead will answer any question about it.</p>",
+      kc:{ q:"If noise monitoring shows your exposure at or above 85 dBA TWA8, you must be notified within…", opts:["30 days","Five working days","One year","Whenever convenient"], a:1 } }
+  ],
+  quizH: "Final Quiz",
+  quizIntro: "Answer all 10 questions. You need 8 correct (80%) to pass. Take your time — you can review your answers before submitting.",
+  submitBtn: "Submit Quiz",
+  answerAll: "Please answer every question before submitting.",
+  quiz: [
+    { q:"Noise-induced hearing loss is…", opts:["Permanent — the inner ear hair cells do not grow back","Temporary and heals in a few weeks","Curable with surgery","Only a problem for older workers"], a:0 },
+    { q:"In Washington, at 85 dBA TWA8 hearing protection is…", opts:["Available on request","Optional until 90 dBA","Required to be worn","Required only after an STS"], a:2 },
+    { q:"At 90 dBA TWA8, the company must additionally…", opts:["Hand out more earplugs","Implement feasible engineering and administrative controls","Do nothing further","Shut down the area"], a:1 },
+    { q:"How many types of hearing protector must be offered to each exposed employee?", opts:["One","Only earmuffs","Whatever is in stock","At least two distinct types"], a:3 },
+    { q:"The correct way to insert a foam earplug is…", opts:["Push it in quickly","Roll it thin, pull the ear up and back, insert, and hold 20–30 seconds","Wet it first","Leave it partly outside the ear"], a:1 },
+    { q:"Removing your hearing protection for 30 minutes during a shift in loud noise…", opts:["Cuts your effective protection for the day by more than half","Has almost no effect","Is fine if you are quick","Only matters if you are near a saw"], a:0 },
+    { q:"Before your annual hearing test you should…", opts:["Listen to music to warm up your ears","Skip breakfast","Avoid loud noise for at least 14 hours","Nothing in particular"], a:2 },
+    { q:"A Standard Threshold Shift means…", opts:["You are being disciplined","Your hearing has measurably changed from your baseline — you are refitted, retrained, and re-evaluated","You will lose your job","Your test was invalid"], a:1 },
+    { q:"Ototoxic chemicals such as solvents and carbon monoxide…", opts:["Protect your hearing","Have no effect on hearing","Only matter if swallowed","Can compound noise damage and increase your risk"], a:3 },
+    { q:"Which produces enough noise to cause permanent damage from a single exposure?", opts:["Normal conversation","A gas lawn mower","An unsuppressed firearm","A running truck engine"], a:2 }
+  ],
+  passH:"Congratulations — You Passed!",
+  passSub:"Certificate of Completion",
+  passModule:"Hearing Conservation — Employee Training " + MODULE_VERSION,
+  scoreLabel:"Score",
+  dateLabel:"Date",
+  codeLabel:"Your completion code",
+  passInstr:"<b>Last step — record your completion:</b> tap the button below and submit the completion form. Enter your name, select <b>\"Hearing Conservation / Conservación de la Audición\"</b> from the module list, and enter the completion code shown above. Your training is not on record until you submit the form.",
+  recordBtn:"Record My Completion",
+  failH:"Not Yet — Keep Going",
+  failMsg:"You scored below 80%. Review the material — especially the 85 dBA rule, how to fit earplugs correctly, why removing them briefly matters so much, and what a Standard Threshold Shift means — and try again. There is no limit on attempts.",
+  reviewBtn:"Review the Material",
+  retakeBtn:"Retake the Quiz",
+  yourScore:"Your score"
+},
+es: {
+  basedOn: "Basado en el Programa de Conservación de la Audición de WKO Inc. v2.1 (capítulo 296-817 WAC). ¿Preguntas? Contacte al Líder de Cumplimiento Ambiental y Seguridad.",
+  introH: "Bienvenido — Conservación de la Audición en WKO Inc.",
+  introP1: "Esta capacitación cubre lo que el ruido le hace a su audición, cómo protegerla, y para qué sirve su examen auditivo anual. Toma unos 20 minutos.",
+  introP2: "</p><div class='notice'><b>Por qué esta importa:</b> la pérdida auditiva por ruido es <b>permanente</b>. No hay cirugía, ni audífono, ni tratamiento que devuelva lo que el ruido se lleva. Todo en esta capacitación se trata de conservar lo que usted tiene.</div><p>Requerida anualmente para todo empleado cuya exposición al ruido alcance 85 dBA TWA8 — lo que incluye todas las áreas de producción en WKO Inc.",
+  nameLabel: "Escriba su nombre completo para comenzar:",
+  namePh: "Nombre y apellido",
+  startBtn: "Comenzar Capacitación",
+  continueBtn: "Continuar",
+  checkBtn: "Verificar Respuesta",
+  kcOk: "Correcto — bien hecho.",
+  kcBad: "No exactamente — la respuesta correcta está resaltada. Revísela y continúe.",
+  secLabel: "Sección",
+  ofLabel: "de",
+  sections: [
+    { h:"1. Lo Que el Ruido Realmente Le Hace a Sus Oídos", body:
+      "<p>En lo profundo de su oído interno hay unas 15,000 células ciliadas diminutas. Las ondas sonoras las doblan, y ese doblez es lo que su cerebro interpreta como sonido. El ruido fuerte las dobla demasiado, con demasiada frecuencia, hasta que se rompen.</p>"+
+      "<p><b>No vuelven a crecer. Nunca.</b> A diferencia de una cortada o un hueso roto, no hay proceso de curación para una célula ciliada muerta. Ninguna cirugía las repara. Los audífonos solo amplifican lo que queda — no restauran lo perdido.</p>"+
+      "<p>La pérdida auditiva por ruido es <b>gradual, indolora y permanente</b>. Esa combinación es lo que la hace peligrosa. Nada duele, así que nada le avisa. Se lleva primero las frecuencias altas — el rango que lleva las consonantes — así que mucho antes de notar que el sonido está más bajo, usted nota que no puede seguir una conversación en un lugar ruidoso. La gente empieza a decirle que tiene la televisión muy alta. Ese daño ya está hecho.</p>"+
+      "<p><b>Señales de que hoy estuvo demasiado fuerte:</b></p>"+
+      "<ul><li><b>Zumbido en los oídos</b> después del turno (tinnitus) — para muchas personas termina siendo permanente</li>"+
+      "<li><b>Audición apagada</b> que se aclara al día siguiente — eso es un cambio temporal del umbral, y es su oído diciéndole que sufrió daño</li>"+
+      "<li><b>Necesitar el radio o la televisión más alto</b> que antes</li></ul>"+
+      "<p>Reporte cualquiera de estas a su supervisor. No son algo que haya que aguantar.</p>",
+      kc:{ q:"Sus oídos zumban después del turno y al día siguiente se sienten normales. ¿Qué significa?", opts:["Nada — ya se pasó","Sus oídos se están endureciendo","Es una señal de advertencia de daño por ruido y debe reportarse","Solo importa si duele"], a:2 } },
+
+    { h:"2. Los Números Que Importan", body:
+      "<p>El ruido se mide en decibeles, y la escala no es como uno esperaría. Es <b>logarítmica</b>: cada aumento de 3 dB es <b>el doble</b> de energía sonora. Por eso la diferencia entre 85 y 95 dBA no es pequeña — es enorme.</p>"+
+      "<p>Como el daño depende tanto de la intensidad como del tiempo, la exposición se mide como un <b>promedio de 8 horas, escrito dBA TWA8</b>. Cuatro umbrales rigen este programa:</p>"+
+      "<table class='mini'><tr><th>Nivel</th><th>Qué significa</th></tr>"+
+      "<tr><td><b>85 dBA TWA8</b></td><td>La protección auditiva <b>debe usarse</b>. Aquí comienzan la capacitación, los exámenes auditivos y el monitoreo.</td></tr>"+
+      "<tr><td><b>90 dBA TWA8</b></td><td>La compañía debe implementar controles de ingeniería o administrativos factibles para bajar el ruido.</td></tr>"+
+      "<tr><td><b>115 dBA</b></td><td>Ruido sostenido extremo. Se requieren señales de advertencia en esas áreas.</td></tr>"+
+      "<tr><td><b>140 dBC</b></td><td>Ruido de impacto o impulso extremo — un solo golpe puede dañar la audición.</td></tr></table>"+
+      "<div class='notice'><b>Washington es más estricto que la regla federal aquí.</b> OSHA federal solo requiere que la protección esté <i>disponible</i> a 85 y que se use a 90. Washington requiere que se <b>use a 85</b> (WAC 296-817-20015). En WKO Inc., la protección auditiva se requiere en todas las áreas de producción.</div>"+
+      "<p>Como referencia: una conversación normal es unos 60 dBA. Un aserradero o cepilladora corre aproximadamente 85–95 dBA. Una motosierra ronda los 110.</p>",
+      kc:{ q:"A 85 dBA TWA8 en Washington, la protección auditiva es…", opts:["Disponible si usted la quiere","Obligatoria de usar","Requerida solo después de un examen auditivo","Opcional hasta 90 dBA"], a:1 } },
+
+    { h:"3. Sus Dos Opciones — Tapones y Orejeras", body:
+      "<p>WKO Inc. le ofrece <b>al menos dos tipos distintos</b> de protección auditiva — eso es un requisito, no una cortesía (WAC 296-817-20015(2)). Usted tiene una opción real porque la protección que le resulta incómoda es la protección que se va a quitar.</p>"+
+      "<table class='mini'><tr><th>Tipo</th><th>Bueno</th><th>Cuidado con</th></tr>"+
+      "<tr><td><b>Tapones de espuma</b></td><td>Alta protección, económicos, funcionan bajo el casco, cómodos con calor</td><td>Solo funcionan si se enrollan e insertan correctamente — la mayoría lo hace mal</td></tr>"+
+      "<tr><td><b>Tapones premoldeados / reutilizables</b></td><td>Fáciles de insertar bien, reutilizables, lavables</td><td>Necesitan la talla correcta; se desgastan</td></tr>"+
+      "<tr><td><b>Orejeras</b></td><td>Rápidas de poner y quitar, talla única, fáciles de verificar a distancia</td><td>Calurosas en verano; cascos, lentes y cabello largo rompen el sello</td></tr>"+
+      "<tr><td><b>Ambos juntos</b></td><td>Para los trabajos más ruidosos — agrega unos 5 dB sobre el mejor de los dos</td><td>No es la suma de ambos valores</td></tr></table>"+
+      "<p><b>NRR</b> — Índice de Reducción de Ruido — es el número impreso en el paquete. Es una cifra de laboratorio, y la protección real siempre es menor por el ajuste imperfecto. Donde el ruido alcanza 115 dBA o 140 dBC, su protector debe tener un NRR de al menos 20 dB.</p>"+
+      "<p>Si lo que tiene es incómodo, no le queda bien, o se descubre quitándoselo — <b>pida un tipo diferente</b>. Para eso existe exactamente la opción.</p>",
+      kc:{ q:"¿Por qué WKO Inc. ofrece más de un tipo de protección auditiva?", opts:["Para agotar inventario viejo","Porque es requerido, y porque la protección incómoda es la que uno se quita","Porque las orejeras son mejores para todos","No hay razón"], a:1 } },
+
+    { h:"4. El Ajuste Lo Es Todo", body:
+      "<p>Un tapón mal insertado puede perder la mayor parte de su protección. El tapón que técnicamente está en su oído pero no sella no está haciendo casi nada — y usted no podrá notarlo por la sensación.</p>"+
+      "<p><b>Tapones de espuma — el método enrollar, jalar, sostener:</b></p>"+
+      "<ul><li><b>Enrolle</b> el tapón en un cilindro delgado y sin pliegues entre sus dedos. Delgado. La mayoría no lo enrolla lo suficiente.</li>"+
+      "<li><b>Jale</b> su oreja hacia arriba y atrás con la mano opuesta, pasando sobre su cabeza. Esto endereza el canal auditivo.</li>"+
+      "<li><b>Inserte</b> bien dentro del canal y <b>sostenga</b> de 20 a 30 segundos mientras la espuma se expande contra las paredes.</li></ul>"+
+      "<p><b>Verifíquelo:</b> ahueque las manos sobre sus oídos y retírelas. Si el nivel de sonido casi no cambia, sus tapones están sellados. Si se pone notablemente más silencioso con las manos puestas, no lo están — quíteselos y empiece de nuevo.</p>"+
+      "<p><b>Orejeras:</b> las almohadillas deben sellar completamente alrededor contra la piel. Recoja el cabello, y tenga presente que las correas del casco, las patillas de los lentes y las joyas rompen el sello. Reemplace las almohadillas cuando se endurezcan o agrieten.</p>"+
+      "<p><b>Cuidado:</b> mantenga limpios los tapones reutilizables y lávelos; deseche los de espuma cuando estén sucios o ya no sean elásticos; nunca comparta tapones con nadie. Reemplace cualquiera que esté gastado, agrietado o rígido — WKO provee reemplazos sin costo.</p>",
+      kc:{ q:"Después de insertar tapones de espuma, debe sostenerlos en su lugar 20–30 segundos porque…", opts:["Es una costumbre","La espuma necesita tiempo para expandirse y sellar contra el canal","Los mantiene limpios","No es necesario"], a:1 } },
+
+    { h:"5. Úselos Todo el Tiempo", body:
+      "<p>Esta sección es corta porque el punto es simple, y es lo más malentendido sobre la protección auditiva.</p>"+
+      "<div class='danger'><b>Quitarse la protección aunque sea por unos minutos en un área ruidosa destruye la mayor parte de la protección que obtuvo durante todo el turno.</b></div>"+
+      "<p>He aquí por qué. La protección se basa en su dosis del día completo. Si usa tapones 8 horas a 95 dBA, su exposición protegida es segura. Quíteselos por <b>30 minutos</b> en ese mismo ruido, y esa media hora sin protección domina la dosis de todo el día — puede reducir su protección efectiva a más de la mitad.</p>"+
+      "<p>Los momentos comunes en que la gente se los quita:</p>"+
+      "<ul><li>Para hablar con un compañero o recibir instrucciones</li>"+
+      "<li>Porque hace calor y le pican</li>"+
+      "<li>Al cruzar un área ruidosa camino a otro lado</li>"+
+      "<li>\u201cSolo un minuto\u201d para escuchar un sonido en una máquina</li></ul>"+
+      "<p><b>Si necesita hablar, salga del ruido.</b> Si le resultan incómodos, pida un tipo diferente. Si necesita escuchar una máquina, para eso está un supervisor y un enfoque de diagnóstico adecuado. Ninguna de estas cosas vale su audición.</p>",
+      kc:{ q:"Se quita los tapones por 30 minutos durante un turno de 8 horas en ruido de 95 dBA. El efecto es…", opts:["Insignificante — solo fueron 30 minutos","Reduce su protección efectiva del día a más de la mitad","Solo importa arriba de 100 dBA","No tiene efecto si se los vuelve a poner"], a:1 } },
+
+    { h:"6. Su Examen Auditivo Anual", body:
+      "<p>WKO Inc. proporciona pruebas audiométricas sin costo para usted, en tiempo de la compañía, a través de <b>the company's contracted audiometric testing provider</b>. Es rápido, indoloro, y es la única manera de saber si su protección realmente está funcionando.</p>"+
+      "<p><b>Su audiograma de línea base</b> es su primera prueba — la referencia contra la cual se compara toda prueba futura. Cada prueba anual posterior se mide contra su línea base, no contra la audición \u201cnormal\u201d. Son sus propios oídos siendo monitoreados a lo largo del tiempo.</p>"+
+      "<p><b>Antes de su prueba:</b> evite el ruido fuerte durante al menos 14 horas antes — incluyendo ruido fuera del trabajo como disparar, cortar el césped, motocicletas y conciertos. El ruido fuerte la noche anterior produce un cambio temporal que hace que su audición se vea peor de lo que está, y ese resultado falso puede quedarse con usted.</p>"+
+      "<p><b>Qué sucede:</b> usted se sienta en una cabina silenciosa con audífonos y presiona un botón cada vez que escucha un tono. Diferentes tonos, diferentes volúmenes. Eso es todo.</p>"+
+      "<p>Tome la prueba en serio y presione el botón cuando genuinamente escuche el tono — adivinar en cualquier dirección solo distorsiona el registro de su propia audición.</p>",
+      kc:{ q:"¿Por qué debe evitar el ruido fuerte 14 horas antes de su examen auditivo anual?", opts:["Hace la prueba más rápida","El ruido reciente causa un cambio temporal que hace ver su audición peor de lo que está","Para que sus oídos estén limpios","No es importante"], a:1 } },
+
+    { h:"7. Cambio Estándar del Umbral — Qué Significa", body:
+      "<p>Un <b>Cambio Estándar del Umbral (STS)</b> es un cambio promedio de 10 dB o más en 2000, 3000 y 4000 Hz en cualquiera de los oídos, comparado con su línea base. En términos simples: su audición ha cambiado de manera medible desde su primera prueba.</p>"+
+      "<div class='notice'><b>Un STS no es un castigo ni una amenaza a su empleo.</b> Es una advertencia temprana — una señal para cambiar algo antes de perder más audición. Nunca se disciplina a un empleado por un STS.</div>"+
+      "<p><b>Lo que hace la compañía cuando usted tiene uno:</b></p>"+
+      "<ul><li>Se le notifica por escrito dentro de 21 días</li>"+
+      "<li>Se le vuelve a ajustar la protección auditiva, se le recapacita, y se le ofrece protección con mayor atenuación</li>"+
+      "<li>Su protección ahora debe reducir su exposición por debajo de 85 dBA</li>"+
+      "<li>Se reevalúa su área de trabajo y los controles</li>"+
+      "<li>Si es necesario, se le refiere para evaluación adicional</li>"+
+      "<li>Puede hacerse una nueva prueba dentro de 30 días para confirmar el resultado</li></ul>"+
+      "<p><b>La protección auditiva se vuelve obligatoria para usted sin importar su nivel de exposición</b> una vez que ha tenido un STS. Los oídos ya dañados son más vulnerables a más daño.</p>",
+      kc:{ q:"El audiograma anual de un empleado muestra un Cambio Estándar del Umbral. ¿Qué sucede?", opts:["Es disciplinado","Es reasignado automáticamente","Se le notifica por escrito, se le reajusta la protección, se le recapacita, y se reevalúa su exposición","Nada hasta la siguiente prueba"], a:2 } },
+
+    { h:"8. Químicos Que Dañan la Audición", body:
+      "<p>Algunos químicos dañan la audición por sí solos, y varios empeoran el daño por ruido más de lo que cualquiera haría por separado. Se llaman <b>ototóxicos</b> — literalmente, venenosos para el oído.</p>"+
+      "<p>Sustancias ototóxicas que puede encontrar en WKO Inc. incluyen:</p>"+
+      "<ul><li><b>Solventes</b> — tolueno, xileno, estireno, tricloroetileno y n-hexano, presentes en algunas pinturas, diluyentes, desengrasantes y adhesivos</li>"+
+      "<li><b>Monóxido de carbono</b> — escape de motores en espacios cerrados o mal ventilados</li>"+
+      "<li><b>Ciertos metales</b> — plomo, mercurio, manganeso, incluyendo exposición a humos de soldadura</li></ul>"+
+      "<p>El punto práctico: si usted trabaja con solventes o cerca de escape de motores <b>y</b> en ruido, su riesgo es mayor de lo que el nivel de ruido por sí solo sugiere. Siga el Programa de Comunicación de Peligros para el manejo de químicos, mantenga la ventilación funcionando, y sea especialmente disciplinado con la protección auditiva en esos trabajos.</p>"+
+      "<p>Algunos medicamentos también son ototóxicos. Si un médico le receta algo y menciona la audición o zumbidos como efecto secundario, dígaselo al Líder de Cumplimiento Ambiental y Seguridad para que se considere en su próximo examen auditivo.</p>",
+      kc:{ q:"Pasa el día usando solventes en un área ruidosa. Su riesgo auditivo es…", opts:["El mismo que el ruido solo","Menor, porque los solventes enmascaran el ruido","Mayor — los químicos ototóxicos pueden agravar el daño por ruido","Solo preocupante arriba de 100 dBA"], a:2 } },
+
+    { h:"9. Fuera del Trabajo También Cuenta", body:
+      "<p>Sus oídos no saben si el ruido es en tiempo de la compañía. La exposición al ruido es una cuestión de <b>24/7/365</b>, y para muchas personas lo más ruidoso que hacen en toda la semana ocurre un sábado.</p>"+
+      "<table class='mini'><tr><th>Actividad</th><th>Aproximadamente</th></tr>"+
+      "<tr><td>Cortadora de césped a gasolina</td><td>90 dBA</td></tr>"+
+      "<tr><td>Motosierra</td><td>110 dBA</td></tr>"+
+      "<tr><td>Motocicleta / moto de nieve</td><td>100 dBA</td></tr>"+
+      "<tr><td>Concierto o estéreo fuerte</td><td>110 dBA</td></tr>"+
+      "<tr><td><b>Arma de fuego sin supresor</b></td><td><b>140–170 dB — un solo disparo puede causar daño permanente</b></td></tr></table>"+
+      "<p>Esto importa por una razón práctica más allá de su propia audición: <b>si usted daña su audición en casa, aparece en su audiograma anual del trabajo.</b> La prueba no puede saber de dónde vino el daño. Proteger su audición fuera del trabajo protege el registro de su audición en el trabajo.</p>"+
+      "<p>Guarde un juego de tapones en el taller de casa, en la camioneta, y en la bolsa del campo de tiro. Cuestan casi nada y son la única protección auditiva que jamás tendrá.</p>",
+      kc:{ q:"¿Cuál de estos puede causar daño auditivo permanente con una sola exposición?", opts:["Una cortadora de césped","Un estéreo fuerte","Un arma de fuego sin supresor","Una motocicleta"], a:2 } },
+
+    { h:"10. Sus Derechos y lo Fundamental", body:
+      "<p><b>Lo que WKO Inc. le debe:</b></p>"+
+      "<ul><li>Protección auditiva <b>sin costo</b>, en al menos dos tipos, reemplazada gratis cuando se desgaste</li>"+
+      "<li>Capacitación anual y examen auditivo anual sin costo, en tiempo de la compañía</li>"+
+      "<li><b>Notificación dentro de cinco días hábiles</b> si el monitoreo de ruido muestra su exposición en o sobre 85 dBA TWA8</li>"+
+      "<li>La <b>oportunidad de observar</b> cualquier monitoreo de ruido que se realice</li>"+
+      "<li>Acceso a este programa escrito, a sus registros de monitoreo de ruido, y a sus propios registros audiométricos cuando lo solicite</li>"+
+      "<li>Notificación escrita dentro de 21 días si tiene un Cambio Estándar del Umbral</li></ul>"+
+      "<p><b>Lo que usted debe:</b> usar su protección, todo el tiempo que esté expuesto, correctamente ajustada. Presentarse a su examen auditivo. Decir algo cuando la protección no ajuste, cuando una máquina se ponga más ruidosa, o cuando sus oídos zumben después del turno.</p>"+
+      "<h2>Lo fundamental</h2>"+
+      "<p>Cualquier otra lesión en este aserradero puede sanar. Esta no. La audición que usted tiene cuando empieza aquí es la máxima que jamás tendrá — la única pregunta es cuánta le quedará cuando se jubile. Un par de tapones cuesta centavos y toma quince segundos ponérselos correctamente.</p>"+
+      "<p>El Programa escrito de Conservación de la Audición v2.1 está disponible en la Oficina de Seguridad, y el Líder de Cumplimiento Ambiental y Seguridad responderá cualquier pregunta.</p>",
+      kc:{ q:"Si el monitoreo de ruido muestra su exposición en o sobre 85 dBA TWA8, se le debe notificar dentro de…", opts:["30 días","Cinco días hábiles","Un año","Cuando sea conveniente"], a:1 } }
+  ],
+  quizH: "Examen Final",
+  quizIntro: "Responda las 10 preguntas. Necesita 8 correctas (80%) para aprobar. Tómese su tiempo — puede revisar sus respuestas antes de enviar.",
+  submitBtn: "Enviar Examen",
+  answerAll: "Por favor responda todas las preguntas antes de enviar.",
+  quiz: [
+    { q:"La pérdida auditiva inducida por ruido es…", opts:["Permanente — las células ciliadas del oído interno no vuelven a crecer","Temporal y sana en unas semanas","Curable con cirugía","Solo un problema para trabajadores mayores"], a:0 },
+    { q:"En Washington, a 85 dBA TWA8 la protección auditiva es…", opts:["Disponible a solicitud","Opcional hasta 90 dBA","Obligatoria de usar","Requerida solo después de un STS"], a:2 },
+    { q:"A 90 dBA TWA8, la compañía debe adicionalmente…", opts:["Repartir más tapones","Implementar controles de ingeniería y administrativos factibles","No hacer nada más","Cerrar el área"], a:1 },
+    { q:"¿Cuántos tipos de protección auditiva deben ofrecerse a cada empleado expuesto?", opts:["Uno","Solo orejeras","Lo que haya en inventario","Al menos dos tipos distintos"], a:3 },
+    { q:"La forma correcta de insertar un tapón de espuma es…", opts:["Empujarlo rápido","Enrollarlo delgado, jalar la oreja arriba y atrás, insertar y sostener 20–30 segundos","Mojarlo primero","Dejarlo parcialmente fuera del oído"], a:1 },
+    { q:"Quitarse la protección auditiva por 30 minutos durante un turno en ruido fuerte…", opts:["Reduce su protección efectiva del día a más de la mitad","Casi no tiene efecto","Está bien si es rápido","Solo importa si está cerca de una sierra"], a:0 },
+    { q:"Antes de su examen auditivo anual usted debe…", opts:["Escuchar música para calentar los oídos","Saltarse el desayuno","Evitar el ruido fuerte por al menos 14 horas","Nada en particular"], a:2 },
+    { q:"Un Cambio Estándar del Umbral significa…", opts:["Que va a ser disciplinado","Que su audición cambió de manera medible desde su línea base — se le reajusta, recapacita y reevalúa","Que perderá su empleo","Que su prueba fue inválida"], a:1 },
+    { q:"Los químicos ototóxicos como solventes y monóxido de carbono…", opts:["Protegen su audición","No tienen efecto en la audición","Solo importan si se tragan","Pueden agravar el daño por ruido y aumentar su riesgo"], a:3 },
+    { q:"¿Cuál produce suficiente ruido para causar daño permanente con una sola exposición?", opts:["Una conversación normal","Una cortadora de césped a gasolina","Un arma de fuego sin supresor","El motor de una camioneta encendida"], a:2 }
+  ],
+  passH:"¡Felicitaciones — Aprobó!",
+  passSub:"Certificado de Finalización",
+  passModule:"Conservación de la Audición — Capacitación del Empleado " + MODULE_VERSION,
+  scoreLabel:"Puntaje",
+  dateLabel:"Fecha",
+  codeLabel:"Su código de finalización",
+  passInstr:"<b>Último paso — registre su finalización:</b> toque el botón de abajo y envíe el formulario de finalización. Escriba su nombre, seleccione <b>\"Hearing Conservation / Conservación de la Audición\"</b> de la lista de módulos, y escriba el código de finalización que aparece arriba. Su capacitación no queda registrada hasta que envíe el formulario.",
+  recordBtn:"Registrar Mi Finalización",
+  failH:"Todavía No — Siga Adelante",
+  failMsg:"Obtuvo menos de 80%. Revise el material — especialmente la regla de 85 dBA, cómo ajustar correctamente los tapones, por qué importa tanto quitárselos brevemente, y qué significa un Cambio Estándar del Umbral — e intente de nuevo. No hay límite de intentos.",
+  reviewBtn:"Revisar el Material",
+  retakeBtn:"Repetir el Examen",
+  yourScore:"Su puntaje"
+}
+};
+
+var ANSWER_KEY = STR.en.quiz.map(function(q){ return q.a; });
+
+/* ------------ State ------------ */
+var state = { lang:null, screen:"lang", section:0, name:"", kcDone:{}, quizAnswers:{}, lastScore:null, code:null };
+
+/* ------------ Helpers ------------ */
+function T(){ return STR[state.lang]; }
+function $(id){ return document.getElementById(id); }
+function esc(s){ var d=document.createElement("div"); d.appendChild(document.createTextNode(s)); return d.innerHTML; }
+
+function generateCode(){
+  var chars="ABCDEFGHJKMNPQRSTUVWXYZ23456789", out="";
+  for(var i=0;i<5;i++){ out+=chars.charAt(Math.floor(Math.random()*chars.length)); }
+  return CODE_PREFIX+out;
+}
+function gradeQuiz(answers){
+  var correct=0;
+  for(var i=0;i<ANSWER_KEY.length;i++){ if(answers[i]===ANSWER_KEY[i]) correct++; }
+  var pct=Math.round(correct/ANSWER_KEY.length*100);
+  return { correct:correct, total:ANSWER_KEY.length, pct:pct, pass: pct>=PASS_PCT };
+}
+
+/* ------------ Rendering ------------ */
+function setLang(l){
+  state.lang=l;
+  if(state.screen==="lang") state.screen="intro";
+  $("langBar").className="langbar";
+  $("btnEN").className = l==="en"?"active":"";
+  $("btnES").className = l==="es"?"active":"";
+  render();
+}
+function progress(){
+  if(state.screen==="lang"){ $("progBar").style.width="0%"; return; }
+  var total = T().sections.length + 2;
+  var pos = state.screen==="intro"?0 : state.screen==="quiz"?total-1 : state.screen==="pass"||state.screen==="fail"?total : state.section+1;
+  $("progBar").style.width = Math.round(pos/total*100)+"%";
+}
+function renderLang(){
+  $("app").innerHTML =
+    '<div class="card splash">'+
+    '<div class="co">WKO INC.</div>'+
+    '<div class="ti-en">Hearing Conservation Training</div>'+
+    '<div class="ti-es">Capacitación sobre Conservación de la Audición</div>'+
+    '<div class="choose">Choose your language / Elija su idioma:</div>'+
+    '<div class="langbtns">'+
+    '<button id="langBtnEN">English</button>'+
+    '<button id="langBtnES">Español</button>'+
+    '</div></div>';
+  $("langBtnEN").addEventListener("click", function(){ setLang("en"); });
+  $("langBtnES").addEventListener("click", function(){ setLang("es"); });
+}
+function render(){
+  progress();
+  if(state.screen==="lang") renderLang();
+  else if(state.screen==="intro") renderIntro();
+  else if(state.screen==="section") renderSection();
+  else if(state.screen==="quiz") renderQuiz();
+  else if(state.screen==="pass") renderPass();
+  else if(state.screen==="fail") renderFail();
+}
+function renderIntro(){
+  var t=T();
+  $("app").innerHTML =
+    '<div class="card"><h1>'+t.introH+'</h1><p>'+t.introP1+'</p><p>'+t.introP2+'</p>'+
+    '<h2>'+t.nameLabel+'</h2>'+
+    '<input type="text" id="nameInput" placeholder="'+t.namePh+'" value="'+esc(state.name)+'" autocomplete="name">'+
+    '<br><button class="btn" id="startBtn" disabled>'+t.startBtn+'</button>'+
+    '<p style="color:var(--gray);font-size:.85em;margin-top:16px">'+t.basedOn+'</p></div>';
+  var inp=$("nameInput"), btn=$("startBtn");
+  function gate(){ state.name=inp.value.trim(); btn.disabled = state.name.length<2; }
+  inp.addEventListener("input", gate); gate();
+  btn.addEventListener("click", function(){ if(state.name.length>=2){ state.screen="section"; state.section=0; render(); window.scrollTo(0,0);} });
+}
+function renderSection(){
+  var t=T(), s=t.sections[state.section];
+  var html = '<div class="card"><div class="qnum">'+t.secLabel+' '+(state.section+1)+' '+t.ofLabel+' '+t.sections.length+'</div><h1>'+s.h+'</h1>'+s.body;
+  var kcPassed = !!state.kcDone[state.section];
+  if(s.kc){
+    html += '<div class="kc"><div class="kct">✔ '+s.kc.q+'</div>';
+    for(var i=0;i<s.kc.opts.length;i++){
+      html += '<label class="opt" id="kcOpt'+i+'"><input type="radio" name="kc" value="'+i+'"'+(kcPassed?' disabled':'')+'>'+s.kc.opts[i]+'</label>';
+    }
+    html += '<div class="fb" id="kcFb"></div>';
+    if(!kcPassed) html += '<button class="btn secondary" id="kcCheck">'+t.checkBtn+'</button>';
+    html += '</div>';
+  }
+  html += '<br><button class="btn" id="contBtn"'+((s.kc&&!kcPassed)?' disabled':'')+'>'+t.continueBtn+'</button></div>';
+  $("app").innerHTML = html;
+  if(s.kc && !kcPassed){
+    $("kcCheck").addEventListener("click", function(){
+      var sel=document.querySelector('input[name="kc"]:checked');
+      if(!sel) return;
+      var v=parseInt(sel.value,10), fb=$("kcFb");
+      if(v===s.kc.a){
+        state.kcDone[state.section]=true;
+        $("kcOpt"+v).className="opt correct";
+        fb.className="fb ok"; fb.textContent=t.kcOk;
+        $("contBtn").disabled=false; $("kcCheck").disabled=true;
+      } else {
+        $("kcOpt"+v).className="opt wrong";
+        $("kcOpt"+s.kc.a).className="opt correct";
+        fb.className="fb bad"; fb.textContent=t.kcBad;
+        state.kcDone[state.section]=true;
+        $("contBtn").disabled=false; $("kcCheck").disabled=true;
+      }
+    });
+  }
+  $("contBtn").addEventListener("click", function(){
+    if(state.section < t.sections.length-1){ state.section++; } else { state.screen="quiz"; }
+    render(); window.scrollTo(0,0);
+  });
+}
+function renderQuiz(){
+  var t=T();
+  var html='<div class="card"><h1>'+t.quizH+'</h1><p>'+t.quizIntro+'</p>';
+  for(var i=0;i<t.quiz.length;i++){
+    var q=t.quiz[i];
+    html+='<div class="quizq"><div class="qt">'+(i+1)+'. '+q.q+'</div>';
+    for(var j=0;j<q.opts.length;j++){
+      var checked = state.quizAnswers[i]===j ? ' checked' : '';
+      html+='<label class="opt"><input type="radio" name="q'+i+'" value="'+j+'"'+checked+'>'+q.opts[j]+'</label>';
+    }
+    html+='</div>';
+  }
+  html+='<div class="fb bad" id="quizWarn" style="display:none">'+t.answerAll+'</div>';
+  html+='<button class="btn" id="quizSubmit">'+t.submitBtn+'</button></div>';
+  $("app").innerHTML=html;
+  var radios=document.querySelectorAll('#app input[type=radio]');
+  for(var r=0;r<radios.length;r++){
+    radios[r].addEventListener("change", function(e){
+      var name=e.target.name, idx=parseInt(name.substring(1),10);
+      state.quizAnswers[idx]=parseInt(e.target.value,10);
+    });
+  }
+  $("quizSubmit").addEventListener("click", function(){
+    var answers=[];
+    for(var i=0;i<t.quiz.length;i++){
+      if(typeof state.quizAnswers[i]==="undefined"){ $("quizWarn").style.display="block"; return; }
+      answers.push(state.quizAnswers[i]);
+    }
+    var res=gradeQuiz(answers);
+    state.lastScore=res;
+    if(res.pass){ state.code=generateCode(); state.screen="pass"; }
+    else { state.screen="fail"; }
+    render(); window.scrollTo(0,0);
+  });
+}
+function fmtDate(){
+  var d=new Date();
+  var m=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+  var mes=["ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic"];
+  return state.lang==="es" ? d.getDate()+" "+mes[d.getMonth()]+" "+d.getFullYear() : m[d.getMonth()]+" "+d.getDate()+", "+d.getFullYear();
+}
+function renderPass(){
+  var t=T(), r=state.lastScore;
+  $("app").innerHTML =
+    '<div class="card"><p class="passmsg">'+t.passH+'</p></div>'+
+    '<div class="cert" id="certBox">'+
+      '<div>'+t.passSub+'</div>'+
+      '<div class="big" id="certName">'+esc(state.name)+'</div>'+
+      '<div>'+t.passModule+'</div>'+
+      '<div style="margin:8px 0">'+t.scoreLabel+': <b>'+r.correct+'/'+r.total+' ('+r.pct+'%)</b> &nbsp;·&nbsp; '+t.dateLabel+': <b id="certDate">'+fmtDate()+'</b></div>'+
+      '<div>'+t.codeLabel+':</div>'+
+      '<div class="code" id="certCode">'+state.code+'</div>'+
+    '</div>'+
+    '<div class="card"><p>'+t.passInstr+'</p>'+
+    '<a class="btn" id="recordLink" href="'+FORM_URL+'" target="_blank" rel="noopener">'+t.recordBtn+'</a></div>';
+}
+function renderFail(){
+  var t=T(), r=state.lastScore;
+  $("app").innerHTML =
+    '<div class="card" id="failBox"><p class="failmsg">'+t.failH+'</p>'+
+    '<p>'+t.yourScore+': <b>'+r.correct+'/'+r.total+' ('+r.pct+'%)</b></p>'+
+    '<p>'+t.failMsg+'</p>'+
+    '<button class="btn secondary" id="reviewBtn">'+t.reviewBtn+'</button> '+
+    '<button class="btn" id="retakeBtn">'+t.retakeBtn+'</button></div>';
+  $("reviewBtn").addEventListener("click", function(){ state.quizAnswers={}; state.screen="section"; state.section=0; render(); window.scrollTo(0,0); });
+  $("retakeBtn").addEventListener("click", function(){ state.quizAnswers={}; state.screen="quiz"; render(); window.scrollTo(0,0); });
+}
+
+/* ------------ Test hooks ------------ */
+window.APP = { STR:STR, state:state, gradeQuiz:gradeQuiz, generateCode:generateCode, ANSWER_KEY:ANSWER_KEY, FORM_URL:FORM_URL, PASS_PCT:PASS_PCT, MODULE_VERSION:MODULE_VERSION, CODE_PREFIX:CODE_PREFIX, setLang:setLang, render:render };
+window.setLang = setLang;
+
+render();
+</script>
+</body>
+</html>

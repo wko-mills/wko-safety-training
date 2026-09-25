@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WKO Inc. — Personal Protective Equipment Training v1.0</title>
+<style>
+  :root { --blue:#2E75B6; --dark:#1F4E79; --light:#F2F2F2; --gray:#666666; --red:#C00000; --green:#2E7D32; --amber:#E07B00; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { font-family: Arial, Helvetica, sans-serif; background:#f7f9fb; color:#222; line-height:1.5; }
+  .wrap { max-width:760px; margin:0 auto; padding:16px; }
+  header.bar { background:var(--dark); color:#fff; padding:14px 20px; }
+  header.bar .co { font-weight:bold; font-size:1.05em; letter-spacing:.5px; }
+  header.bar .sub { font-size:.85em; margin-top:2px; opacity:.9; }
+  .splash { text-align:center; padding:34px 22px; }
+  .splash .co { color:var(--gray); font-size:.85em; letter-spacing:2px; font-weight:bold; }
+  .splash .ti-en { color:var(--dark); font-size:1.6em; font-weight:bold; margin:10px 0 4px; }
+  .splash .ti-es { color:var(--blue); font-size:1.4em; font-weight:bold; margin-bottom:18px; }
+  .splash .choose { margin-bottom:16px; }
+  .splash .langbtns { display:flex; gap:14px; justify-content:center; flex-wrap:wrap; }
+  .splash .langbtns button { font-family:Arial; background:var(--blue); color:#fff; border:none; border-radius:6px; padding:14px 0; width:240px; max-width:45%; font-size:1.05em; font-weight:bold; cursor:pointer; }
+  .langbar { text-align:right; padding:10px 16px 0; }
+  .langbar button { font-family:Arial; border:2px solid var(--blue); background:#fff; color:var(--blue); padding:6px 14px; font-weight:bold; cursor:pointer; border-radius:4px; margin-left:6px; font-size:.95em; }
+  .langbar button.active { background:var(--blue); color:#fff; }
+  .card { background:#fff; border:1px solid #d9e2ec; border-radius:8px; padding:22px; margin:16px 0; box-shadow:0 1px 3px rgba(0,0,0,.06); }
+  h1 { color:var(--dark); font-size:1.35em; margin-bottom:12px; }
+  h2 { color:var(--blue); font-size:1.1em; margin:16px 0 8px; }
+  p, li { margin-bottom:10px; }
+  ul { padding-left:22px; }
+  .progress { background:#e1e8f0; border-radius:6px; height:10px; overflow:hidden; margin:4px 0 14px; }
+  .progress > div { background:var(--blue); height:100%; width:0; transition:width .3s; }
+  .btn { font-family:Arial; display:inline-block; background:var(--blue); color:#fff; border:none; padding:12px 26px; font-size:1em; font-weight:bold; border-radius:6px; cursor:pointer; margin-top:14px; }
+  .btn:disabled { background:#9db8d2; cursor:not-allowed; }
+  .btn.secondary { background:#fff; color:var(--blue); border:2px solid var(--blue); }
+  input[type=text] { font-family:Arial; width:100%; padding:12px; font-size:1em; border:2px solid #b8c7d9; border-radius:6px; margin-top:6px; }
+  input[type=text]:focus { border-color:var(--blue); outline:none; }
+  .kc { background:var(--light); border-left:4px solid var(--blue); padding:16px; border-radius:0 6px 6px 0; margin-top:16px; }
+  .kc .kct { font-weight:bold; color:var(--dark); margin-bottom:8px; }
+  .opt { display:block; background:#fff; border:2px solid #c9d6e4; border-radius:6px; padding:10px 12px; margin:8px 0; cursor:pointer; }
+  .opt input { margin-right:10px; }
+  .opt.correct { border-color:var(--green); background:#eef7ee; }
+  .opt.wrong { border-color:var(--red); background:#fdecec; }
+  .fb { font-weight:bold; margin-top:8px; display:none; }
+  .fb.ok { color:var(--green); display:block; }
+  .fb.bad { color:var(--red); display:block; }
+  .qnum { color:var(--gray); font-size:.85em; }
+  .quizq { border-bottom:1px solid #e4eaf1; padding:14px 0; }
+  .quizq .qt { font-weight:bold; margin-bottom:6px; }
+  .cert { border:3px solid var(--dark); border-radius:10px; padding:26px; text-align:center; background:#fff; }
+  .cert .big { font-size:1.5em; color:var(--dark); font-weight:bold; margin:10px 0; }
+  .cert .code { font-size:1.6em; letter-spacing:2px; font-weight:bold; color:var(--blue); background:var(--light); display:inline-block; padding:8px 20px; border-radius:6px; margin:10px 0; }
+  .passmsg { color:var(--green); font-weight:bold; font-size:1.2em; }
+  .failmsg { color:var(--red); font-weight:bold; font-size:1.2em; }
+  .notice { background:#fff8e1; border-left:4px solid #f0a500; padding:12px; border-radius:0 6px 6px 0; margin:12px 0; font-size:.95em; }
+  .danger { background:#fdecec; border-left:4px solid var(--red); padding:12px; border-radius:0 6px 6px 0; margin:12px 0; }
+  .phone { font-weight:bold; color:var(--dark); }
+  table.mini { border-collapse:collapse; width:100%; margin:10px 0; font-size:.95em; }
+  table.mini th { background:var(--blue); color:#fff; padding:8px; text-align:left; }
+  table.mini td { border:1px solid #d9e2ec; padding:8px; vertical-align:top; }
+  table.mini tr:nth-child(even) td { background:var(--light); }
+  .tier { border-radius:8px; padding:14px; margin:10px 0; border:1px solid #d9e2ec; }
+  .tier .tt { font-weight:bold; font-size:1.05em; margin-bottom:4px; }
+  .tier.t1 { border-left:6px solid var(--blue); }
+  .tier.t2 { border-left:6px solid var(--amber); }
+  .tier.t3 { border-left:6px solid var(--red); }
+  footer { text-align:center; color:var(--gray); font-size:.8em; padding:20px 0 30px; }
+  .hidden { display:none !important; }
+</style>
+</head>
+<body>
+<header class="bar">
+  <div class="co">WKO INC.</div>
+  <div class="sub">Personal Protective Equipment Training &mdash; WAC 296-800-160</div>
+</header>
+<div class="langbar hidden" id="langBar">
+  <button id="btnEN" onclick="setLang('en')">English</button>
+  <button id="btnES" onclick="setLang('es')">Español</button>
+</div>
+<div class="wrap">
+  <div class="progress" id="progWrap"><div id="progBar"></div></div>
+  <div id="app"></div>
+</div>
+<footer id="ftr">WKO Inc. &middot; Carson, WA &middot; WAC 296-800-160 &middot; Module v1.0 (2026)</footer>
+<script>
+"use strict";
+var FORM_URL = "https://forms.cloud.microsoft/r/YHYEJNbAMt";
+var MODULE_VERSION = "v1.0";
+var CODE_PREFIX = "PPE26-";
+var PASS_PCT = 80;
+
+/* ------------ Language packs ------------ */
+var STR = {
+en: {
+  basedOn: "Based on the WKO Inc. PPE Program v2.1 (WAC 296-800-160). Questions? Contact the Environmental Compliance and Safety Lead.",
+  introH: "Welcome — Personal Protective Equipment at WKO Inc.",
+  introP1: "PPE is your last line of defense against workplace injuries — eye, head, hand, foot, and visibility protection that stands between you and the hazard when nothing else can remove it. This training covers the PPE rules for every WKO Inc. work area, what the company provides, and how to care for your equipment.",
+  introP2: "The training takes about 15–20 minutes. You must score 80% or better on the final quiz to receive credit. You may retake the quiz if needed.",
+  nameLabel: "Enter your full name to begin:",
+  namePh: "First and last name",
+  startBtn: "Start Training",
+  continueBtn: "Continue",
+  checkBtn: "Check Answer",
+  kcOk: "Correct — well done.",
+  kcBad: "Not quite — the correct answer is highlighted. Review it, then continue.",
+  secLabel: "Section",
+  ofLabel: "of",
+  sections: [
+    { h:"1. Why PPE — Your Last Line of Defense", body:
+      "<p>WKO Inc. controls hazards using the <b>hierarchy of controls</b>. From strongest to weakest:</p>"+
+      "<ol><li><b>Elimination</b> — remove the hazard entirely</li>"+
+      "<li><b>Substitution</b> — replace it with something less hazardous</li>"+
+      "<li><b>Engineering controls</b> — machine guards, ventilation, enclosures</li>"+
+      "<li><b>Administrative controls</b> — procedures, signs, training</li>"+
+      "<li><b>Personal protective equipment</b> — barriers worn on your body</li></ol>"+
+      "<p>PPE comes <b>last</b> because it does not remove the hazard — it only reduces your exposure. That is exactly why wearing it correctly matters so much: when you need PPE, it is the only thing left between you and the injury.</p>"+
+      "<p><b>When PPE is required — by the area rules, a Hazard Assessment, or your supervisor — wearing it is mandatory. No exceptions.</b></p>",
+      kc:{ q:"In the hierarchy of controls, where does PPE sit?", opts:["First — it is the strongest control","Somewhere in the middle","Last — it is the final line of defense when other controls cannot remove the hazard","PPE is not part of the hierarchy"], a:2 } },
+
+    { h:"2. Your Area Rules — What to Wear Where", body:
+      "<p>These are the <b>area defaults</b> at WKO Inc. They apply because of where you are, before any task even begins:</p>"+
+      "<table class='mini'><tr><th>Where</th><th>Required PPE</th></tr>"+
+      "<tr><td><b>All production areas</b> — sawmill, planer mill, barker facility, v-drum whole log chipper facility</td><td>Safety glasses with side shields (Z87+ impact-rated)</td></tr>"+
+      "<tr><td><b>Anywhere overhead hazards or falling objects exist</b> (identified by the Hazard Assessment)</td><td>Hard hat</td></tr>"+
+      "<tr><td><b>Around rolling stock and vehicle traffic</b>, including the log yard</td><td>High-visibility garment, Class 2 or better</td></tr>"+
+      "<tr><td><b>All production, maintenance, and yard work</b></td><td>Sturdy work boots, ankle height or higher</td></tr></table>"+
+      "<p>In shops, the log yard, and other areas, eye protection is <b>task-driven</b> — the Hazard Assessment for your job tells you when it is required.</p>",
+      kc:{ q:"Where are safety glasses required as an area rule?", opts:["Only in the maintenance shop","In all production areas — sawmill, planer mill, barker, and v-drum chipper facilities","Only when your supervisor says so","Only in the log yard"], a:1 } },
+
+    { h:"3. Eyes and Face", body:
+      "<p><b>Safety glasses</b> must have side shields and impact-rated lenses marked <b>Z87+</b>. Ordinary glasses and sunglasses do not qualify.</p>"+
+      "<p><b>Wear prescription glasses?</b> Use the company-provided <b>over-the-glasses (OTG)</b> safety eyewear — it fits over your regular glasses. Never work in production areas with prescription glasses alone.</p>"+
+      "<p><b>Face shields</b> are required for grinding, cutting, chipping, and chemical handling with splash potential. A face shield is worn <b>over</b> your safety glasses — it never replaces them, because particles can fly up underneath the shield.</p>"+
+      "<p><b>Goggles</b> — chemical splash goggles for chemical handling; dust goggles for high-dust jobs. Both cover-style and cup-style are available.</p>" },
+
+    { h:"4. Boots, Gloves, and Hi-Vis", body:
+      "<p><b>Boots:</b> sturdy leather work boots, <b>ankle height or higher</b>, fully enclosing the foot with solid soles. These are everyday footwear that <b>you provide</b>. Safety-toe boots are not required as a general rule — if a Hazard Assessment identifies a crush or impact hazard for your specific task, it will say exactly what protection is required.</p>"+
+      "<p><b>Gloves:</b> <b>leather work gloves are required whenever you handle green lumber.</b> All other glove use is task-driven: cut-resistant gloves for blade and sharp-edge work, chemical-resistant gloves for chemical handling (check SDS Section 8), heat-resistant gloves for hot work.</p>"+
+      "<p><b>Hi-vis:</b> a Class 2 or better high-visibility garment — fluorescent orange, yellow, or green with reflective striping — whenever you work around <b>rolling stock and vehicle traffic, including the log yard</b>. Exempt: offices, enclosed operator cabs, lunchrooms, passenger vehicles, and public parking areas.</p>",
+      kc:{ q:"When are leather work gloves required?", opts:["Only in winter","Whenever you handle green lumber","Only for maintenance employees","Gloves are always optional"], a:1 } },
+
+    { h:"5. Your Hazard Assessment Controls Task PPE", body:
+      "<p>WKO Inc. maintains a <b>full complement of certified PPE Hazard Assessments</b> covering every work area and job classification.</p>"+
+      "<p>When a task brings hazards beyond the area rules — <b>green chain and heavy lumber handling, grinding, chemical handling, hot work</b> — the certified Hazard Assessment for that job is the <b>controlling document</b>. It lists the exact PPE required for the exact hazard, and it applies <b>in addition to</b> the area rules.</p>"+
+      "<p><b>Want to see yours?</b> Hazard Assessments are available through your supervisor or the Safety Office.</p>"+
+      "<p><b>Fit matters.</b> PPE only protects when it fits properly. If your PPE is uncomfortable, too loose, too tight, or interferes with your work — report it. Poorly fitting PPE gets fixed, not tolerated.</p>",
+      kc:{ q:"Your task is grinding in the shop. Where do you find the exact PPE required?", opts:["Guess based on what co-workers wear","The certified Hazard Assessment for the job — ask your supervisor or the Safety Office","PPE is not required in the shop","The employee handbook"], a:1 } },
+
+    { h:"6. Inspect, Care, and Replace", body:
+      "<p><b>Before every use,</b> inspect your PPE for cracks, damage, wear, and contamination.</p>"+
+      "<ul><li><b>Damaged or defective PPE comes out of service immediately</b> — report it to your supervisor and get a replacement</li>"+
+      "<li>Clean, maintain, and store PPE the way the manufacturer says</li>"+
+      "<li><b>Never</b> alter, modify, or defeat PPE — no removing hard hat suspensions, no cutting on safety glasses</li>"+
+      "<li>Shared PPE (face shields, goggles, loaner hard hats) is cleaned and sanitized between users</li></ul>"+
+      "<p>The company replaces worn-out PPE <b>at no cost to you</b>. The only time replacement can come out of your pocket is if the PPE was <b>lost or intentionally damaged</b> — normal wear and accidental damage are always on the company.</p>",
+      kc:{ q:"You notice a crack in your hard hat shell. What do you do?", opts:["Tape it and keep working","Keep using it until the end of the month","Take it out of service immediately, tell your supervisor, and get a replacement","Swap it with a co-worker's hat"], a:2 } },
+
+    { h:"7. What the Company Provides (and What You Provide)", body:
+      "<p><b>Provided free, and replaced free:</b> all required PPE — safety glasses (including OTG styles), hard hats, gloves required for green lumber handling, high-visibility garments, hearing protection, face shields, and goggles.</p>"+
+      "<p><b>You provide:</b> your everyday work boots — the sturdy ankle-height-or-higher boots required in Section 4. They are ordinary work footwear you can wear anywhere.</p>"+
+      "<p><b>Voluntary PPE:</b> you may choose to wear PPE that is not required for your job, as long as it does not create a new hazard. Wearing a <b>dust mask (N95)</b> voluntarily is fine. Any <b>other</b> respirator — like a half-face or full-face elastomeric — is different: it requires the Respiratory Protection Program, including a medical evaluation, even for voluntary use. Talk to the Safety Lead first.</p>" },
+
+    { h:"8. Hearing, Respirators, Falls — and the Bottom Line", body:
+      "<p>Three kinds of PPE have their own dedicated programs:</p>"+
+      "<ul><li><b>Hearing protection</b> — must be worn whenever noise exposure reaches <b>85 dBA</b> (8-hour average). See the Hearing Conservation Program.</li>"+
+      "<li><b>Respirators</b> — selection, fit testing, and medical evaluation per the Respiratory Protection Program.</li>"+
+      "<li><b>Fall protection</b> — required when working at heights of <b>4 feet or more</b>. See the Fall Protection Program.</li></ul>"+
+      "<p><b>The bottom line:</b> wearing required PPE is a condition of working here. Skipping it, altering it, or defeating it leads to discipline — but more importantly, it leaves you as the only thing standing between the hazard and the injury. The written PPE Program v2.1 is available in the Safety Office, and the Environmental Compliance and Safety Lead will answer any question about it.</p>" }
+  ],
+  quizH: "Final Quiz",
+  quizIntro: "Answer all 10 questions. You need 8 correct (80%) to pass. Take your time — you can review your answers before submitting.",
+  submitBtn: "Submit Quiz",
+  answerAll: "Please answer every question before submitting.",
+  quiz: [
+    { q:"In the hierarchy of controls, PPE is used…", opts:["Before engineering controls","As the first choice because it is cheapest","Only after other controls cannot adequately reduce the hazard","Instead of machine guards"], a:2 },
+    { q:"Safety glasses with side shields are required in…", opts:["The log yard only","All production areas, including the sawmill, planer mill, barker, and v-drum chipper facilities","Offices and lunchrooms","Only areas with chemical hazards"], a:1 },
+    { q:"You wear prescription glasses. In a production area you must…", opts:["Wear your prescription glasses alone — they count","Wear company-provided over-the-glasses (OTG) safety eyewear","Remove your glasses while working","Buy your own prescription safety glasses"], a:1 },
+    { q:"Hard hats are required…", opts:["Everywhere on site at all times","Only in winter","Where overhead hazards or falling-object dangers exist, as identified by the Hazard Assessment","Never — they are optional"], a:2 },
+    { q:"Which is TRUE about work boots at WKO Inc.?", opts:["Steel toes are required for everyone","Sneakers are fine in the planer mill","Sturdy boots, ankle height or higher, are required — and you provide them","The company buys everyone's everyday boots"], a:2 },
+    { q:"Leather work gloves are required when…", opts:["Handling green lumber","Driving a forklift","Eating lunch","Walking through the parking lot"], a:0 },
+    { q:"A Class 2 high-visibility garment is required…", opts:["Only for supervisors","Around rolling stock and vehicle traffic, including the log yard","Inside enclosed operator cabs","In the office"], a:1 },
+    { q:"Your task today includes grinding. The exact PPE required comes from…", opts:["Whatever feels comfortable","The certified Hazard Assessment for the job","A co-worker's opinion","The parking rules"], a:1 },
+    { q:"A face shield…", opts:["Replaces safety glasses","Is worn over safety glasses — never instead of them","Is only for welders","Is optional during grinding"], a:1 },
+    { q:"When can PPE replacement cost come out of your pocket?", opts:["Whenever it wears out","Any time it gets damaged","Only if the PPE was lost or intentionally damaged","Every January"], a:2 }
+  ],
+  passH:"Congratulations — You Passed!",
+  passSub:"Certificate of Completion",
+  passModule:"Personal Protective Equipment (PPE) — Employee Training " + MODULE_VERSION,
+  scoreLabel:"Score",
+  dateLabel:"Date",
+  codeLabel:"Your completion code",
+  passInstr:"<b>Last step — record your completion:</b> tap the button below and submit the completion form. Enter your name, select <b>\"Personal Protective Equipment (PPE) / Equipo de Protección Personal (EPP)\"</b> from the module list, and enter the completion code shown above. Your training is not on record until you submit the form.",
+  recordBtn:"Record My Completion",
+  failH:"Not Yet — Keep Going",
+  failMsg:"You scored below 80%. Review the material — especially the area rules, when gloves and hard hats are required, and how the Hazard Assessment controls task PPE — and try again. There is no limit on attempts.",
+  reviewBtn:"Review the Material",
+  retakeBtn:"Retake the Quiz",
+  yourScore:"Your score"
+},
+es: {
+  basedOn: "Basado en el Programa de EPP de WKO Inc. v2.1 (WAC 296-800-160). ¿Preguntas? Contacte al Líder de Cumplimiento Ambiental y Seguridad.",
+  introH: "Bienvenido — Equipo de Protección Personal en WKO Inc.",
+  introP1: "El EPP es su última línea de defensa contra las lesiones en el trabajo — protección para los ojos, la cabeza, las manos, los pies y la visibilidad que se interpone entre usted y el peligro cuando nada más puede eliminarlo. Esta capacitación cubre las reglas de EPP para cada área de trabajo de WKO Inc., lo que la compañía proporciona y cómo cuidar su equipo.",
+  introP2: "La capacitación toma de 15 a 20 minutos. Debe obtener 80% o más en el examen final para recibir crédito. Puede repetir el examen si es necesario.",
+  nameLabel: "Escriba su nombre completo para comenzar:",
+  namePh: "Nombre y apellido",
+  startBtn: "Comenzar la Capacitación",
+  continueBtn: "Continuar",
+  checkBtn: "Verificar Respuesta",
+  kcOk: "Correcto — bien hecho.",
+  kcBad: "No exactamente — la respuesta correcta está resaltada. Revísela y continúe.",
+  secLabel: "Sección",
+  ofLabel: "de",
+  sections: [
+    { h:"1. Por Qué el EPP — Su Última Línea de Defensa", body:
+      "<p>WKO Inc. controla los peligros usando la <b>jerarquía de controles</b>. Del más fuerte al más débil:</p>"+
+      "<ol><li><b>Eliminación</b> — quitar el peligro por completo</li>"+
+      "<li><b>Sustitución</b> — reemplazarlo con algo menos peligroso</li>"+
+      "<li><b>Controles de ingeniería</b> — guardas de máquinas, ventilación, cerramientos</li>"+
+      "<li><b>Controles administrativos</b> — procedimientos, señales, capacitación</li>"+
+      "<li><b>Equipo de protección personal</b> — barreras que se usan en el cuerpo</li></ol>"+
+      "<p>El EPP va <b>al final</b> porque no elimina el peligro — solo reduce su exposición. Por eso usarlo correctamente importa tanto: cuando usted necesita el EPP, es lo único que queda entre usted y la lesión.</p>"+
+      "<p><b>Cuando el EPP es requerido — por las reglas de área, una Evaluación de Peligros o su supervisor — usarlo es obligatorio. Sin excepciones.</b></p>",
+      kc:{ q:"En la jerarquía de controles, ¿dónde está el EPP?", opts:["Primero — es el control más fuerte","En algún lugar del medio","Al final — es la última línea de defensa cuando otros controles no pueden eliminar el peligro","El EPP no es parte de la jerarquía"], a:2 } },
+
+    { h:"2. Sus Reglas de Área — Qué Usar y Dónde", body:
+      "<p>Estas son las <b>reglas de área</b> en WKO Inc. Aplican por el lugar donde usted está, antes de que comience cualquier tarea:</p>"+
+      "<table class='mini'><tr><th>Dónde</th><th>EPP Requerido</th></tr>"+
+      "<tr><td><b>Todas las áreas de producción</b> — aserradero, cepilladora, descortezadora, astilladora de troncos v-drum</td><td>Lentes de seguridad con protectores laterales (Z87+ resistentes a impacto)</td></tr>"+
+      "<tr><td><b>Donde existan peligros elevados u objetos que puedan caer</b> (identificados por la Evaluación de Peligros)</td><td>Casco</td></tr>"+
+      "<tr><td><b>Cerca de equipo móvil y tráfico de vehículos</b>, incluyendo el patio de troncos</td><td>Prenda de alta visibilidad, Clase 2 o mejor</td></tr>"+
+      "<tr><td><b>Todo trabajo de producción, mantenimiento y patio</b></td><td>Botas de trabajo resistentes, a la altura del tobillo o más altas</td></tr></table>"+
+      "<p>En los talleres, el patio de troncos y otras áreas, la protección ocular <b>depende de la tarea</b> — la Evaluación de Peligros de su trabajo le dice cuándo se requiere.</p>",
+      kc:{ q:"¿Dónde se requieren lentes de seguridad como regla de área?", opts:["Solo en el taller de mantenimiento","En todas las áreas de producción — aserradero, cepilladora, descortezadora y astilladora v-drum","Solo cuando su supervisor lo diga","Solo en el patio de troncos"], a:1 } },
+
+    { h:"3. Ojos y Cara", body:
+      "<p>Los <b>lentes de seguridad</b> deben tener protectores laterales y lentes resistentes a impacto marcados <b>Z87+</b>. Los lentes comunes y los lentes de sol no califican.</p>"+
+      "<p>¿<b>Usa lentes de receta?</b> Use los lentes de seguridad <b>sobre-lentes (OTG)</b> que proporciona la compañía — se colocan sobre sus lentes normales. Nunca trabaje en áreas de producción solo con lentes de receta.</p>"+
+      "<p>Las <b>caretas (face shields)</b> se requieren para esmerilar, cortar, astillar y manejar químicos con riesgo de salpicadura. La careta se usa <b>sobre</b> los lentes de seguridad — nunca los reemplaza, porque las partículas pueden volar por debajo de la careta.</p>"+
+      "<p><b>Goggles</b> — goggles contra salpicaduras químicas para el manejo de químicos; goggles contra polvo para trabajos con mucho polvo. Hay estilos de copa y de cobertura.</p>" },
+
+    { h:"4. Botas, Guantes y Alta Visibilidad", body:
+      "<p><b>Botas:</b> botas de trabajo de cuero resistentes, <b>a la altura del tobillo o más altas</b>, que cubran todo el pie con suelas sólidas. Son calzado de uso diario que <b>usted proporciona</b>. Las botas con punta de seguridad no se requieren como regla general — si una Evaluación de Peligros identifica un peligro de aplastamiento o impacto para su tarea específica, dirá exactamente qué protección se requiere.</p>"+
+      "<p><b>Guantes:</b> <b>los guantes de trabajo de cuero son obligatorios siempre que maneje madera verde.</b> Todo otro uso de guantes depende de la tarea: guantes resistentes a cortes para trabajo con hojas y bordes filosos, guantes resistentes a químicos para el manejo de químicos (vea la Sección 8 de la SDS), guantes resistentes al calor para trabajo en caliente.</p>"+
+      "<p><b>Alta visibilidad:</b> una prenda de alta visibilidad Clase 2 o mejor — naranja, amarillo o verde fluorescente con franjas reflectantes — siempre que trabaje cerca de <b>equipo móvil y tráfico de vehículos, incluyendo el patio de troncos</b>. Exentos: oficinas, cabinas cerradas de operador, comedores, vehículos de pasajeros y estacionamientos públicos.</p>",
+      kc:{ q:"¿Cuándo se requieren los guantes de trabajo de cuero?", opts:["Solo en invierno","Siempre que maneje madera verde","Solo para empleados de mantenimiento","Los guantes siempre son opcionales"], a:1 } },
+
+    { h:"5. Su Evaluación de Peligros Controla el EPP de la Tarea", body:
+      "<p>WKO Inc. mantiene un <b>conjunto completo de Evaluaciones de Peligros de EPP certificadas</b> que cubren cada área de trabajo y clasificación de puesto.</p>"+
+      "<p>Cuando una tarea trae peligros más allá de las reglas de área — <b>la cadena verde y el manejo de madera pesada, esmerilar, manejar químicos, trabajo en caliente</b> — la Evaluación de Peligros certificada de ese trabajo es el <b>documento que controla</b>. Enumera el EPP exacto requerido para el peligro exacto, y aplica <b>además de</b> las reglas de área.</p>"+
+      "<p><b>¿Quiere ver la suya?</b> Las Evaluaciones de Peligros están disponibles a través de su supervisor o la Oficina de Seguridad.</p>"+
+      "<p><b>El ajuste importa.</b> El EPP solo protege cuando ajusta correctamente. Si su EPP es incómodo, está muy flojo, muy apretado o interfiere con su trabajo — repórtelo. El EPP que no ajusta bien se corrige, no se tolera.</p>",
+      kc:{ q:"Su tarea es esmerilar en el taller. ¿Dónde encuentra el EPP exacto requerido?", opts:["Adivinar según lo que usan los compañeros","La Evaluación de Peligros certificada del trabajo — pregunte a su supervisor o a la Oficina de Seguridad","No se requiere EPP en el taller","El manual del empleado"], a:1 } },
+
+    { h:"6. Inspeccionar, Cuidar y Reemplazar", body:
+      "<p><b>Antes de cada uso,</b> inspeccione su EPP buscando grietas, daños, desgaste y contaminación.</p>"+
+      "<ul><li><b>El EPP dañado o defectuoso sale de servicio inmediatamente</b> — repórtelo a su supervisor y obtenga un reemplazo</li>"+
+      "<li>Limpie, mantenga y guarde el EPP como dice el fabricante</li>"+
+      "<li><b>Nunca</b> altere, modifique o anule el EPP — no quite la suspensión del casco, no corte los lentes de seguridad</li>"+
+      "<li>El EPP compartido (caretas, goggles, cascos prestados) se limpia y desinfecta entre usuarios</li></ul>"+
+      "<p>La compañía reemplaza el EPP desgastado <b>sin costo para usted</b>. La única vez que el reemplazo puede salir de su bolsillo es si el EPP fue <b>perdido o dañado intencionalmente</b> — el desgaste normal y el daño accidental siempre los cubre la compañía.</p>",
+      kc:{ q:"Nota una grieta en el casco. ¿Qué hace?", opts:["Le pone cinta y sigue trabajando","Lo sigue usando hasta fin de mes","Lo saca de servicio inmediatamente, avisa a su supervisor y obtiene un reemplazo","Lo intercambia con el casco de un compañero"], a:2 } },
+
+    { h:"7. Qué Proporciona la Compañía (y Qué Proporciona Usted)", body:
+      "<p><b>Proporcionado gratis, y reemplazado gratis:</b> todo el EPP requerido — lentes de seguridad (incluyendo estilos OTG), cascos, guantes requeridos para el manejo de madera verde, prendas de alta visibilidad, protección auditiva, caretas y goggles.</p>"+
+      "<p><b>Usted proporciona:</b> sus botas de trabajo de uso diario — las botas resistentes a la altura del tobillo o más altas requeridas en la Sección 4. Son calzado de trabajo común que puede usar en cualquier lugar.</p>"+
+      "<p><b>EPP voluntario:</b> usted puede elegir usar EPP que no es requerido para su trabajo, siempre que no cree un nuevo peligro. Usar una <b>mascarilla contra polvo (N95)</b> voluntariamente está bien. Cualquier <b>otro</b> respirador — como un respirador elastomérico de media cara o cara completa — es diferente: requiere el Programa de Protección Respiratoria, incluyendo una evaluación médica, incluso para uso voluntario. Hable primero con el Líder de Seguridad.</p>" },
+
+    { h:"8. Oídos, Respiradores, Caídas — y Lo Esencial", body:
+      "<p>Tres tipos de EPP tienen sus propios programas dedicados:</p>"+
+      "<ul><li><b>Protección auditiva</b> — debe usarse siempre que la exposición al ruido alcance <b>85 dBA</b> (promedio de 8 horas). Vea el Programa de Conservación Auditiva.</li>"+
+      "<li><b>Respiradores</b> — selección, prueba de ajuste y evaluación médica según el Programa de Protección Respiratoria.</li>"+
+      "<li><b>Protección contra caídas</b> — requerida al trabajar a alturas de <b>4 pies o más</b>. Vea el Programa de Protección contra Caídas.</li></ul>"+
+      "<p><b>Lo esencial:</b> usar el EPP requerido es una condición para trabajar aquí. Omitirlo, alterarlo o anularlo lleva a medidas disciplinarias — pero más importante, lo deja a usted como lo único entre el peligro y la lesión. El Programa de EPP v2.1 escrito está disponible en la Oficina de Seguridad, y el Líder de Cumplimiento Ambiental y Seguridad responderá cualquier pregunta.</p>" }
+  ],
+  quizH: "Examen Final",
+  quizIntro: "Responda las 10 preguntas. Necesita 8 correctas (80%) para aprobar. Tómese su tiempo — puede revisar sus respuestas antes de enviar.",
+  submitBtn: "Enviar Examen",
+  answerAll: "Por favor responda todas las preguntas antes de enviar.",
+  quiz: [
+    { q:"En la jerarquía de controles, el EPP se usa…", opts:["Antes de los controles de ingeniería","Como primera opción porque es más barato","Solo después de que otros controles no pueden reducir adecuadamente el peligro","En lugar de las guardas de máquinas"], a:2 },
+    { q:"Los lentes de seguridad con protectores laterales se requieren en…", opts:["Solo el patio de troncos","Todas las áreas de producción, incluyendo el aserradero, la cepilladora, la descortezadora y la astilladora v-drum","Oficinas y comedores","Solo áreas con peligros químicos"], a:1 },
+    { q:"Usted usa lentes de receta. En un área de producción debe…", opts:["Usar solo sus lentes de receta — cuentan","Usar los lentes de seguridad sobre-lentes (OTG) que proporciona la compañía","Quitarse los lentes mientras trabaja","Comprar sus propios lentes de seguridad de receta"], a:1 },
+    { q:"Los cascos se requieren…", opts:["En todo el sitio en todo momento","Solo en invierno","Donde existan peligros elevados o de objetos que caen, según la Evaluación de Peligros","Nunca — son opcionales"], a:2 },
+    { q:"¿Cuál es VERDADERO sobre las botas de trabajo en WKO Inc.?", opts:["Se requiere punta de acero para todos","Los tenis están bien en la cepilladora","Se requieren botas resistentes, a la altura del tobillo o más altas — y usted las proporciona","La compañía compra las botas diarias de todos"], a:2 },
+    { q:"Los guantes de trabajo de cuero se requieren cuando…", opts:["Maneja madera verde","Maneja un montacargas","Almuerza","Camina por el estacionamiento"], a:0 },
+    { q:"Una prenda de alta visibilidad Clase 2 se requiere…", opts:["Solo para supervisores","Cerca de equipo móvil y tráfico de vehículos, incluyendo el patio de troncos","Dentro de cabinas cerradas de operador","En la oficina"], a:1 },
+    { q:"Su tarea de hoy incluye esmerilar. El EPP exacto requerido viene de…", opts:["Lo que se sienta cómodo","La Evaluación de Peligros certificada del trabajo","La opinión de un compañero","Las reglas del estacionamiento"], a:1 },
+    { q:"Una careta (face shield)…", opts:["Reemplaza los lentes de seguridad","Se usa sobre los lentes de seguridad — nunca en su lugar","Es solo para soldadores","Es opcional al esmerilar"], a:1 },
+    { q:"¿Cuándo puede salir de su bolsillo el costo de reemplazo del EPP?", opts:["Cada vez que se desgasta","Cada vez que se daña","Solo si el EPP fue perdido o dañado intencionalmente","Cada enero"], a:2 }
+  ],
+  passH:"¡Felicidades — Aprobó!",
+  passSub:"Certificado de Finalización",
+  passModule:"Equipo de Protección Personal (EPP) — Capacitación del Empleado " + MODULE_VERSION,
+  scoreLabel:"Puntaje",
+  dateLabel:"Fecha",
+  codeLabel:"Su código de finalización",
+  passInstr:"<b>Último paso — registre su finalización:</b> toque el botón de abajo y envíe el formulario de finalización. Escriba su nombre, seleccione <b>\"Personal Protective Equipment (PPE) / Equipo de Protección Personal (EPP)\"</b> de la lista de módulos, y escriba el código de finalización que aparece arriba. Su capacitación no queda registrada hasta que envíe el formulario.",
+  recordBtn:"Registrar Mi Finalización",
+  failH:"Todavía No — Siga Adelante",
+  failMsg:"Obtuvo menos de 80%. Revise el material — especialmente las reglas de área, cuándo se requieren guantes y cascos, y cómo la Evaluación de Peligros controla el EPP de la tarea — e intente de nuevo. No hay límite de intentos.",
+  reviewBtn:"Revisar el Material",
+  retakeBtn:"Repetir el Examen",
+  yourScore:"Su puntaje"
+}
+};
+
+var ANSWER_KEY = STR.en.quiz.map(function(q){ return q.a; });
+
+/* ------------ State ------------ */
+var state = { lang:null, screen:"lang", section:0, name:"", kcDone:{}, quizAnswers:{}, lastScore:null, code:null };
+
+/* ------------ Helpers ------------ */
+function T(){ return STR[state.lang]; }
+function $(id){ return document.getElementById(id); }
+function esc(s){ var d=document.createElement("div"); d.appendChild(document.createTextNode(s)); return d.innerHTML; }
+
+function generateCode(){
+  var chars="ABCDEFGHJKMNPQRSTUVWXYZ23456789", out="";
+  for(var i=0;i<5;i++){ out+=chars.charAt(Math.floor(Math.random()*chars.length)); }
+  return CODE_PREFIX+out;
+}
+function gradeQuiz(answers){
+  var correct=0;
+  for(var i=0;i<ANSWER_KEY.length;i++){ if(answers[i]===ANSWER_KEY[i]) correct++; }
+  var pct=Math.round(correct/ANSWER_KEY.length*100);
+  return { correct:correct, total:ANSWER_KEY.length, pct:pct, pass: pct>=PASS_PCT };
+}
+
+/* ------------ Rendering ------------ */
+function setLang(l){
+  state.lang=l;
+  if(state.screen==="lang") state.screen="intro";
+  $("langBar").className="langbar";
+  $("btnEN").className = l==="en"?"active":"";
+  $("btnES").className = l==="es"?"active":"";
+  render();
+}
+function progress(){
+  if(state.screen==="lang"){ $("progBar").style.width="0%"; return; }
+  var total = T().sections.length + 2;
+  var pos = state.screen==="intro"?0 : state.screen==="quiz"?total-1 : state.screen==="pass"||state.screen==="fail"?total : state.section+1;
+  $("progBar").style.width = Math.round(pos/total*100)+"%";
+}
+function renderLang(){
+  $("app").innerHTML =
+    '<div class="card splash">'+
+    '<div class="co">WKO INC.</div>'+
+    '<div class="ti-en">Personal Protective Equipment (PPE) Training</div>'+
+    '<div class="ti-es">Capacitación sobre Equipo de Protección Personal (EPP)</div>'+
+    '<div class="choose">Choose your language / Elija su idioma:</div>'+
+    '<div class="langbtns">'+
+    '<button id="langBtnEN">English</button>'+
+    '<button id="langBtnES">Español</button>'+
+    '</div></div>';
+  $("langBtnEN").addEventListener("click", function(){ setLang("en"); });
+  $("langBtnES").addEventListener("click", function(){ setLang("es"); });
+}
+function render(){
+  progress();
+  if(state.screen==="lang") renderLang();
+  else if(state.screen==="intro") renderIntro();
+  else if(state.screen==="section") renderSection();
+  else if(state.screen==="quiz") renderQuiz();
+  else if(state.screen==="pass") renderPass();
+  else if(state.screen==="fail") renderFail();
+}
+function renderIntro(){
+  var t=T();
+  $("app").innerHTML =
+    '<div class="card"><h1>'+t.introH+'</h1><p>'+t.introP1+'</p><p>'+t.introP2+'</p>'+
+    '<h2>'+t.nameLabel+'</h2>'+
+    '<input type="text" id="nameInput" placeholder="'+t.namePh+'" value="'+esc(state.name)+'" autocomplete="name">'+
+    '<br><button class="btn" id="startBtn" disabled>'+t.startBtn+'</button>'+
+    '<p style="color:var(--gray);font-size:.85em;margin-top:16px">'+t.basedOn+'</p></div>';
+  var inp=$("nameInput"), btn=$("startBtn");
+  function gate(){ state.name=inp.value.trim(); btn.disabled = state.name.length<2; }
+  inp.addEventListener("input", gate); gate();
+  btn.addEventListener("click", function(){ if(state.name.length>=2){ state.screen="section"; state.section=0; render(); window.scrollTo(0,0);} });
+}
+function renderSection(){
+  var t=T(), s=t.sections[state.section];
+  var html = '<div class="card"><div class="qnum">'+t.secLabel+' '+(state.section+1)+' '+t.ofLabel+' '+t.sections.length+'</div><h1>'+s.h+'</h1>'+s.body;
+  var kcPassed = !!state.kcDone[state.section];
+  if(s.kc){
+    html += '<div class="kc"><div class="kct">✔ '+s.kc.q+'</div>';
+    for(var i=0;i<s.kc.opts.length;i++){
+      html += '<label class="opt" id="kcOpt'+i+'"><input type="radio" name="kc" value="'+i+'"'+(kcPassed?' disabled':'')+'>'+s.kc.opts[i]+'</label>';
+    }
+    html += '<div class="fb" id="kcFb"></div>';
+    if(!kcPassed) html += '<button class="btn secondary" id="kcCheck">'+t.checkBtn+'</button>';
+    html += '</div>';
+  }
+  html += '<br><button class="btn" id="contBtn"'+((s.kc&&!kcPassed)?' disabled':'')+'>'+t.continueBtn+'</button></div>';
+  $("app").innerHTML = html;
+  if(s.kc && !kcPassed){
+    $("kcCheck").addEventListener("click", function(){
+      var sel=document.querySelector('input[name="kc"]:checked');
+      if(!sel) return;
+      var v=parseInt(sel.value,10), fb=$("kcFb");
+      if(v===s.kc.a){
+        state.kcDone[state.section]=true;
+        $("kcOpt"+v).className="opt correct";
+        fb.className="fb ok"; fb.textContent=t.kcOk;
+        $("contBtn").disabled=false; $("kcCheck").disabled=true;
+      } else {
+        $("kcOpt"+v).className="opt wrong";
+        $("kcOpt"+s.kc.a).className="opt correct";
+        fb.className="fb bad"; fb.textContent=t.kcBad;
+        state.kcDone[state.section]=true;
+        $("contBtn").disabled=false; $("kcCheck").disabled=true;
+      }
+    });
+  }
+  $("contBtn").addEventListener("click", function(){
+    if(state.section < t.sections.length-1){ state.section++; } else { state.screen="quiz"; }
+    render(); window.scrollTo(0,0);
+  });
+}
+function renderQuiz(){
+  var t=T();
+  var html='<div class="card"><h1>'+t.quizH+'</h1><p>'+t.quizIntro+'</p>';
+  for(var i=0;i<t.quiz.length;i++){
+    var q=t.quiz[i];
+    html+='<div class="quizq"><div class="qt">'+(i+1)+'. '+q.q+'</div>';
+    for(var j=0;j<q.opts.length;j++){
+      var checked = state.quizAnswers[i]===j ? ' checked' : '';
+      html+='<label class="opt"><input type="radio" name="q'+i+'" value="'+j+'"'+checked+'>'+q.opts[j]+'</label>';
+    }
+    html+='</div>';
+  }
+  html+='<div class="fb bad" id="quizWarn" style="display:none">'+t.answerAll+'</div>';
+  html+='<button class="btn" id="quizSubmit">'+t.submitBtn+'</button></div>';
+  $("app").innerHTML=html;
+  var radios=document.querySelectorAll('#app input[type=radio]');
+  for(var r=0;r<radios.length;r++){
+    radios[r].addEventListener("change", function(e){
+      var name=e.target.name, idx=parseInt(name.substring(1),10);
+      state.quizAnswers[idx]=parseInt(e.target.value,10);
+    });
+  }
+  $("quizSubmit").addEventListener("click", function(){
+    var answers=[];
+    for(var i=0;i<t.quiz.length;i++){
+      if(typeof state.quizAnswers[i]==="undefined"){ $("quizWarn").style.display="block"; return; }
+      answers.push(state.quizAnswers[i]);
+    }
+    var res=gradeQuiz(answers);
+    state.lastScore=res;
+    if(res.pass){ state.code=generateCode(); state.screen="pass"; }
+    else { state.screen="fail"; }
+    render(); window.scrollTo(0,0);
+  });
+}
+function fmtDate(){
+  var d=new Date();
+  var m=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+  var mes=["ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic"];
+  return state.lang==="es" ? d.getDate()+" "+mes[d.getMonth()]+" "+d.getFullYear() : m[d.getMonth()]+" "+d.getDate()+", "+d.getFullYear();
+}
+function renderPass(){
+  var t=T(), r=state.lastScore;
+  $("app").innerHTML =
+    '<div class="card"><p class="passmsg">'+t.passH+'</p></div>'+
+    '<div class="cert" id="certBox">'+
+      '<div>'+t.passSub+'</div>'+
+      '<div class="big" id="certName">'+esc(state.name)+'</div>'+
+      '<div>'+t.passModule+'</div>'+
+      '<div style="margin:8px 0">'+t.scoreLabel+': <b>'+r.correct+'/'+r.total+' ('+r.pct+'%)</b> &nbsp;·&nbsp; '+t.dateLabel+': <b id="certDate">'+fmtDate()+'</b></div>'+
+      '<div>'+t.codeLabel+':</div>'+
+      '<div class="code" id="certCode">'+state.code+'</div>'+
+    '</div>'+
+    '<div class="card"><p>'+t.passInstr+'</p>'+
+    '<a class="btn" id="recordLink" href="'+FORM_URL+'" target="_blank" rel="noopener">'+t.recordBtn+'</a></div>';
+}
+function renderFail(){
+  var t=T(), r=state.lastScore;
+  $("app").innerHTML =
+    '<div class="card" id="failBox"><p class="failmsg">'+t.failH+'</p>'+
+    '<p>'+t.yourScore+': <b>'+r.correct+'/'+r.total+' ('+r.pct+'%)</b></p>'+
+    '<p>'+t.failMsg+'</p>'+
+    '<button class="btn secondary" id="reviewBtn">'+t.reviewBtn+'</button> '+
+    '<button class="btn" id="retakeBtn">'+t.retakeBtn+'</button></div>';
+  $("reviewBtn").addEventListener("click", function(){ state.quizAnswers={}; state.screen="section"; state.section=0; render(); window.scrollTo(0,0); });
+  $("retakeBtn").addEventListener("click", function(){ state.quizAnswers={}; state.screen="quiz"; render(); window.scrollTo(0,0); });
+}
+
+/* ------------ Test hooks ------------ */
+window.APP = { STR:STR, state:state, gradeQuiz:gradeQuiz, generateCode:generateCode, ANSWER_KEY:ANSWER_KEY, FORM_URL:FORM_URL, PASS_PCT:PASS_PCT, MODULE_VERSION:MODULE_VERSION, CODE_PREFIX:CODE_PREFIX, setLang:setLang, render:render };
+window.setLang = setLang;
+
+render();
+</script>
+</body>
+</html>

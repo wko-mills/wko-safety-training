@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WKO Inc. — Confined Space SUPERVISOR Training</title>
+<style>
+  :root { --blue:#2E75B6; --dark:#1F4E79; --gray:#666; --light:#F2F2F2;
+          --green:#2E8B57; --amber:#E8A317; --orange:#D2691E; --red:#B22222; --maroon:#701C1C; }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:Arial,Helvetica,sans-serif; background:var(--light); color:#222; line-height:1.5; -webkit-text-size-adjust:100%; }
+  .wrap { max-width:640px; margin:0 auto; min-height:100vh; display:flex; flex-direction:column; background:#fff; box-shadow:0 0 24px rgba(0,0,0,.08); }
+  header { background:var(--dark); color:#fff; padding:14px 20px; }
+  header .co { font-weight:bold; font-size:15px; letter-spacing:.5px; }
+  header .prog { font-size:12px; color:#cfe0f0; }
+  .badge { display:inline-block; background:var(--amber); color:#2b1c00; font-weight:bold; font-size:11px; letter-spacing:1px; padding:2px 8px; border-radius:999px; margin-top:5px; }
+  .bar { height:6px; background:#dce7f2; } .bar span { display:block; height:100%; background:var(--blue); width:0%; transition:width .3s; }
+  main { flex:1; padding:24px 20px 32px; }
+  h1 { color:var(--dark); font-size:24px; margin-bottom:12px; }
+  p { margin-bottom:12px; font-size:16px; }
+  ul, ol { margin:0 0 12px 22px; } li { margin-bottom:7px; font-size:16px; }
+  .eyebrow { text-transform:uppercase; letter-spacing:1.5px; font-size:11px; color:var(--gray); font-weight:bold; margin-bottom:6px; }
+  .card { background:var(--light); border-left:4px solid var(--blue); padding:12px 14px; margin:14px 0; border-radius:0 6px 6px 0; font-size:15px; }
+  .card.warn { border-left-color:var(--red); }
+  .card.do { border-left-color:var(--green); }
+  .notice { background:#fff8e1; border-left:4px solid var(--amber); padding:12px 14px; margin:14px 0; border-radius:0 6px 6px 0; font-size:15px; }
+  .btn { display:block; width:100%; background:var(--blue); color:#fff; border:none; border-radius:8px; padding:15px; font-size:17px; font-weight:bold; font-family:inherit; cursor:pointer; margin-top:18px; }
+  .btn:active { background:var(--dark); } .btn:disabled { background:#b9c8d6; cursor:default; }
+  .btn.secondary { background:#fff; color:var(--blue); border:2px solid var(--blue); }
+  a.btn { text-decoration:none; text-align:center; box-sizing:border-box; }
+  input[type=text] { width:100%; padding:13px; font-size:17px; font-family:inherit; border:2px solid #c6d4e2; border-radius:8px; margin-top:6px; }
+  input[type=text]:focus { outline:none; border-color:var(--blue); }
+  label { font-weight:bold; font-size:14px; color:var(--dark); }
+  .opt { display:block; width:100%; text-align:left; background:#fff; border:2px solid #c6d4e2; border-radius:8px; padding:13px 14px; font-size:16px; font-family:inherit; margin-top:10px; cursor:pointer; }
+  .opt.sel { border-color:var(--blue); background:#eaf2fa; }
+  .opt.right { border-color:var(--green); background:#e8f5ee; }
+  .opt.wrong { border-color:var(--red); background:#fbeaea; }
+  .feedback { margin-top:12px; padding:12px 14px; border-radius:8px; font-size:15px; display:none; }
+  .feedback.good { background:#e8f5ee; border-left:4px solid var(--green); display:block; }
+  .feedback.bad { background:#fbeaea; border-left:4px solid var(--red); display:block; }
+  .qnum { font-size:12px; color:var(--gray); font-weight:bold; text-transform:uppercase; letter-spacing:1px; margin-bottom:4px; }
+  .cert { border:3px solid var(--dark); border-radius:10px; padding:22px; text-align:center; margin-top:16px; }
+  .cert .big { font-size:22px; font-weight:bold; color:var(--dark); margin:8px 0; }
+  .cert .code { font-size:26px; letter-spacing:3px; font-weight:bold; color:var(--blue); background:var(--light); border-radius:8px; padding:10px; margin:12px 0; }
+  .score-pill { display:inline-block; background:var(--green); color:#fff; border-radius:999px; padding:6px 18px; font-weight:bold; font-size:18px; }
+  .score-pill.fail { background:var(--red); }
+  table.mini { border-collapse:collapse; width:100%; margin:12px 0; font-size:14px; }
+  table.mini th { background:var(--blue); color:#fff; padding:8px; text-align:left; }
+  table.mini td { border:1px solid #d9e2ec; padding:8px; vertical-align:top; }
+  table.mini tr:nth-child(even) td { background:var(--light); }
+  footer { padding:12px 20px; font-size:11px; color:var(--gray); text-align:center; border-top:1px solid #e4e9ef; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="co">WKO INC.</div>
+    <div class="prog">Confined Space Program · WAC 296-809 · 29 CFR 1910.146</div>
+    <div class="badge">SUPERVISOR MODULE</div>
+  </header>
+  <div class="bar"><span id="prog"></span></div>
+  <main id="main"></main>
+  <footer>WKO Inc. · Carson, WA · WAC 296-809 · Supervisor Module v1.0 (2026)</footer>
+</div>
+
+<script>
+const FORM_URL = "https://forms.cloud.microsoft/r/YHYEJNbAMt";
+
+let empName = "", slideIdx = 0, quizIdx = 0, quizScore = 0;
+
+const slides = [
+{ t:'content', eyebrow:'Section 1 of 6', title:'What This Module Covers', html:
+  `<p>This module carries the <b>Entry Supervisor</b> knowledge for confined space operations at WKO Inc. It builds on the employee awareness module — complete that first.</p>
+  <div class="notice"><b>WAC 296-809-40002 requires role-specific training and documented proficiency</b> before an employee is first assigned to confined space duties. Passing this quiz is one acceptable proficiency method (a comprehensive written exam), but it does not replace the hands-on training and simulated non-entry rescue that the company's contracted fall-protection and rescue trainer delivers annually on our own equipment.</div>
+  <p><b>What you owe as an Entry Supervisor:</b></p>
+  <table class="mini">
+  <tr><th>Duty</th><th>Source</th></tr>
+  <tr><td>Determine acceptable entry conditions and authorize entry by signing the permit</td><td>296-809-50018</td></tr>
+  <tr><td>Verify all tests were conducted and all equipment is in place before approving</td><td>296-809-50018</td></tr>
+  <tr><td>Verify rescue services are available and there is a means to contact them</td><td>296-809-50014</td></tr>
+  <tr><td>Remove unauthorized individuals who enter or attempt to enter</td><td>296-809-50018</td></tr>
+  <tr><td>Terminate the entry and cancel the permit when work is done or conditions change</td><td>296-809-50024</td></tr>
+  <tr><td>Coordinate with contractors entering our spaces, including the post-work debrief</td><td>296-809-20006</td></tr>
+  </table>
+  <div class="card warn"><b>Your signature is the gate.</b> Nobody enters a permit-required confined space at WKO Inc. without an Entry Supervisor signature on a completed permit. If you are not certain every condition is met, do not sign.</div>` },
+
+{ t:'content', eyebrow:'Section 2 of 6', title:'The Permit and the Black Packet', html:
+  `<p>WKO Inc. assembles a <b>Confined Space Black Packet</b> for every entry — a grab-and-go kit so that entrants, attendants and you have every required document at the opening. A complete packet is verified <b>before any worker breaks the plane of the opening</b>.</p>
+  <p><b>What is in the packet:</b></p>
+  <ul>
+  <li>Cover and contents checklist — verify the packet is complete before entry</li>
+  <li>Confined Space Decision Flow Chart — is it a confined space, is it permit-required, which entry path</li>
+  <li>Confined Space Entry Permit — full permit entries</li>
+  <li>Alternative Methods Entry Documentation — with the 15-point pre-entry checklist</li>
+  <li>Gas Detector Bump &amp; Calibration Log — MSA ALTAIR 4XR and 5X</li>
+  <li>Rescue Pre-Plan &amp; Contact Sheet</li>
+  <li>Training Acknowledgment Slip</li>
+  <li>Field logs — Entry Roster &amp; Pre-Entry Briefing, Atmospheric Monitoring Log, Sign-Out and Return Register</li>
+  </ul>
+  <h1 style="font-size:20px;margin-top:18px">Permit Rules You Enforce</h1>
+  <ul>
+  <li>The permit is <b>good for one shift only</b> and carries an expiration time. It must be updated for each shift.</li>
+  <li>The permit is <b>posted at the work site outside the space</b> for the duration of the entry.</li>
+  <li>You <b>terminate</b> the permit when the task is complete, or immediately when a condition is detected that exceeds what the permit authorized.</li>
+  <li>Cancelled permits come back to you, and are <b>retained a minimum of one year</b>. They are reviewed annually as part of the program review (296-809-50006).</li>
+  <li>Hot work inside the space requires a <b>separate Hot Work Permit</b>, approved by you and attached to the entry permit.</li>
+  </ul>
+  <div class="card do"><b>Return the records.</b> Completed permits, alternative methods documentation, and monitoring records go back to the Safety Office when the entry is finished. The Sign-Out and Return Register is what makes that traceable.</div>` },
+
+{ t:'content', eyebrow:'Section 3 of 6', title:'Atmospheric Testing and Monitoring', html:
+  `<p>Atmospheric hazards are the leading cause of confined space deaths. Testing order and continuous monitoring are not optional details.</p>
+  <h1 style="font-size:20px">Pre-Entry Testing — In This Order</h1>
+  <ol class="steps">
+  <li><b>Oxygen content</b> — acceptable 19.5% to 23.5%</li>
+  <li><b>Flammable gases and vapors</b> — must be below 10% of the lower flammable limit</li>
+  <li><b>Potential toxic air contaminants</b> — below applicable permissible exposure limits</li>
+  </ol>
+  <p>Test from outside the space. Lower the probe slowly through the full vertical depth, allowing the instrument time to respond at each level. <b>Sample at floor level</b> — several dangerous gases are heavier than air and settle at the bottom.</p>
+  <table class="mini">
+  <tr><th>Parameter</th><th>Acceptable</th><th>Action Level</th><th>IDLH</th></tr>
+  <tr><td>Oxygen</td><td>19.5% – 23.5%</td><td>&lt;20.0% or &gt;23.0%</td><td>&lt;16%</td></tr>
+  <tr><td>LEL/LFL</td><td>&lt;10% LFL</td><td>&gt;5% LFL</td><td>≥10% LFL</td></tr>
+  <tr><td>Carbon Monoxide</td><td>&lt;25 ppm</td><td>&gt;25 ppm</td><td>1,200 ppm</td></tr>
+  <tr><td>Hydrogen Sulfide</td><td>&lt;10 ppm</td><td>&gt;10 ppm</td><td>100 ppm</td></tr>
+  </table>
+  <h1 style="font-size:20px;margin-top:18px">Continuous Monitoring</h1>
+  <p>WKO Inc. requires <b>continuous</b> atmospheric monitoring for the full duration of every permit entry, consistent with NFPA 350 (2022) and ANSI Z117.1. Conditions inside a space change without warning — from leaks, chemical reaction, work being performed, or ventilation failure.</p>
+  <ul>
+  <li>The Attendant watches the readings and <b>records them at least hourly</b> on the permit</li>
+  <li>Any reading outside acceptable limits means <b>immediate evacuation</b></li>
+  <li>Ventilation is hazard <b>control</b>, not elimination — monitoring continues with the blower running</li>
+  </ul>
+  <h1 style="font-size:20px;margin-top:18px">Instrument Discipline</h1>
+  <ul>
+  <li><b>Bump test before each day of use and before every entry.</b> If the bump test fails, the instrument is out of service until a full calibration passes.</li>
+  <li>Full calibration per manufacturer interval. WKO Inc. default: monthly verification, full calibration at least every six months.</li>
+  <li>Log the date, instrument serial number, calibration gas lot number, and result — Gas Detector Bump &amp; Calibration Log.</li>
+  </ul>` },
+
+{ t:'content', eyebrow:'Section 4 of 6', title:'Rescue — Verify Before You Sign', html:
+  `<div class="card warn"><b>WKO Inc. employees perform NON-ENTRY rescue only.</b> No WKO employee enters a confined space to perform a rescue, under any circumstances. We have no SCBA on site. Entry rescue is the local fire department (911).</div>
+  <h1 style="font-size:20px">Non-Entry Rescue Setup</h1>
+  <ul>
+  <li>Each entrant wears a <b>full-body harness with a retrieval line</b> attached to a mechanical retrieval device or fixed anchor outside the space</li>
+  <li><b>Mechanical retrieval equipment is required for vertical spaces deeper than 5 feet</b></li>
+  <li>A retrieval line may be omitted only where it would create a greater hazard — obstructions or turns that prevent the pull from transmitting, projections that would injure the entrant, or entanglement with an air-supplied respirator</li>
+  </ul>
+  <h1 style="font-size:20px;margin-top:16px">Entry Rescue — the local fire department (911)</h1>
+  <ul>
+  <li>For any entry that <b>could</b> expose entrants to IDLH conditions, you notify the local fire department <b>in advance</b> and they are present for the duration of that entry</li>
+  <li>If the local fire department must leave during an IDLH-potential entry, <b>entrants come out immediately</b> and stay out until rescue coverage is restored</li>
+  <li>A posted phone number is not a rescue plan. Complete the <b>Rescue Pre-Plan &amp; Contact Sheet</b> before entry</li>
+  </ul>
+  <div class="notice"><b>Rescue currency:</b> everyone involved in confined space rescue — including non-entry rescue — must have trained and <b>practiced a rescue within the previous 12 months</b>. At least one member of the on-site team must hold current First Aid and CPR certification. the company's contracted fall-protection and rescue trainer's annual simulated non-entry rescue satisfies the practice requirement.</div>
+  <h1 style="font-size:20px;margin-top:16px">The Unauthorized Rescue Problem</h1>
+  <p>WAC 296-809-40002 specifically requires that people <b>not</b> authorized to perform rescue be trained on the dangers of attempting one. That is the core of the employee awareness module — but it is also on you. Brief every crew working near an entry: if someone goes down, they call 911 and keep others out. They do not go in.</p>` },
+
+{ t:'content', eyebrow:'Section 5 of 6', title:'Alternative Methods and Hazard Control', html:
+  `<p>Alternative methods let you enter a permit-required space <b>without a full permit</b> — but only under narrow conditions, and it is a documented process, not a shortcut.</p>
+  <h1 style="font-size:20px">The Two Conditions</h1>
+  <p>Monitoring and inspection data must support that the space can be maintained safe for entry, <b>and</b> one of these must be true:</p>
+  <ol class="steps">
+  <li>All hazards — atmospheric <b>and</b> physical — have been eliminated, making the space equivalent to a non-permit space; <b>or</b></li>
+  <li>All physical hazards have been eliminated and a potential hazardous atmosphere is controlled by <b>continuous forced-air ventilation</b>, with monitoring data proving it stays safe. <b>If the ventilation stops, entrants must be able to exit safely.</b></li>
+  </ol>
+  <div class="card warn">If you cannot answer YES to every item on the 15-point pre-entry checklist, <b>STOP and use the full entry permit.</b> Alternative methods documentation must be completed and made available to entrants before each entry — identification of the space and date, hazards present or potentially present and how they are controlled, atmospheric results, and your signature certifying conditions are met.</div>
+  <p><b>Pre-elimination entry:</b> if someone must go in <i>before</i> hazards are eliminated — to collect monitoring data or apply controls — that entry follows the <b>full permit procedure</b> (296-809-60002(5)).</p>
+  <h1 style="font-size:20px;margin-top:18px">Hazard Control Before Any Entry</h1>
+  <ul>
+  <li><b>Lockout/tagout</b> all hazardous energy connected to or capable of affecting the space, per the WKO Inc. LOTO Program and WAC 296-803</li>
+  <li><b>Isolate lines</b> — blank, blind, disconnect, or cap so no hazardous material can enter. Investigate every connected line, including sewer connections</li>
+  <li><b>Break couplings or remove drive belts</b> where mechanical apparatus is present; lock out the disconnect</li>
+  <li><b>Remove product</b> — drain, pump out, or otherwise empty the space</li>
+  <li><b>Ventilate</b> — forced-draft clean air <b>into</b> the space, running continuously for the entire entry</li>
+  </ul>` },
+
+{ t:'content', eyebrow:'Section 6 of 6', title:'Contractors, Training and Records', html:
+  `<h1 style="font-size:20px">Contractor Coordination (296-809-20006)</h1>
+  <p>When a contractor will enter one of our confined spaces, WKO Inc. as <b>host employer</b> must:</p>
+  <ul>
+  <li>Inform the contractor that the workplace contains permit-required confined spaces and entry is allowed only when WAC 296-809 requirements are met</li>
+  <li>Inform them of the hazards we have identified in those spaces and provide our program information, including precautions and procedures they must follow</li>
+  <li><b>Coordinate entry operations</b> when WKO employees and contractor employees will be working in or near the space</li>
+  <li><b>Debrief each other after the work</b> regarding any hazards confronted or created during the entry — this is a required step, not a courtesy</li>
+  </ul>
+  <div class="card"><b>Coordinate, do not prescribe.</b> We share hazards and coordinate timing. The contractor decides their own means and methods — that line protects the independent-contractor relationship and keeps our DOSH posture clean.</div>
+  <h1 style="font-size:20px;margin-top:18px">Training Triggers</h1>
+  <p>Training is required before an employee is first assigned confined space duties, and again when:</p>
+  <ul>
+  <li>There is a change in the employee's assigned duties</li>
+  <li>A permit space hazard appears that they have not been trained on</li>
+  <li>There are <b>deviations from our entry procedures</b></li>
+  <li>An employee's knowledge or use of the procedures is <b>inadequate</b></li>
+  </ul>
+  <p>Training must be in a <b>language and vocabulary the employee understands</b> — which is why the employee module is bilingual.</p>
+  <h1 style="font-size:20px;margin-top:18px">Records</h1>
+  <ul>
+  <li><b>Training records</b> — name, dates, trainer, topics, trainer signature certifying completion. Use the Training Acknowledgment Slip; file with the Safety Office</li>
+  <li><b>Cancelled permits</b> — retained one year minimum, reviewed annually</li>
+  <li><b>Calibration and bump test records</b> — date, serial number, gas lot, result</li>
+  <li><b>Annual program review</b> forms — retained three years minimum</li>
+  </ul>
+  <div class="card do">Verify annually that the local fire department (911) remains willing and able to provide confined space entry rescue. That confirmation is part of the annual program review and is easy to let slide.</div>` }
+];
+
+const quiz = [
+{ q:'A worker needs to reach into a permit-required confined space to grab a dropped tool — head and shoulders only. What is required?',
+  opts:['Nothing, since the body is not fully inside','A signed entry permit — entry occurs when any part of the body breaks the plane','Verbal approval from the attendant','A hot work permit'], a:1 },
+{ q:'What is the correct ORDER for pre-entry atmospheric testing?',
+  opts:['Flammable, oxygen, toxic','Toxic, flammable, oxygen','Oxygen, flammable, toxic','Any order, as long as all three are tested'], a:2 },
+{ q:'A bump test on the ALTAIR fails on the morning of a scheduled entry. What happens?',
+  opts:['The instrument is out of service until a full calibration passes','Use it — the last full calibration is still current','Use it but record the failure on the permit','Use a second instrument to confirm, then proceed'], a:0 },
+{ q:'Mechanical retrieval equipment is required for vertical confined spaces deeper than:',
+  opts:['3 feet','5 feet','10 feet','15 feet'], a:1 },
+{ q:'Under WAC 296-809-20006, what is required of WKO Inc. and a contractor AFTER confined space entry operations are complete?',
+  opts:['The contractor files a copy of their permit with us','Nothing — the duty ends when the work ends','We inspect their equipment before they leave','Both parties debrief each other on hazards confronted or created'], a:3 }
+];
+
+const main = document.getElementById('main');
+const progEl = document.getElementById('prog');
+const totalSteps = slides.length + quiz.length + 2;
+function setProg(n){ progEl.style.width = Math.min(100, Math.round(n/totalSteps*100)) + '%'; }
+function esc(s){ const d=document.createElement('div'); d.textContent=s; return d.innerHTML; }
+
+function showStart(){
+  setProg(0);
+  main.innerHTML = `
+    <h1>Confined Space — Supervisor Training</h1>
+    <p>This module covers what supervisors must know and do under WKO Inc.'s Confined Space Program and WAC 296-809. It builds on the employee module — complete that first.</p>
+    <div class="card">Pass the 5-question quiz with <b>80% or better</b> to finish. You'll get a completion code and a button to record it.</div>
+    <label for="nm">Your full name</label>
+    <input type="text" id="nm" placeholder="First and Last Name">
+    <div id="nmErr" style="color:var(--red);font-size:14px;margin-top:6px;display:none">Enter your first and last name.</div>
+    <button class="btn" id="goBtn">Begin</button>`;
+  document.getElementById('goBtn').addEventListener('click', ()=>{
+    const v = document.getElementById('nm').value.trim();
+    if (!v || v.split(/\s+/).length < 2){ document.getElementById('nmErr').style.display='block'; return; }
+    empName = v; slideIdx = 0; showSlide(); window.scrollTo(0,0);
+  });
+  const inp = document.getElementById('nm');
+  inp.addEventListener('keydown', e=>{ if(e.key==='Enter') document.getElementById('goBtn').click(); });
+}
+
+function showSlide(){
+  if (slideIdx >= slides.length){ quizIdx=0; quizScore=0; showQuizIntro(); return; }
+  setProg(1+slideIdx);
+  const s = slides[slideIdx];
+  main.innerHTML = `<div class="eyebrow">${s.eyebrow}</div><h1>${s.title}</h1>${s.html}
+    <div style="display:flex;gap:10px;margin-top:18px">
+      ${slideIdx>0?'<button class="btn secondary" id="prevBtn">Back</button>':''}
+      <button class="btn" id="nextBtn">${slideIdx<slides.length-1?'Next':'Start Quiz'}</button>
+    </div>`;
+  document.getElementById('nextBtn').addEventListener('click', ()=>{ slideIdx++; showSlide(); window.scrollTo(0,0); });
+  if (slideIdx>0) document.getElementById('prevBtn').addEventListener('click', ()=>{ slideIdx--; showSlide(); window.scrollTo(0,0); });
+}
+
+function showQuizIntro(){
+  setProg(1+slides.length);
+  main.innerHTML = `<h1>Knowledge Quiz</h1>
+    <p>5 questions — you need 4 correct (80%) to pass.</p>
+    <button class="btn" id="startQ">Start Quiz</button>`;
+  document.getElementById('startQ').addEventListener('click', ()=>{ quizIdx=0; quizScore=0; showQuizQ(); window.scrollTo(0,0); });
+}
+
+function showQuizQ(){
+  if (quizIdx >= quiz.length){ showResult(); return; }
+  setProg(1+slides.length+quizIdx);
+  const qq = quiz[quizIdx];
+  main.innerHTML = `<div class="qnum">Question ${quizIdx+1} of ${quiz.length}</div>
+    <p style="font-size:18px;font-weight:bold;margin-bottom:14px">${qq.q}</p>
+    ${qq.opts.map((o,i)=>`<button class="opt" data-i="${i}">${o}</button>`).join('')}
+    <div id="fb"></div>
+    <button class="btn" id="subBtn" disabled>Submit Answer</button>`;
+  let sel = -1;
+  document.querySelectorAll('.opt').forEach(b=>{
+    b.addEventListener('click', ()=>{
+      if (sel === -2) return;
+      sel = +b.dataset.i;
+      document.querySelectorAll('.opt').forEach(x=>x.classList.toggle('sel', +x.dataset.i===sel));
+      document.getElementById('subBtn').disabled = false;
+    });
+  });
+  document.getElementById('subBtn').addEventListener('click', ()=>{
+    if (sel < 0 || sel === -2) return;
+    document.querySelectorAll('.opt').forEach(b=>{ const i=+b.dataset.i; if(i===qq.a) b.classList.add('right'); else if(i===sel) b.classList.add('wrong'); b.style.pointerEvents='none'; });
+    const ok = sel===qq.a;
+    if (ok) quizScore++;
+    document.getElementById('fb').innerHTML = `<div class="feedback ${ok?'good':'bad'}">${ok?'Correct.':'Incorrect — the correct answer is highlighted.'}</div>`;
+    sel = -2;
+    const btn = document.getElementById('subBtn');
+    btn.textContent = quizIdx < quiz.length-1 ? 'Next Question' : 'See Results';
+    btn.disabled = false;
+    btn.onclick = ()=>{ quizIdx++; showQuizQ(); window.scrollTo(0,0); };
+  });
+}
+
+let completionCode = null;
+function genCode(){
+  const ds = new Date().toISOString().slice(0,10);
+  let h=0; const src=empName.toUpperCase()+ds+quizScore+'SUP';
+  for(let i=0;i<src.length;i++){ h=((h<<5)-h)+src.charCodeAt(i); h|=0; }
+  return 'CS26S-' + Math.abs(h).toString(36).toUpperCase().slice(0,5).padStart(5,'0');
+}
+
+function showResult(){
+  setProg(totalSteps);
+  const pct = Math.round(quizScore/quiz.length*100);
+  const passed = quizScore >= Math.ceil(quiz.length*80/100);
+  const dateStr = new Date().toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'});
+  if (passed){
+    if (!completionCode) completionCode = genCode();
+    main.innerHTML = `
+      <div class="score-pill">${quizScore}/${quiz.length} — ${pct}%</div>
+      <div class="cert">
+        <div style="font-size:14px;color:var(--gray)">CERTIFICATE OF COMPLETION</div>
+        <div class="big">${esc(empName)}</div>
+        <div>Confined Space — Supervisor Training v1.0</div>
+        <p><b>${dateStr}</b> · Score: <b>${quizScore}/${quiz.length} (${pct}%)</b></p>
+        <div style="font-size:14px;margin-top:8px">Your completion code:</div>
+        <div class="code">${completionCode}</div>
+      </div>
+      <p style="margin-top:16px"><b>Last step — record your completion:</b> tap the button below, select <b>"Confined Space Awareness / Conciencia de Espacios Confinados"</b>, enter your completion code, and submit. Your training is not on record until you submit the form.</p>
+      <a href="${FORM_URL}" target="_blank" class="btn" style="background:var(--green)">Record Your Completion</a>`;
+  } else {
+    main.innerHTML = `
+      <div class="score-pill fail">${quizScore}/${quiz.length} — ${pct}%</div>
+      <p style="margin-top:14px">You need 80% to pass. Review the material and take the quiz again — your crew depends on you knowing this.</p>
+      <button class="btn secondary" id="retryBtn">Review &amp; Try Again</button>`;
+    document.getElementById('retryBtn').addEventListener('click', ()=>{ quizIdx=0; quizScore=0; slideIdx=0; showSlide(); window.scrollTo(0,0); });
+  }
+}
+
+// expose for testing
+window.APP = { slides, quiz, FORM_URL, completionCode, showStart,
+  get empName(){ return empName; }, set empName(v){ empName=v; },
+  get slideIdx(){ return slideIdx; }, set slideIdx(v){ slideIdx=v; },
+  get quizIdx(){ return quizIdx; }, set quizIdx(v){ quizIdx=v; },
+  get quizScore(){ return quizScore; }, set quizScore(v){ quizScore=v; },
+  get currentCode(){ return completionCode; }
+};
+showStart();
+</script>
+</body>
+</html>

@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WKO Inc. — Bloodborne Pathogens Training v1.0</title>
+<style>
+  :root { --blue:#2E75B6; --dark:#1F4E79; --light:#F2F2F2; --gray:#666666; --red:#C00000; --green:#2E7D32; --amber:#E07B00; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { font-family: Arial, Helvetica, sans-serif; background:#f7f9fb; color:#222; line-height:1.5; }
+  .wrap { max-width:760px; margin:0 auto; padding:16px; }
+  header.bar { background:var(--dark); color:#fff; padding:14px 20px; }
+  header.bar .co { font-weight:bold; font-size:1.05em; letter-spacing:.5px; }
+  header.bar .sub { font-size:.85em; margin-top:2px; opacity:.9; }
+  .splash { text-align:center; padding:34px 22px; }
+  .splash .co { color:var(--gray); font-size:.85em; letter-spacing:2px; font-weight:bold; }
+  .splash .ti-en { color:var(--dark); font-size:1.6em; font-weight:bold; margin:10px 0 4px; }
+  .splash .ti-es { color:var(--blue); font-size:1.4em; font-weight:bold; margin-bottom:18px; }
+  .splash .choose { margin-bottom:16px; }
+  .splash .langbtns { display:flex; gap:14px; justify-content:center; flex-wrap:wrap; }
+  .splash .langbtns button { font-family:Arial; background:var(--blue); color:#fff; border:none; border-radius:6px; padding:14px 0; width:240px; max-width:45%; font-size:1.05em; font-weight:bold; cursor:pointer; }
+  .langbar { text-align:right; padding:10px 16px 0; }
+  .langbar button { font-family:Arial; border:2px solid var(--blue); background:#fff; color:var(--blue); padding:6px 14px; font-weight:bold; cursor:pointer; border-radius:4px; margin-left:6px; font-size:.95em; }
+  .langbar button.active { background:var(--blue); color:#fff; }
+  .card { background:#fff; border:1px solid #d9e2ec; border-radius:8px; padding:22px; margin:16px 0; box-shadow:0 1px 3px rgba(0,0,0,.06); }
+  h1 { color:var(--dark); font-size:1.35em; margin-bottom:12px; }
+  h2 { color:var(--blue); font-size:1.1em; margin:16px 0 8px; }
+  p, li { margin-bottom:10px; }
+  ul { padding-left:22px; }
+  .progress { background:#e1e8f0; border-radius:6px; height:10px; overflow:hidden; margin:4px 0 14px; }
+  .progress > div { background:var(--blue); height:100%; width:0; transition:width .3s; }
+  .btn { font-family:Arial; display:inline-block; background:var(--blue); color:#fff; border:none; padding:12px 26px; font-size:1em; font-weight:bold; border-radius:6px; cursor:pointer; margin-top:14px; }
+  .btn:disabled { background:#9db8d2; cursor:not-allowed; }
+  .btn.secondary { background:#fff; color:var(--blue); border:2px solid var(--blue); }
+  input[type=text] { font-family:Arial; width:100%; padding:12px; font-size:1em; border:2px solid #b8c7d9; border-radius:6px; margin-top:6px; }
+  input[type=text]:focus { border-color:var(--blue); outline:none; }
+  .kc { background:var(--light); border-left:4px solid var(--blue); padding:16px; border-radius:0 6px 6px 0; margin-top:16px; }
+  .kc .kct { font-weight:bold; color:var(--dark); margin-bottom:8px; }
+  .opt { display:block; background:#fff; border:2px solid #c9d6e4; border-radius:6px; padding:10px 12px; margin:8px 0; cursor:pointer; }
+  .opt input { margin-right:10px; }
+  .opt.correct { border-color:var(--green); background:#eef7ee; }
+  .opt.wrong { border-color:var(--red); background:#fdecec; }
+  .fb { font-weight:bold; margin-top:8px; display:none; }
+  .fb.ok { color:var(--green); display:block; }
+  .fb.bad { color:var(--red); display:block; }
+  .qnum { color:var(--gray); font-size:.85em; }
+  .quizq { border-bottom:1px solid #e4eaf1; padding:14px 0; }
+  .quizq .qt { font-weight:bold; margin-bottom:6px; }
+  .cert { border:3px solid var(--dark); border-radius:10px; padding:26px; text-align:center; background:#fff; }
+  .cert .big { font-size:1.5em; color:var(--dark); font-weight:bold; margin:10px 0; }
+  .cert .code { font-size:1.6em; letter-spacing:2px; font-weight:bold; color:var(--blue); background:var(--light); display:inline-block; padding:8px 20px; border-radius:6px; margin:10px 0; }
+  .passmsg { color:var(--green); font-weight:bold; font-size:1.2em; }
+  .failmsg { color:var(--red); font-weight:bold; font-size:1.2em; }
+  .notice { background:#fff8e1; border-left:4px solid #f0a500; padding:12px; border-radius:0 6px 6px 0; margin:12px 0; font-size:.95em; }
+  .danger { background:#fdecec; border-left:4px solid var(--red); padding:12px; border-radius:0 6px 6px 0; margin:12px 0; }
+  .phone { font-weight:bold; color:var(--dark); }
+  table.mini { border-collapse:collapse; width:100%; margin:10px 0; font-size:.95em; }
+  table.mini th { background:var(--blue); color:#fff; padding:8px; text-align:left; }
+  table.mini td { border:1px solid #d9e2ec; padding:8px; vertical-align:top; }
+  table.mini tr:nth-child(even) td { background:var(--light); }
+  .tier { border-radius:8px; padding:14px; margin:10px 0; border:1px solid #d9e2ec; }
+  .tier .tt { font-weight:bold; font-size:1.05em; margin-bottom:4px; }
+  .tier.t1 { border-left:6px solid var(--blue); }
+  .tier.t2 { border-left:6px solid var(--amber); }
+  .tier.t3 { border-left:6px solid var(--red); }
+  footer { text-align:center; color:var(--gray); font-size:.8em; padding:20px 0 30px; }
+  .hidden { display:none !important; }
+</style>
+</head>
+<body>
+<header class="bar">
+  <div class="co">WKO INC.</div>
+  <div class="sub">Bloodborne Pathogens — Employee Training / Patógenos de transmisión sanguínea — Capacitación del Empleado</div>
+</header>
+<div class="langbar hidden" id="langBar">
+  <button id="btnEN" onclick="setLang('en')">English</button>
+  <button id="btnES" onclick="setLang('es')">Español</button>
+</div>
+<div class="wrap">
+  <div class="progress" id="progWrap"><div id="progBar"></div></div>
+  <div id="app"></div>
+</div>
+<footer id="ftr">WKO Inc. &middot; Carson, WA &middot; WAC 296-823 &middot; Module v1.0 (2026)</footer>
+<script>
+"use strict";
+var FORM_URL = "https://forms.cloud.microsoft/r/YHYEJNbAMt";
+var MODULE_VERSION = "v1.0";
+var CODE_PREFIX = "BB26-";
+var PASS_PCT = 80;
+
+var STR = {
+en: {"basedOn": "Based on the WKO Inc. Bloodborne Pathogens Exposure Control Plan v2.1 (chapter 296-823 WAC). Questions? Ask your supervisor or the safety manager.", "introH": "Welcome — Bloodborne Pathogens at WKO Inc.", "introP1": "This training covers bloodborne pathogens: what they are, how they spread, and how to protect yourself and your coworkers. In a sawmill, cuts and bleeding injuries happen — and the moment you help someone who is bleeding, this training is what keeps you safe. It takes about 20 minutes.", "introP2": "</p><div class='notice'><b>Why this one matters:</b> you cannot tell by looking whether someone's blood carries an infection. The safe habit is simple — treat all blood as if it is infectious, every time.</div><p>Required annually for all WKO Inc. employees.", "nameLabel": "Enter your full name to begin:", "namePh": "First and last name", "startBtn": "Start Training", "continueBtn": "Continue", "checkBtn": "Check Answer", "kcOk": "Correct — well done.", "kcBad": "Not quite — the correct answer is highlighted. Review it, then continue.", "secLabel": "Section", "ofLabel": "of", "sections": [{"h": "1. What This Training Covers", "body": "<p>A <b>bloodborne pathogen</b> is a germ carried in human blood that can cause disease. The three we worry about most are Hepatitis B (HBV), Hepatitis C (HCV), and HIV.</p><p>Washington State law — <b>chapter 296-823 WAC</b> — requires this training because your work can bring you into contact with blood or other potentially infectious material (OPIM). WKO Inc. has a written <b>Exposure Control Plan</b> that spells out how we keep you safe.</p><div class='notice'>A paper copy of chapter 296-823 WAC and of our Exposure Control Plan is kept in the <b>safety office</b> and is available to you at any time. You can also read the rule online at <b>app.leg.wa.gov/wac/</b> (296-823).</div>", "kc": {"q": "Which law requires this training?", "opts": ["There is no law — it is a company preference", "Chapter 296-823 WAC (Washington State)", "A federal tax rule", "The Employee Handbook only"], "a": 1}}, {"h": "2. The Three Diseases", "body": "<p>All three are carried in blood and can cause serious, long-term illness. You cannot tell who is infected by looking.</p><table class='mini'><tr><th>Pathogen</th><th>What it affects</th></tr><tr><td><b>Hepatitis B (HBV)</b></td><td>Liver. Can cause lifelong infection. <b>A safe, free vaccine exists</b> — covered in Section 8.</td></tr><tr><td><b>Hepatitis C (HCV)</b></td><td>Liver. Often has no symptoms for years. No vaccine.</td></tr><tr><td><b>HIV</b></td><td>The immune system. No vaccine.</td></tr></table><p>Symptoms — when they appear — can include tiredness, fever, nausea, stomach pain, and yellowing of the skin or eyes (for hepatitis). Many people carry these viruses for years with <b>no symptoms at all</b>, which is exactly why every exposure is taken seriously.</p>", "kc": {"q": "Which of these three has a safe, free vaccine?", "opts": ["HIV", "Hepatitis C", "Hepatitis B", "None of them"], "a": 2}}, {"h": "3. How They Spread", "body": "<p>Bloodborne pathogens spread when infected <b>blood or OPIM</b> gets into your body. That happens through:</p><ul><li>A cut, scrape, or broken skin that infected blood touches</li><li>A splash into your eyes, nose, or mouth (mucous membranes)</li><li>A puncture from a sharp object with blood on it — a needle, a knife, a piece of banded steel or metal</li></ul><p><b>OPIM</b> means \"other potentially infectious materials\" — for example saliva with visible blood, or any body fluid you cannot identify. When in doubt, treat it as infectious.</p><div class='notice'>You do <b>not</b> get these diseases from casual contact — sharing tools, restrooms, or a lunch table. It takes blood or OPIM getting <i>into</i> your body.</div>", "kc": {"q": "Which of these is a way bloodborne pathogens can enter your body?", "opts": ["Sharing a lunch table", "Breathing the same air", "Infected blood reaching a cut or splashing into your eyes", "Standing near someone"], "a": 2}}, {"h": "4. Our Exposure Control Plan — Who Is Covered", "body": "<p>WKO Inc.'s written <b>Exposure Control Plan</b> is the heart of how we protect you. It names who has <b>occupational exposure</b> — meaning exposure is expected as part of the job:</p><table class='mini'><tr><th>Who</th><th>Why</th></tr><tr><td><b>Supervisors</b></td><td>Assigned first aid and directing cleanup as a secondary duty</td></tr><tr><td><b>Designated First-Aid Providers</b></td><td>Employees who hold a first-aid card and have signed the designation form</td></tr><tr><td><b>Custodial</b></td><td>Cleaning up blood or OPIM is part of the routine job</td></tr></table><p>Everyone else is <b>not</b> occupationally exposed — but you are trained anyway, because anyone can end up helping a bleeding coworker (Section 9).</p><div class='notice'>You can get a copy of the full Exposure Control Plan from the <b>safety office</b> or your supervisor at any time.</div>", "kc": {"q": "Under our plan, who is treated as “occupationally exposed”?", "opts": ["Every employee equally", "Supervisors, Designated First-Aid Providers, and custodial staff", "Only the safety manager", "Nobody"], "a": 1}}, {"h": "5. Recognizing When Exposure Can Happen", "body": "<p>You do not have to work in a clinic to meet blood on the job. In a sawmill, the everyday moments that put you near blood or OPIM are:</p><ul><li>Helping a coworker who has cut themselves or is bleeding</li><li>Cleaning up after an injury — blood on a rail, a floor, a machine, or a tool</li><li>Handling a first-aid kit or bandaging a wound</li><li>Picking up a sharp object — broken banding, a blade, or metal with blood on it</li></ul><p>Recognizing these moments <b>before</b> you act is the whole point: it is the split second where you reach for a glove instead of a bare hand.</p>", "kc": {"q": "Which is a common way a sawmill worker meets blood on the job?", "opts": ["Reading a safety poster", "Helping a coworker who is bleeding from a cut", "Attending a meeting", "Driving to work"], "a": 1}}, {"h": "6. Universal Precautions and Safe Work Practices", "body": "<p>The single most important habit in this training:</p><div class='danger'><b>Universal precautions:</b> treat <u>all</u> human blood and OPIM as if it is infectious — every time, no matter whose it is or how healthy they look.</div><p>The safe work practices that follow from it:</p><ul><li><b>Do not touch blood or OPIM with bare hands.</b> Put on gloves first (Section 7).</li><li><b>Wash</b> with soap and water immediately after any contact — even after removing gloves. If no sink is close, use the hand sanitizer and wash as soon as you can.</li><li><b>Do not pick up broken glass, blades, or sharps with your hands</b> — use a brush and dustpan, tongs, or a tool.</li><li>Do not eat, drink, or touch your face when handling blood or OPIM.</li></ul>", "kc": {"q": "What does “universal precautions” mean?", "opts": ["Only worry about blood from people who look sick", "Treat all blood and OPIM as if it is infectious", "Precautions only the supervisor takes", "Wear gloves only for large spills"], "a": 1}}, {"h": "7. Gloves and PPE — Your Barrier", "body": "<p>Your first line of defense is a barrier between the blood and your skin. For most sawmill situations that means <b>disposable gloves</b>, kept in the first-aid kits.</p><ul><li><b>Put gloves on before</b> you touch blood, OPIM, or a wound. Check them for rips first.</li><li>If a splash to the face is possible, add <b>eye protection</b>. Custodial cleanup of a large spill may call for more.</li><li><b>Remove gloves without touching the outside with bare skin</b> — peel the first glove off inside-out, hold it in your gloved hand, then slide a finger under the second glove and peel it off over the first.</li><li><b>Dispose</b> of used gloves and bloodied material in the proper container (Section 11), then <b>wash your hands</b>.</li></ul><div class='notice'>Gloves fail if you touch your face, phone, or a clean surface while wearing contaminated gloves. Take them off first.</div>", "kc": {"q": "What is the correct way to take off contaminated gloves?", "opts": ["Pull them off by the fingertips and toss them", "Peel them off inside-out without touching the outside with bare skin", "Rinse them and reuse them", "Leave them on until the end of the shift"], "a": 1}}, {"h": "8. The Hepatitis B Vaccine", "body": "<p>Hepatitis B is the one bloodborne disease with a <b>safe, effective vaccine</b> — and WKO Inc. offers it <b>free of charge</b> to employees who have occupational exposure.</p><ul><li>The vaccine is given as a short series of shots. It is <b>safe</b> and <b>effective</b> at preventing Hepatitis B.</li><li>If you are an assigned first-aid provider, supervisor, or custodial employee, you may request the series at no cost.</li><li>Any employee who helps in a situation involving blood or OPIM is offered the vaccine within <b>24 hours</b> as company policy.</li></ul><div class='notice'><b>You have the right to decline.</b> If you choose not to be vaccinated, you sign a short <b>declination form</b> (Appendix A of the plan). You can <b>change your mind later</b> and still get the vaccine, free, at any time while you still have exposure.</div>", "kc": {"q": "Which is true about the Hepatitis B vaccine at WKO Inc.?", "opts": ["You must pay for it", "You can decline it and still change your mind later, at no cost", "It is required for every employee", "It is only for supervisors"], "a": 1}}, {"h": "9. Helping Outside Your Normal Job (Good Samaritan)", "body": "<p>Most employees are not assigned first aid — but anyone might step in to help a coworker who is bleeding. That is the right thing to do, and this training is exactly why you can do it safely.</p><ul><li><b>Protect yourself first:</b> glove up, use universal precautions, avoid splashes.</li><li><b>Report it before the end of the shift.</b> Tell your supervisor that you helped in a situation with blood — this is the single most important thing to remember from this training.</li><li>Reporting means WKO can offer you the Hepatitis B vaccine (Section 8) and, if there was an actual exposure, a medical evaluation (Section 10).</li></ul><div class='danger'><b>Remember this one sentence:</b> if you help someone who is bleeding, tell your supervisor before you go home.</div>", "kc": {"q": "You helped a bleeding coworker but weren't hurt yourself. What must you do?", "opts": ["Nothing, since you weren't injured", "Tell your supervisor before the end of the shift", "Wait to see if you feel sick", "Report it only if you got blood on you"], "a": 1}}, {"h": "10. If You Are Exposed — What to Do", "body": "<p>An <b>exposure incident</b> is when blood or OPIM gets into a cut, splashes your eyes/nose/mouth, or punctures your skin. If it happens:</p><ul><li><b>Wash immediately</b> — flush the cut with soap and water; flush eyes with water for several minutes.</li><li><b>Report it to your supervisor right away</b>, and always before the end of the shift.</li><li>WKO Inc. will offer you a <b>confidential medical evaluation and follow-up</b> at no cost, through the company's designated occupational-medicine provider. This can include testing and, for Hepatitis B, protective treatment — but it works best when started quickly.</li></ul><div class='notice'>Reporting fast is not about blame. It is the only way you get the medical follow-up the law guarantees you.</div>", "kc": {"q": "The first physical thing to do after a blood exposure is…", "opts": ["Finish the task first", "Wash or flush the area immediately", "Wait until the next break", "Drive yourself home"], "a": 1}}, {"h": "11. Labels, Signs, and Sharps", "body": "<p>Certain colors and labels warn you that blood or OPIM may be present. Learn to recognize them:</p><ul><li>The <b>orange-red biohazard symbol</b> marks containers, bags, or areas that may hold blood or OPIM.</li><li><b>Red bags or red containers</b> are used for material contaminated with blood or OPIM.</li><li><b>Sharps containers</b> are rigid, puncture-resistant containers for needles, blades, and broken glass — never put sharps in a regular trash can.</li></ul><div class='notice'>If you see a biohazard label or a red bag, treat what's inside as infectious and leave it for trained cleanup unless that is your assigned job.</div>", "kc": {"q": "A rigid, puncture-resistant container marked with the biohazard symbol is for…", "opts": ["Regular lunch trash", "Needles, blades, and broken glass (sharps)", "Recycling", "Clean rags"], "a": 1}}, {"h": "12. Questions About This Training", "body": "<p>You can ask questions about this training and get answers during your shift.</p><div class='kc' style='border-left-color:var(--blue);'><div class='kct'>Questions about this training?</div><p style='margin:0'>Ask your <b>supervisor</b> or the <b>safety manager</b> — in person during your shift, or by the contact numbers posted on the department bulletin board. You can ask before, during, or after this module and get an answer the same day.</p></div><p>When you continue, you'll take a short 10-question quiz. You need 8 correct (80%) to pass, and you can retake it as many times as you need.</p>"}], "quiz": [{"q": "A bloodborne pathogen is…", "opts": ["A dust in the air", "A germ carried in human blood that can cause disease", "A type of hearing damage", "A machine hazard"], "a": 1}, {"q": "Which disease has a safe, free vaccine offered at WKO Inc.?", "opts": ["HIV", "Hepatitis C", "Hepatitis B", "None"], "a": 2}, {"q": "“Universal precautions” means…", "opts": ["Only worry about visibly sick people's blood", "Treat all human blood and OPIM as if it is infectious", "A rule only for the safety office", "Gloves only for big spills"], "a": 1}, {"q": "Bloodborne pathogens can enter your body through…", "opts": ["Sharing tools or a restroom", "Breathing shared air", "A cut, a splash to the eyes, or a puncture from a bloody sharp", "Standing nearby"], "a": 2}, {"q": "Before touching blood or a wound, you should…", "opts": ["Rinse your hands", "Put on gloves and check them for rips", "Ask a coworker to watch", "Nothing is needed for small cuts"], "a": 1}, {"q": "The correct way to remove contaminated gloves is…", "opts": ["Peel them off inside-out without touching the outside with bare skin", "Pull from the fingertips", "Rinse and reuse them", "Wear them until the shift ends"], "a": 0}, {"q": "You help a bleeding coworker but are not injured yourself. You must…", "opts": ["Do nothing", "Tell your supervisor before the end of the shift", "Only report if blood got on you", "Wait to see if you feel ill"], "a": 1}, {"q": "After blood splashes into your eyes, the first thing to do is…", "opts": ["Finish the task", "Flush your eyes with water right away", "Wait for break", "Rub them dry"], "a": 1}, {"q": "About the Hepatitis B vaccine, which is TRUE?", "opts": ["You must pay for it", "You can decline and still change your mind later at no cost", "It is mandatory for all", "It is only for custodial staff"], "a": 1}, {"q": "Needles, blades, and broken glass go into…", "opts": ["A regular trash can", "A rigid, puncture-resistant sharps container", "A red recycling bin", "Any bag that's handy"], "a": 1}], "quizH": "Final Quiz", "quizIntro": "Answer all 10 questions. You need 8 correct (80%) to pass. Take your time — you can review the material and retake the quiz if needed.", "submitBtn": "Submit Quiz", "answerAll": "Please answer every question before submitting.", "passH": "Congratulations — You Passed!", "passSub": "Certificate of Completion", "passModule": "Bloodborne Pathogens — Employee Training " + MODULE_VERSION, "scoreLabel": "Score", "dateLabel": "Date", "codeLabel": "Your completion code", "passInstr": "<b>Last step — record your completion:</b> tap the button below and submit the completion form. Enter your name, select <b>\"Bloodborne Pathogens / Patógenos de transmisión sanguínea\"</b> from the module list, and enter the completion code shown above. Your training is not on record until you submit the form.", "completion": "", "recordBtn": "Record My Completion", "failH": "Not Yet — Keep Going", "failMsg": "You scored below 80%. Review the material — especially universal precautions, how to remove gloves, reporting before the end of the shift, and what to do if you're exposed — and try again. There is no limit on attempts.", "reviewBtn": "Review the Material", "retakeBtn": "Retake the Quiz", "yourScore": "Your score"},
+es: {"basedOn": "Basado en el Plan de Control de Exposición a Patógenos de Transmisión Sanguínea de WKO Inc. v2.1 (capítulo 296-823 WAC). ¿Preguntas? Pregunte a su supervisor o al gerente de seguridad.", "introH": "Bienvenido — Patógenos de transmisión sanguínea en WKO Inc.", "introP1": "Esta capacitación cubre los patógenos de transmisión sanguínea: qué son, cómo se propagan y cómo protegerse usted y a sus compañeros. En un aserradero ocurren cortes y lesiones con sangrado — y en el momento en que ayuda a alguien que sangra, esta capacitación es lo que lo mantiene seguro. Toma unos 20 minutos.", "introP2": "</p><div class='notice'><b>Por qué importa:</b> no se puede saber a simple vista si la sangre de alguien tiene una infección. El hábito seguro es simple — trate toda la sangre como si fuera infecciosa, siempre.</div><p>Requerido anualmente para todos los empleados de WKO Inc.", "nameLabel": "Escriba su nombre completo para comenzar:", "namePh": "Nombre y apellido", "startBtn": "Comenzar la capacitación", "continueBtn": "Continuar", "checkBtn": "Verificar respuesta", "kcOk": "Correcto — bien hecho.", "kcBad": "No exactamente — la respuesta correcta está resaltada. Revísela y continúe.", "secLabel": "Sección", "ofLabel": "de", "sections": [{"h": "1. Qué cubre esta capacitación", "body": "<p>Un <b>patógeno de transmisión sanguínea</b> es un germen que se transporta en la sangre humana y puede causar enfermedad. Los tres que más nos preocupan son la Hepatitis B (VHB), la Hepatitis C (VHC) y el VIH.</p><p>La ley del estado de Washington — <b>capítulo 296-823 WAC</b> — exige esta capacitación porque su trabajo puede ponerlo en contacto con sangre u otros materiales potencialmente infecciosos (OPIM). WKO Inc. tiene un <b>Plan de Control de Exposición</b> por escrito que detalla cómo lo mantenemos seguro.</p><div class='notice'>Una copia impresa del capítulo 296-823 WAC y de nuestro Plan de Control de Exposición se guarda en la <b>oficina de seguridad</b> y está disponible para usted en cualquier momento. También puede leer la norma en línea en <b>app.leg.wa.gov/wac/</b> (296-823).</div>", "kc": {"q": "¿Qué ley exige esta capacitación?", "opts": ["No hay ley — es una preferencia de la empresa", "El capítulo 296-823 WAC (estado de Washington)", "Una regla federal de impuestos", "Solo el Manual del Empleado"], "a": 1}}, {"h": "2. Las tres enfermedades", "body": "<p>Las tres se transportan en la sangre y pueden causar enfermedades graves y de larga duración. No se puede saber a simple vista quién está infectado.</p><table class='mini'><tr><th>Patógeno</th><th>Qué afecta</th></tr><tr><td><b>Hepatitis B (VHB)</b></td><td>El hígado. Puede causar infección de por vida. <b>Existe una vacuna segura y gratuita</b> — Sección 8.</td></tr><tr><td><b>Hepatitis C (VHC)</b></td><td>El hígado. A menudo sin síntomas por años. Sin vacuna.</td></tr><tr><td><b>VIH</b></td><td>El sistema inmunológico. Sin vacuna.</td></tr></table><p>Los síntomas — cuando aparecen — pueden incluir cansancio, fiebre, náuseas, dolor de estómago y coloración amarilla de la piel o los ojos (para la hepatitis). Muchas personas portan estos virus por años <b>sin ningún síntoma</b>, y por eso cada exposición se toma en serio.</p>", "kc": {"q": "¿Cuál de estas tres tiene una vacuna segura y gratuita?", "opts": ["VIH", "Hepatitis C", "Hepatitis B", "Ninguna"], "a": 2}}, {"h": "3. Cómo se propagan", "body": "<p>Los patógenos de transmisión sanguínea se propagan cuando <b>sangre u OPIM</b> infectados entran en su cuerpo. Eso ocurre por:</p><ul><li>Un corte, raspadura o piel rota que la sangre infectada toca</li><li>Una salpicadura en los ojos, la nariz o la boca (membranas mucosas)</li><li>Un pinchazo con un objeto punzante con sangre — una aguja, un cuchillo, un fleje de acero o metal</li></ul><p><b>OPIM</b> significa “otros materiales potencialmente infecciosos” — por ejemplo saliva con sangre visible, o cualquier fluido corporal que no pueda identificar. En caso de duda, trátelo como infeccioso.</p><div class='notice'>Estas enfermedades <b>no</b> se contagian por contacto casual — compartir herramientas, baños o una mesa de almuerzo. Se necesita que sangre u OPIM entren <i>en</i> su cuerpo.</div>", "kc": {"q": "¿Cuál de estas es una forma en que los patógenos pueden entrar en su cuerpo?", "opts": ["Compartir una mesa de almuerzo", "Respirar el mismo aire", "Sangre infectada que llega a un corte o salpica los ojos", "Estar cerca de alguien"], "a": 2}}, {"h": "4. Nuestro Plan de Control de Exposición — Quién está cubierto", "body": "<p>El <b>Plan de Control de Exposición</b> por escrito de WKO Inc. es el centro de cómo lo protegemos. Nombra quién tiene <b>exposición ocupacional</b> — es decir, que la exposición se espera como parte del trabajo:</p><table class='mini'><tr><th>Quién</th><th>Por qué</th></tr><tr><td><b>Supervisores</b></td><td>Primeros auxilios asignados y dirección de la limpieza como deber secundario</td></tr><tr><td><b>Proveedores de Primeros Auxilios Designados</b></td><td>Empleados con tarjeta de primeros auxilios que han firmado el formulario de designación</td></tr><tr><td><b>Personal de limpieza</b></td><td>Limpiar sangre u OPIM es parte del trabajo habitual</td></tr></table><p>Todos los demás <b>no</b> tienen exposición ocupacional — pero igual reciben capacitación, porque cualquiera puede terminar ayudando a un compañero que sangra (Sección 9).</p><div class='notice'>Puede obtener una copia del Plan de Control de Exposición completo en la <b>oficina de seguridad</b> o con su supervisor en cualquier momento.</div>", "kc": {"q": "Según nuestro plan, ¿quién se considera con “exposición ocupacional”?", "opts": ["Todos los empleados por igual", "Supervisores, Proveedores de Primeros Auxilios Designados y personal de limpieza", "Solo el gerente de seguridad", "Nadie"], "a": 1}}, {"h": "5. Reconocer cuándo puede ocurrir la exposición", "body": "<p>No hace falta trabajar en una clínica para encontrar sangre en el trabajo. En un aserradero, los momentos cotidianos que lo acercan a sangre u OPIM son:</p><ul><li>Ayudar a un compañero que se ha cortado o está sangrando</li><li>Limpiar después de una lesión — sangre en un riel, un piso, una máquina o una herramienta</li><li>Manejar un botiquín o vendar una herida</li><li>Recoger un objeto punzante — fleje roto, una cuchilla o metal con sangre</li></ul><p>Reconocer estos momentos <b>antes</b> de actuar es lo esencial: es el instante en que toma un guante en lugar de la mano desnuda.</p>", "kc": {"q": "¿Cuál es una forma común en que un trabajador de aserradero encuentra sangre en el trabajo?", "opts": ["Leer un cartel de seguridad", "Ayudar a un compañero que sangra por un corte", "Asistir a una reunión", "Conducir al trabajo"], "a": 1}}, {"h": "6. Precauciones universales y prácticas seguras", "body": "<p>El hábito más importante de esta capacitación:</p><div class='danger'><b>Precauciones universales:</b> trate <u>toda</u> la sangre humana y OPIM como si fueran infecciosos — siempre, sin importar de quién sea ni qué tan sano parezca.</div><p>Las prácticas seguras que se derivan de ello:</p><ul><li><b>No toque sangre ni OPIM con las manos desnudas.</b> Póngase guantes primero (Sección 7).</li><li><b>Lávese</b> con agua y jabón de inmediato después de cualquier contacto — incluso después de quitarse los guantes. Si no hay lavabo cerca, use el desinfectante de manos y lávese en cuanto pueda.</li><li><b>No recoja vidrios rotos, cuchillas ni objetos punzantes con las manos</b> — use cepillo y recogedor, pinzas o una herramienta.</li><li>No coma, beba ni se toque la cara al manejar sangre u OPIM.</li></ul>", "kc": {"q": "¿Qué significan las “precauciones universales”?", "opts": ["Preocuparse solo por la sangre de quienes se ven enfermos", "Tratar toda la sangre y OPIM como si fueran infecciosos", "Precauciones que solo toma el supervisor", "Usar guantes solo para derrames grandes"], "a": 1}}, {"h": "7. Guantes y EPP — Su barrera", "body": "<p>Su primera línea de defensa es una barrera entre la sangre y su piel. Para la mayoría de las situaciones en el aserradero eso significa <b>guantes desechables</b>, que se guardan en los botiquines.</p><ul><li><b>Póngase los guantes antes</b> de tocar sangre, OPIM o una herida. Revíselos por roturas primero.</li><li>Si es posible una salpicadura a la cara, agregue <b>protección para los ojos</b>. La limpieza de un derrame grande puede requerir más.</li><li><b>Quítese los guantes sin tocar el exterior con la piel desnuda</b> — pele el primer guante al revés, sosténgalo en la mano enguantada, luego deslice un dedo bajo el segundo guante y pélelo sobre el primero.</li><li><b>Deseche</b> los guantes usados y el material con sangre en el recipiente adecuado (Sección 11), y luego <b>lávese las manos</b>.</li></ul><div class='notice'>Los guantes fallan si toca su cara, su teléfono o una superficie limpia con guantes contaminados. Quíteselos primero.</div>", "kc": {"q": "¿Cuál es la forma correcta de quitarse guantes contaminados?", "opts": ["Jalarlos por las puntas de los dedos y tirarlos", "Pelarlos al revés sin tocar el exterior con la piel desnuda", "Enjuagarlos y reutilizarlos", "Dejarlos puestos hasta el final del turno"], "a": 1}}, {"h": "8. La vacuna contra la Hepatitis B", "body": "<p>La Hepatitis B es la única enfermedad de transmisión sanguínea con una <b>vacuna segura y eficaz</b> — y WKO Inc. la ofrece <b>sin costo</b> a los empleados con exposición ocupacional.</p><ul><li>La vacuna se administra en una serie corta de inyecciones. Es <b>segura</b> y <b>eficaz</b> para prevenir la Hepatitis B.</li><li>Si usted es proveedor de primeros auxilios asignado, supervisor o empleado de limpieza, puede solicitar la serie sin costo.</li><li>Cualquier empleado que ayude en una situación con sangre u OPIM recibe la oferta de la vacuna dentro de <b>24 horas</b> como política de la empresa.</li></ul><div class='notice'><b>Usted tiene derecho a rechazarla.</b> Si decide no vacunarse, firma un breve <b>formulario de rechazo</b> (Apéndice A del plan). Puede <b>cambiar de opinión más adelante</b> y recibir la vacuna, gratis, en cualquier momento mientras siga teniendo exposición.</div>", "kc": {"q": "¿Qué es cierto sobre la vacuna contra la Hepatitis B en WKO Inc.?", "opts": ["Debe pagarla", "Puede rechazarla y aún cambiar de opinión después, sin costo", "Es obligatoria para todos", "Es solo para supervisores"], "a": 1}}, {"h": "9. Ayudar fuera de su trabajo normal (Buen Samaritano)", "body": "<p>La mayoría de los empleados no tienen primeros auxilios asignados — pero cualquiera podría intervenir para ayudar a un compañero que sangra. Eso es lo correcto, y esta capacitación es precisamente por qué puede hacerlo de forma segura.</p><ul><li><b>Protéjase primero:</b> póngase guantes, use precauciones universales, evite salpicaduras.</li><li><b>Repórtelo antes del final del turno.</b> Dígale a su supervisor que ayudó en una situación con sangre — esto es lo más importante que debe recordar de esta capacitación.</li><li>Reportarlo permite que WKO le ofrezca la vacuna contra la Hepatitis B (Sección 8) y, si hubo una exposición real, una evaluación médica (Sección 10).</li></ul><div class='danger'><b>Recuerde esta frase:</b> si ayuda a alguien que sangra, dígale a su supervisor antes de irse a casa.</div>", "kc": {"q": "Ayudó a un compañero que sangraba pero usted no se lastimó. ¿Qué debe hacer?", "opts": ["Nada, porque no se lastimó", "Decírselo a su supervisor antes del final del turno", "Esperar a ver si se siente enfermo", "Reportarlo solo si le cayó sangre"], "a": 1}}, {"h": "10. Si usted se expone — Qué hacer", "body": "<p>Un <b>incidente de exposición</b> es cuando sangre u OPIM entran en un corte, salpican sus ojos/nariz/boca, o perforan su piel. Si ocurre:</p><ul><li><b>Lávese de inmediato</b> — enjuague el corte con agua y jabón; enjuague los ojos con agua por varios minutos.</li><li><b>Repórtelo a su supervisor de inmediato</b>, y siempre antes del final del turno.</li><li>WKO Inc. le ofrecerá una <b>evaluación médica confidencial y seguimiento</b> sin costo, a través de the company's designated occupational-medicine provider. Puede incluir pruebas y, para la Hepatitis B, tratamiento protector — pero funciona mejor si se inicia rápido.</li></ul><div class='notice'>Reportar rápido no se trata de culpar. Es la única forma de recibir el seguimiento médico que la ley le garantiza.</div>", "kc": {"q": "Lo primero que debe hacer físicamente tras una exposición a sangre es…", "opts": ["Terminar la tarea primero", "Lavar o enjuagar la zona de inmediato", "Esperar al próximo descanso", "Conducir a casa"], "a": 1}}, {"h": "11. Etiquetas, señales y objetos punzantes", "body": "<p>Ciertos colores y etiquetas le advierten que puede haber sangre u OPIM. Aprenda a reconocerlos:</p><ul><li>El <b>símbolo de riesgo biológico naranja-rojo</b> marca recipientes, bolsas o áreas que pueden contener sangre u OPIM.</li><li>Las <b>bolsas o recipientes rojos</b> se usan para material contaminado con sangre u OPIM.</li><li>Los <b>recipientes para objetos punzantes</b> son rígidos y resistentes a perforaciones, para agujas, cuchillas y vidrios rotos — nunca ponga objetos punzantes en un bote de basura normal.</li></ul><div class='notice'>Si ve una etiqueta de riesgo biológico o una bolsa roja, trate el contenido como infeccioso y déjelo para la limpieza capacitada, a menos que ese sea su trabajo asignado.</div>", "kc": {"q": "Un recipiente rígido y resistente a perforaciones con el símbolo de riesgo biológico es para…", "opts": ["Basura normal del almuerzo", "Agujas, cuchillas y vidrios rotos (punzantes)", "Reciclaje", "Trapos limpios"], "a": 1}}, {"h": "12. Preguntas sobre esta capacitación", "body": "<p>Puede hacer preguntas sobre esta capacitación y recibir respuestas durante su turno.</p><div class='kc' style='border-left-color:var(--blue);'><div class='kct'>¿Preguntas sobre esta capacitación?</div><p style='margin:0'>Pregunte a su <b>supervisor</b> o al <b>gerente de seguridad</b> — en persona durante su turno, o por los números de contacto publicados en el tablero del departamento. Puede preguntar antes, durante o después de este módulo y recibir respuesta el mismo día.</p></div><p>Al continuar, tomará un breve examen de 10 preguntas. Necesita 8 correctas (80%) para aprobar, y puede repetirlo cuantas veces necesite.</p>"}], "quiz": [{"q": "Un patógeno de transmisión sanguínea es…", "opts": ["Un polvo en el aire", "Un germen en la sangre humana que puede causar enfermedad", "Un tipo de daño auditivo", "Un peligro de máquina"], "a": 1}, {"q": "¿Qué enfermedad tiene una vacuna segura y gratuita en WKO Inc.?", "opts": ["VIH", "Hepatitis C", "Hepatitis B", "Ninguna"], "a": 2}, {"q": "“Precauciones universales” significa…", "opts": ["Preocuparse solo por la sangre de quienes se ven enfermos", "Tratar toda la sangre y OPIM como si fueran infecciosos", "Una regla solo para la oficina de seguridad", "Guantes solo para derrames grandes"], "a": 1}, {"q": "Los patógenos pueden entrar en su cuerpo por…", "opts": ["Compartir herramientas o un baño", "Respirar el aire compartido", "Un corte, una salpicadura a los ojos, o un pinchazo con un punzante con sangre", "Estar cerca"], "a": 2}, {"q": "Antes de tocar sangre o una herida, debe…", "opts": ["Enjuagarse las manos", "Ponerse guantes y revisarlos por roturas", "Pedir a un compañero que observe", "No hace falta nada para cortes pequeños"], "a": 1}, {"q": "La forma correcta de quitarse guantes contaminados es…", "opts": ["Pelarlos al revés sin tocar el exterior con la piel desnuda", "Jalarlos de las puntas", "Enjuagarlos y reutilizarlos", "Usarlos hasta el fin del turno"], "a": 0}, {"q": "Ayuda a un compañero que sangra pero usted no se lastima. Debe…", "opts": ["No hacer nada", "Decírselo a su supervisor antes del final del turno", "Reportar solo si le cayó sangre", "Esperar a ver si se enferma"], "a": 1}, {"q": "Tras una salpicadura de sangre en los ojos, lo primero es…", "opts": ["Terminar la tarea", "Enjuagar los ojos con agua de inmediato", "Esperar al descanso", "Secarlos frotando"], "a": 1}, {"q": "Sobre la vacuna contra la Hepatitis B, ¿qué es CIERTO?", "opts": ["Debe pagarla", "Puede rechazarla y aún cambiar de opinión después sin costo", "Es obligatoria para todos", "Es solo para el personal de limpieza"], "a": 1}, {"q": "Agujas, cuchillas y vidrios rotos van en…", "opts": ["Un bote de basura normal", "Un recipiente rígido y resistente a perforaciones para punzantes", "Un contenedor de reciclaje rojo", "Cualquier bolsa a la mano"], "a": 1}], "quizH": "Examen final", "quizIntro": "Responda las 10 preguntas. Necesita 8 correctas (80%) para aprobar. Tómese su tiempo — puede revisar el material y volver a tomar el examen si es necesario.", "submitBtn": "Enviar examen", "answerAll": "Por favor responda todas las preguntas antes de enviar.", "passH": "¡Felicidades — Aprobó!", "passSub": "Certificado de Finalización", "passModule": "Patógenos de transmisión sanguínea — Capacitación del Empleado " + MODULE_VERSION, "scoreLabel": "Puntaje", "dateLabel": "Fecha", "codeLabel": "Su código de finalización", "passInstr": "<b>Último paso — registre su finalización:</b> toque el botón de abajo y envíe el formulario. Escriba su nombre, seleccione <b>\"Bloodborne Pathogens / Patógenos de transmisión sanguínea\"</b> de la lista de módulos, e ingrese el código mostrado arriba. Su capacitación no queda registrada hasta que envíe el formulario.", "completion": "", "recordBtn": "Registrar mi finalización", "failH": "Aún no — Siga adelante", "failMsg": "Obtuvo menos del 80%. Repase el material — especialmente las precauciones universales, cómo quitarse los guantes, reportar antes del final del turno, y qué hacer si se expone — e inténtelo de nuevo. No hay límite de intentos.", "reviewBtn": "Repasar el material", "retakeBtn": "Repetir el examen", "yourScore": "Su puntaje"}
+};
+
+var ANSWER_KEY = STR.en.quiz.map(function(q){ return q.a; });
+
+/* ------------ State ------------ */
+var state = { lang:null, screen:"lang", section:0, name:"", kcDone:{}, quizAnswers:{}, lastScore:null, code:null };
+
+/* ------------ Helpers ------------ */
+function T(){ return STR[state.lang]; }
+function $(id){ return document.getElementById(id); }
+function esc(s){ var d=document.createElement("div"); d.appendChild(document.createTextNode(s)); return d.innerHTML; }
+
+function generateCode(){
+  var chars="ABCDEFGHJKMNPQRSTUVWXYZ23456789", out="";
+  for(var i=0;i<5;i++){ out+=chars.charAt(Math.floor(Math.random()*chars.length)); }
+  return CODE_PREFIX+out;
+}
+function gradeQuiz(answers){
+  var correct=0;
+  for(var i=0;i<ANSWER_KEY.length;i++){ if(answers[i]===ANSWER_KEY[i]) correct++; }
+  var pct=Math.round(correct/ANSWER_KEY.length*100);
+  return { correct:correct, total:ANSWER_KEY.length, pct:pct, pass: pct>=PASS_PCT };
+}
+
+/* ------------ Rendering ------------ */
+function setLang(l){
+  state.lang=l;
+  if(state.screen==="lang") state.screen="intro";
+  $("langBar").className="langbar";
+  $("btnEN").className = l==="en"?"active":"";
+  $("btnES").className = l==="es"?"active":"";
+  render();
+}
+function progress(){
+  if(state.screen==="lang"){ $("progBar").style.width="0%"; return; }
+  var total = T().sections.length + 2;
+  var pos = state.screen==="intro"?0 : state.screen==="quiz"?total-1 : state.screen==="pass"||state.screen==="fail"?total : state.section+1;
+  $("progBar").style.width = Math.round(pos/total*100)+"%";
+}
+function renderLang(){
+  $("app").innerHTML =
+    '<div class="card splash">'+
+    '<div class="co">WKO INC.</div>'+
+    '<div class="ti-en">Bloodborne Pathogens Training</div>'+
+    '<div class="ti-es">Capacitación sobre Patógenos de Transmisión Sanguínea</div>'+
+    '<div class="choose">Choose your language / Elija su idioma:</div>'+
+    '<div class="langbtns">'+
+    '<button id="langBtnEN">English</button>'+
+    '<button id="langBtnES">Español</button>'+
+    '</div></div>';
+  $("langBtnEN").addEventListener("click", function(){ setLang("en"); });
+  $("langBtnES").addEventListener("click", function(){ setLang("es"); });
+}
+function render(){
+  progress();
+  if(state.screen==="lang") renderLang();
+  else if(state.screen==="intro") renderIntro();
+  else if(state.screen==="section") renderSection();
+  else if(state.screen==="quiz") renderQuiz();
+  else if(state.screen==="pass") renderPass();
+  else if(state.screen==="fail") renderFail();
+}
+function renderIntro(){
+  var t=T();
+  $("app").innerHTML =
+    '<div class="card"><h1>'+t.introH+'</h1><p>'+t.introP1+'</p><p>'+t.introP2+'</p>'+
+    '<h2>'+t.nameLabel+'</h2>'+
+    '<input type="text" id="nameInput" placeholder="'+t.namePh+'" value="'+esc(state.name)+'" autocomplete="name">'+
+    '<br><button class="btn" id="startBtn" disabled>'+t.startBtn+'</button>'+
+    '<p style="color:var(--gray);font-size:.85em;margin-top:16px">'+t.basedOn+'</p></div>';
+  var inp=$("nameInput"), btn=$("startBtn");
+  function gate(){ state.name=inp.value.trim(); btn.disabled = state.name.length<2; }
+  inp.addEventListener("input", gate); gate();
+  btn.addEventListener("click", function(){ if(state.name.length>=2){ state.screen="section"; state.section=0; render(); window.scrollTo(0,0);} });
+}
+function renderSection(){
+  var t=T(), s=t.sections[state.section];
+  var html = '<div class="card"><div class="qnum">'+t.secLabel+' '+(state.section+1)+' '+t.ofLabel+' '+t.sections.length+'</div><h1>'+s.h+'</h1>'+s.body;
+  var kcPassed = !!state.kcDone[state.section];
+  if(s.kc){
+    html += '<div class="kc"><div class="kct">✔ '+s.kc.q+'</div>';
+    for(var i=0;i<s.kc.opts.length;i++){
+      html += '<label class="opt" id="kcOpt'+i+'"><input type="radio" name="kc" value="'+i+'"'+(kcPassed?' disabled':'')+'>'+s.kc.opts[i]+'</label>';
+    }
+    html += '<div class="fb" id="kcFb"></div>';
+    if(!kcPassed) html += '<button class="btn secondary" id="kcCheck">'+t.checkBtn+'</button>';
+    html += '</div>';
+  }
+  html += '<br><button class="btn" id="contBtn"'+((s.kc&&!kcPassed)?' disabled':'')+'>'+t.continueBtn+'</button></div>';
+  $("app").innerHTML = html;
+  if(s.kc && !kcPassed){
+    $("kcCheck").addEventListener("click", function(){
+      var sel=document.querySelector('input[name="kc"]:checked');
+      if(!sel) return;
+      var v=parseInt(sel.value,10), fb=$("kcFb");
+      if(v===s.kc.a){
+        state.kcDone[state.section]=true;
+        $("kcOpt"+v).className="opt correct";
+        fb.className="fb ok"; fb.textContent=t.kcOk;
+        $("contBtn").disabled=false; $("kcCheck").disabled=true;
+      } else {
+        $("kcOpt"+v).className="opt wrong";
+        $("kcOpt"+s.kc.a).className="opt correct";
+        fb.className="fb bad"; fb.textContent=t.kcBad;
+        state.kcDone[state.section]=true;
+        $("contBtn").disabled=false; $("kcCheck").disabled=true;
+      }
+    });
+  }
+  $("contBtn").addEventListener("click", function(){
+    if(state.section < t.sections.length-1){ state.section++; } else { state.screen="quiz"; }
+    render(); window.scrollTo(0,0);
+  });
+}
+function renderQuiz(){
+  var t=T();
+  var html='<div class="card"><h1>'+t.quizH+'</h1><p>'+t.quizIntro+'</p>';
+  for(var i=0;i<t.quiz.length;i++){
+    var q=t.quiz[i];
+    html+='<div class="quizq"><div class="qt">'+(i+1)+'. '+q.q+'</div>';
+    for(var j=0;j<q.opts.length;j++){
+      var checked = state.quizAnswers[i]===j ? ' checked' : '';
+      html+='<label class="opt"><input type="radio" name="q'+i+'" value="'+j+'"'+checked+'>'+q.opts[j]+'</label>';
+    }
+    html+='</div>';
+  }
+  html+='<div class="fb bad" id="quizWarn" style="display:none">'+t.answerAll+'</div>';
+  html+='<button class="btn" id="quizSubmit">'+t.submitBtn+'</button></div>';
+  $("app").innerHTML=html;
+  var radios=document.querySelectorAll('#app input[type=radio]');
+  for(var r=0;r<radios.length;r++){
+    radios[r].addEventListener("change", function(e){
+      var name=e.target.name, idx=parseInt(name.substring(1),10);
+      state.quizAnswers[idx]=parseInt(e.target.value,10);
+    });
+  }
+  $("quizSubmit").addEventListener("click", function(){
+    var answers=[];
+    for(var i=0;i<t.quiz.length;i++){
+      if(typeof state.quizAnswers[i]==="undefined"){ $("quizWarn").style.display="block"; return; }
+      answers.push(state.quizAnswers[i]);
+    }
+    var res=gradeQuiz(answers);
+    state.lastScore=res;
+    if(res.pass){ state.code=generateCode(); state.screen="pass"; }
+    else { state.screen="fail"; }
+    render(); window.scrollTo(0,0);
+  });
+}
+function fmtDate(){
+  var d=new Date();
+  var m=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+  var mes=["ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic"];
+  return state.lang==="es" ? d.getDate()+" "+mes[d.getMonth()]+" "+d.getFullYear() : m[d.getMonth()]+" "+d.getDate()+", "+d.getFullYear();
+}
+function renderPass(){
+  var t=T(), r=state.lastScore;
+  $("app").innerHTML =
+    '<div class="card"><p class="passmsg">'+t.passH+'</p></div>'+
+    '<div class="cert" id="certBox">'+
+      '<div>'+t.passSub+'</div>'+
+      '<div class="big" id="certName">'+esc(state.name)+'</div>'+
+      '<div>'+t.passModule+'</div>'+
+      '<div style="margin:8px 0">'+t.scoreLabel+': <b>'+r.correct+'/'+r.total+' ('+r.pct+'%)</b> &nbsp;·&nbsp; '+t.dateLabel+': <b id="certDate">'+fmtDate()+'</b></div>'+
+      '<div>'+t.codeLabel+':</div>'+
+      '<div class="code" id="certCode">'+state.code+'</div>'+
+    '</div>'+
+    '<div class="card"><p>'+t.passInstr+'</p>'+
+    '<a class="btn" id="recordLink" href="'+FORM_URL+'" target="_blank" rel="noopener">'+t.recordBtn+'</a></div>';
+}
+function renderFail(){
+  var t=T(), r=state.lastScore;
+  $("app").innerHTML =
+    '<div class="card" id="failBox"><p class="failmsg">'+t.failH+'</p>'+
+    '<p>'+t.yourScore+': <b>'+r.correct+'/'+r.total+' ('+r.pct+'%)</b></p>'+
+    '<p>'+t.failMsg+'</p>'+
+    '<button class="btn secondary" id="reviewBtn">'+t.reviewBtn+'</button> '+
+    '<button class="btn" id="retakeBtn">'+t.retakeBtn+'</button></div>';
+  $("reviewBtn").addEventListener("click", function(){ state.quizAnswers={}; state.screen="section"; state.section=0; render(); window.scrollTo(0,0); });
+  $("retakeBtn").addEventListener("click", function(){ state.quizAnswers={}; state.screen="quiz"; render(); window.scrollTo(0,0); });
+}
+
+/* ------------ Test hooks ------------ */
+window.APP = { STR:STR, state:state, gradeQuiz:gradeQuiz, generateCode:generateCode, ANSWER_KEY:ANSWER_KEY, FORM_URL:FORM_URL, PASS_PCT:PASS_PCT, MODULE_VERSION:MODULE_VERSION, CODE_PREFIX:CODE_PREFIX, setLang:setLang, render:render };
+window.setLang = setLang;
+
+render();
+</script>
+</body>
+</html>

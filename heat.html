@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WKO Inc. — Outdoor Heat Exposure Training v1.0</title>
+<style>
+  :root { --blue:#2E75B6; --dark:#1F4E79; --light:#F2F2F2; --gray:#666666; --red:#C00000; --green:#2E7D32; --amber:#E07B00; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { font-family: Arial, Helvetica, sans-serif; background:#f7f9fb; color:#222; line-height:1.5; }
+  .wrap { max-width:760px; margin:0 auto; padding:16px; }
+  header.bar { background:var(--dark); color:#fff; padding:14px 20px; }
+  header.bar .co { font-weight:bold; font-size:1.05em; letter-spacing:.5px; }
+  header.bar .sub { font-size:.85em; margin-top:2px; opacity:.9; }
+  .splash { text-align:center; padding:34px 22px; }
+  .splash .co { color:var(--gray); font-size:.85em; letter-spacing:2px; font-weight:bold; }
+  .splash .ti-en { color:var(--dark); font-size:1.6em; font-weight:bold; margin:10px 0 4px; }
+  .splash .ti-es { color:var(--blue); font-size:1.4em; font-weight:bold; margin-bottom:18px; }
+  .splash .choose { margin-bottom:16px; }
+  .splash .langbtns { display:flex; gap:14px; justify-content:center; flex-wrap:wrap; }
+  .splash .langbtns button { font-family:Arial; background:var(--blue); color:#fff; border:none; border-radius:6px; padding:14px 0; width:240px; max-width:45%; font-size:1.05em; font-weight:bold; cursor:pointer; }
+  .langbar { text-align:right; padding:10px 16px 0; }
+  .langbar button { font-family:Arial; border:2px solid var(--blue); background:#fff; color:var(--blue); padding:6px 14px; font-weight:bold; cursor:pointer; border-radius:4px; margin-left:6px; font-size:.95em; }
+  .langbar button.active { background:var(--blue); color:#fff; }
+  .card { background:#fff; border:1px solid #d9e2ec; border-radius:8px; padding:22px; margin:16px 0; box-shadow:0 1px 3px rgba(0,0,0,.06); }
+  h1 { color:var(--dark); font-size:1.35em; margin-bottom:12px; }
+  h2 { color:var(--blue); font-size:1.1em; margin:16px 0 8px; }
+  p, li { margin-bottom:10px; }
+  ul { padding-left:22px; }
+  .progress { background:#e1e8f0; border-radius:6px; height:10px; overflow:hidden; margin:4px 0 14px; }
+  .progress > div { background:var(--blue); height:100%; width:0; transition:width .3s; }
+  .btn { font-family:Arial; display:inline-block; background:var(--blue); color:#fff; border:none; padding:12px 26px; font-size:1em; font-weight:bold; border-radius:6px; cursor:pointer; margin-top:14px; }
+  .btn:disabled { background:#9db8d2; cursor:not-allowed; }
+  .btn.secondary { background:#fff; color:var(--blue); border:2px solid var(--blue); }
+  input[type=text] { font-family:Arial; width:100%; padding:12px; font-size:1em; border:2px solid #b8c7d9; border-radius:6px; margin-top:6px; }
+  input[type=text]:focus { border-color:var(--blue); outline:none; }
+  .kc { background:var(--light); border-left:4px solid var(--blue); padding:16px; border-radius:0 6px 6px 0; margin-top:16px; }
+  .kc .kct { font-weight:bold; color:var(--dark); margin-bottom:8px; }
+  .opt { display:block; background:#fff; border:2px solid #c9d6e4; border-radius:6px; padding:10px 12px; margin:8px 0; cursor:pointer; }
+  .opt input { margin-right:10px; }
+  .opt.correct { border-color:var(--green); background:#eef7ee; }
+  .opt.wrong { border-color:var(--red); background:#fdecec; }
+  .fb { font-weight:bold; margin-top:8px; display:none; }
+  .fb.ok { color:var(--green); display:block; }
+  .fb.bad { color:var(--red); display:block; }
+  .qnum { color:var(--gray); font-size:.85em; }
+  .quizq { border-bottom:1px solid #e4eaf1; padding:14px 0; }
+  .quizq .qt { font-weight:bold; margin-bottom:6px; }
+  .cert { border:3px solid var(--dark); border-radius:10px; padding:26px; text-align:center; background:#fff; }
+  .cert .big { font-size:1.5em; color:var(--dark); font-weight:bold; margin:10px 0; }
+  .cert .code { font-size:1.6em; letter-spacing:2px; font-weight:bold; color:var(--blue); background:var(--light); display:inline-block; padding:8px 20px; border-radius:6px; margin:10px 0; }
+  .passmsg { color:var(--green); font-weight:bold; font-size:1.2em; }
+  .failmsg { color:var(--red); font-weight:bold; font-size:1.2em; }
+  .notice { background:#fff8e1; border-left:4px solid #f0a500; padding:12px; border-radius:0 6px 6px 0; margin:12px 0; font-size:.95em; }
+  .danger { background:#fdecec; border-left:4px solid var(--red); padding:12px; border-radius:0 6px 6px 0; margin:12px 0; }
+  .phone { font-weight:bold; color:var(--dark); }
+  table.mini { border-collapse:collapse; width:100%; margin:10px 0; font-size:.95em; }
+  table.mini th { background:var(--blue); color:#fff; padding:8px; text-align:left; }
+  table.mini td { border:1px solid #d9e2ec; padding:8px; vertical-align:top; }
+  table.mini tr:nth-child(even) td { background:var(--light); }
+  .tier { border-radius:8px; padding:14px; margin:10px 0; border:1px solid #d9e2ec; }
+  .tier .tt { font-weight:bold; font-size:1.05em; margin-bottom:4px; }
+  .tier.t1 { border-left:6px solid var(--blue); }
+  .tier.t2 { border-left:6px solid var(--amber); }
+  .tier.t3 { border-left:6px solid var(--red); }
+  footer { text-align:center; color:var(--gray); font-size:.8em; padding:20px 0 30px; }
+  .hidden { display:none !important; }
+</style>
+</head>
+<body>
+<header class="bar">
+  <div class="co">WKO INC.</div>
+  <div class="sub">Outdoor Heat Exposure Training &mdash; WAC 296-62-095</div>
+</header>
+<div class="langbar hidden" id="langBar">
+  <button id="btnEN" onclick="setLang('en')">English</button>
+  <button id="btnES" onclick="setLang('es')">Español</button>
+</div>
+<div class="wrap">
+  <div class="progress" id="progWrap"><div id="progBar"></div></div>
+  <div id="app"></div>
+</div>
+<footer id="ftr">WKO Inc. &middot; Carson, WA &middot; WAC 296-62-095 &middot; Module v1.0 (2026)</footer>
+<script>
+"use strict";
+var FORM_URL = "https://forms.cloud.microsoft/r/YHYEJNbAMt";
+var MODULE_VERSION = "v1.0";
+var CODE_PREFIX = "HT26-";
+var PASS_PCT = 80;
+
+/* ------------ Language packs ------------ */
+var STR = {
+en: {
+  basedOn: "Based on the WKO Inc. Outdoor Heat Exposure Program v2.1 (WAC 296-62-095 through 296-62-09560). Questions? Contact the Environmental Compliance and Safety Lead.",
+  introH: "Welcome — Working Safely in Outdoor Heat",
+  introP1: "Heat-related illness can come on fast, and heat stroke can kill. Washington's outdoor heat rule protects employees who work outdoors — and at WKO Inc. that includes the log yard, lumber yard, kiln areas, mobile equipment operation, maintenance work outdoors, and any production support task performed outside.",
+  introP2: "The training takes about 15–20 minutes. You must score 80% or better on the final quiz to receive credit. You may retake the quiz if needed.",
+  nameLabel: "Enter your full name to begin:",
+  namePh: "First and last name",
+  startBtn: "Start Training",
+  continueBtn: "Continue",
+  checkBtn: "Check Answer",
+  kcOk: "Correct — well done.",
+  kcBad: "Not quite — the correct answer is highlighted. Review it, then continue.",
+  secLabel: "Section",
+  ofLabel: "of",
+  sections: [
+    { h:"1. When the Heat Rule Applies", body:
+      "<p>Washington's outdoor heat rule (WAC 296-62-095) applies <b>year-round</b> — not just in summer. It kicks in whenever the outdoor temperature reaches the <b>action level</b> for the clothing you are required to wear:</p>"+
+      "<table class='mini'><tr><th>What you are wearing</th><th>Action level</th></tr>"+
+      "<tr><td>All other clothing — regular work clothes, single or double layers, hard hat, normal raingear</td><td><b>80&deg;F</b></td></tr>"+
+      "<tr><td>Non-breathable clothing — vapor barrier clothing, chemical-resistant suits, encapsulating suits</td><td><b>52&deg;F</b></td></tr></table>"+
+      "<p>The rule covers work in an <b>outdoor environment</b>. That also includes places like vehicle cabs, sheds and tents when the temperature there is not controlled — so an equipment cab without working air conditioning counts as outdoors.</p>"+
+      "<div class='notice'><b>Incidental exposure:</b> if you are outdoors 15 minutes or less in any 60-minute period, the rule's requirements do not apply to that hour. Step outside briefly, come back in — that's incidental. Spend more than 15 minutes of an hour outside and you are covered.</div>",
+      kc:{ q:"You are in regular work clothes and a hard hat. At what outdoor temperature does the heat rule kick in?", opts:["52&deg;F","80&deg;F","90&deg;F","100&deg;F"], a:1 } },
+
+    { h:"2. What Raises Your Risk", body:
+      "<p><b>Environmental factors</b> — the conditions around you — raise the risk of heat-related illness:</p>"+
+      "<ul><li>Air temperature and relative humidity</li>"+
+      "<li>Radiant heat from the sun, kilns, engines and other hot equipment</li>"+
+      "<li>Conductive heat from the ground, decking and machinery</li>"+
+      "<li>How much air is moving</li>"+
+      "<li>How hard and how long you are working</li>"+
+      "<li>The clothing and PPE you are required to wear</li></ul>"+
+      "<p><b>Personal factors</b> also matter. These vary from person to person, and this information is for <b>your own personal use</b>:</p>"+
+      "<ul><li>Age and physical fitness</li>"+
+      "<li>How acclimatized you are to working in heat</li>"+
+      "<li>Medical conditions</li>"+
+      "<li>How much drinking water you consume</li>"+
+      "<li>Alcohol use</li>"+
+      "<li>Previous heat-related illness</li>"+
+      "<li>Pregnancy</li>"+
+      "<li>Medications that affect how your body responds to heat</li></ul>"+
+      "<p>If you take a medication and are unsure whether it affects your response to heat, ask your doctor or pharmacist. You are not required to tell your employer about a medical condition or medication.</p>" },
+
+    { h:"3. Drinking Water", body:
+      "<p>When the temperature is at or above the action level, WKO Inc. provides at least <b>one quart (32 oz) of suitably cool drinking water per employee, per hour</b> of work — and it must be readily accessible wherever you are working.</p>"+
+      "<ul><li>Drink <b>small amounts often</b> — about a cup every 15–20 minutes — rather than a lot at once</li>"+
+      "<li>Don't wait until you feel thirsty. By the time you are thirsty you are already behind</li>"+
+      "<li>Portable water containers are positioned close to work areas away from fixed water sources</li></ul>"+
+      "<p><b>What counts:</b> potable water, and electrolyte-replenishing sports drinks that do <u>not</u> contain caffeine.</p>"+
+      "<div class='notice'><b>What does NOT count:</b> coffee, tea, energy drinks and any other caffeinated beverage do not satisfy the water requirement.</div>",
+      kc:{ q:"How much drinking water must be available to each employee per hour when the temperature is at or above the action level?", opts:["One pint (16 oz)","One quart (32 oz)","One gallon","No set amount"], a:1 } },
+
+    { h:"4. Shade and Cool-Down Rest Periods", body:
+      "<p>At or above the action level, shade or other equally effective cooling must be provided — close to where you work, big enough for everyone on a break to sit fully in the shade, and open to the air. Shade can be trees, canopies, tarps, tents, building overhangs, an air-conditioned cab or a cooled break room.</p>"+
+      "<p>As the temperature climbs, the requirements build on each other:</p>"+
+      "<div class='tier t1'><div class='tt'>At or above the action level (80&deg;F / 52&deg;F)</div>"+
+      "Water, shade, training — and <b>preventive cool-down rest whenever you feel the need</b>. This rest is paid, and you must never be discouraged or penalized for taking it.</div>"+
+      "<div class='tier t2'><div class='tt'>At or above 90&deg;F</div>"+
+      "Everything above, <b>plus a mandatory paid cool-down rest period of at least 10 minutes every 2 hours</b>, taken in shade or equally effective cooling — plus close observation of all employees.</div>"+
+      "<div class='tier t3'><div class='tt'>At or above 100&deg;F</div>"+
+      "Everything above, <b>plus a mandatory paid cool-down rest period of at least 15 minutes every hour</b> — plus close observation of all employees.</div>"+
+      "<p>Mandatory cool-down rest may be taken at the same time as a meal or rest break you already get. Supervisors may also adjust schedules — such as starting earlier in the day — to reduce work performed in the worst of the heat.</p>",
+      kc:{ q:"The temperature hits 92&deg;F. What mandatory cool-down rest are you entitled to?", opts:["None until it reaches 100&deg;F","At least 10 minutes every 2 hours, paid","At least 15 minutes every hour, paid","Only your normal lunch break"], a:1 } },
+
+    { h:"5. Acclimatization and Close Observation", body:
+      "<p><b>Acclimatization</b> is your body's gradual adaptation to working in heat. It develops over <b>7 to 14 days</b> of exposure, with much of the adaptation happening in the first four to five days. It is <b>lost after 7 or more consecutive days</b> away from working in the heat — so after vacation or a stretch of cool weather, you start over.</p>"+
+      "<p>WKO Inc. closely observes employees for <b>14 consecutive days</b> when they are:</p>"+
+      "<ul><li><b>Newly assigned</b> to outdoor work at or above the action level</li>"+
+      "<li><b>Returning</b> to that work after an absence of 7 days or more</li></ul>"+
+      "<p><b>During a heat wave, everyone is closely observed</b> — even fully acclimatized employees. A heat wave is any day when the predicted high is at or above the action level <i>and</i> at least 10&deg;F higher than the average high of the previous five days.</p>"+
+      "<div class='notice'><b>Important:</b> you <b>cannot build tolerance to the heat during a heat wave</b>. A sudden jump in temperature is dangerous for everybody, no matter how long you have worked outside.</div>"+
+      "<p><b>Close observation</b> means someone is checking on you: direct supervisor observation, a mandatory buddy system, or regular radio or phone check-ins if you work alone or in a remote part of the yard.</p>",
+      kc:{ q:"You return from a two-week vacation in July. What applies to you?", opts:["Nothing — you already work here","Close observation for 14 days, because acclimatization is lost after 7 or more days away","You must retake this training before working","You may not work outdoors for a week"], a:1 } },
+
+    { h:"6. PPE, Clothing and Cooling Yourself", body:
+      "<p>The gear that protects you from other hazards also holds heat in. During <b>all rest and meal periods</b>, remove heat-retaining PPE — non-breathable or chemical-resistant clothing, and any other gear that traps heat — so your body can actually cool down. Sitting in the shade in a vapor-barrier suit does very little.</p>"+
+      "<ul><li>Wear light-colored, loose, breathable clothing when the job allows it</li>"+
+      "<li>Use shade, fans, misting or cool wet cloths on your neck and face during rest</li>"+
+      "<li>Take advantage of air-conditioned cabs and cooled break areas</li></ul>"+
+      "<div class='notice'>Never remove PPE that is required for a hazard while you are still working — the answer to heat is rest, water, shade and schedule changes, not going unprotected.</div>" },
+
+    { h:"7. Recognizing Heat-Related Illness", body:
+      "<p>Learn these signs — in yourself and in the people working around you.</p>"+
+      "<table class='mini'><tr><th>Condition</th><th>Signs and symptoms</th><th>What to do</th></tr>"+
+      "<tr><td><b>Heat rash</b></td><td>Clusters of red bumps on the skin — neck, upper chest, skin folds</td><td>Keep the area dry; move to a cooler environment</td></tr>"+
+      "<tr><td><b>Heat cramps</b></td><td>Muscle cramps or spasms, usually legs or abdomen; heavy sweating</td><td>Move to shade, rest, drink water, stretch gently</td></tr>"+
+      "<tr><td><b>Heat exhaustion</b></td><td>Heavy sweating; weakness; cold, pale, clammy skin; fast weak pulse; nausea or vomiting; headache; dizziness; fainting</td><td>Move to shade or air conditioning; loosen clothing; cool wet cloths; sips of water. <b>If vomiting or getting worse — call 911</b></td></tr>"+
+      "<tr><td><b>Heat stroke</b><br><span style='color:#C00000'>LIFE THREATENING</span></td><td>Body temperature 104&deg;F or higher; hot red skin, dry or damp; rapid strong pulse; headache; dizziness; nausea; <b>confusion, irritability, slurred speech</b>; seizures; loss of consciousness</td><td><b>CALL 911 IMMEDIATELY</b>; move to shade; cool rapidly with water and ice packs to armpits and groin; do NOT give fluids if unconscious</td></tr></table>"+
+      "<div class='danger'><b>Confusion is the red flag.</b> A co-worker who stops making sense, gets combative, or stops sweating in the heat may be having a heat stroke. Do not wait to see if they improve — this is an emergency.</div>",
+      kc:{ q:"A co-worker in the yard is confused, combative and has hot, red skin. What is your FIRST action?", opts:["Give them cold water to drink","Call 911 immediately and start cooling them","Have them sit down and watch them for 30 minutes","Drive them home"], a:1 } },
+
+    { h:"8. Reporting and Emergency Response", body:
+      "<p><b>Report symptoms immediately</b> — your own or a co-worker's — to your supervisor. Reporting early is what keeps a bad afternoon from becoming an ambulance ride. You will never be disciplined for reporting heat symptoms or for taking a preventive cool-down rest.</p>"+
+      "<p>If someone shows signs or symptoms of heat-related illness:</p>"+
+      "<ul><li><b>Stop work</b> and move them to shade or a cool environment</li>"+
+      "<li>Loosen or remove heavy, heat-retaining clothing and PPE</li>"+
+      "<li>Provide cool drinking water if they are conscious and alert</li>"+
+      "<li>Cool them actively — fan, spray or sponge with cool water, wet cloths, ice packs to armpits and groin</li>"+
+      "<li><b>Stay with them.</b> Never leave an affected employee alone</li>"+
+      "<li>If they do not improve quickly, or show confusion, loss of consciousness or any sign of heat stroke — <b>CALL 911 IMMEDIATELY</b></li>"+
+      "<li>Make sure EMS can reach the location; if the person is in a remote area of the yard, arrange to move them where an ambulance can get to them</li></ul>"+
+      "<p>WKO Inc. maintains effective communication — radio, cell phone or direct contact — between employees and supervisors so symptoms can be reported and help summoned quickly.</p>"+
+      "<h2>Emergency Numbers</h2>"+
+      "<p>Emergency (medical / fire): <span class='phone'>911</span><br>"+
+      "your nearest hospital Emergency Department: <span class='phone'>see posted emergency contact sheet</span> — see posted emergency contact sheet (about a short drive from the mill)</p>" }
+  ],
+  quizH: "Final Quiz",
+  quizIntro: "Answer all 10 questions. You need 8 correct (80%) to pass. Take your time — you can review your answers before submitting.",
+  submitBtn: "Submit Quiz",
+  answerAll: "Please answer every question before submitting.",
+  quiz: [
+    { q:"In regular work clothes and a hard hat, the outdoor heat rule takes effect at what temperature?", opts:["52&deg;F","80&deg;F","90&deg;F","100&deg;F"], a:1 },
+    { q:"How much suitably cool drinking water must be available per employee per hour at or above the action level?", opts:["One pint","One quart","Two quarts","No set amount"], a:1 },
+    { q:"At or above 90&deg;F, the mandatory paid cool-down rest period is…", opts:["5 minutes every hour","10 minutes every 2 hours","15 minutes every 2 hours","There is none until 100&deg;F"], a:1 },
+    { q:"At or above 100&deg;F, the mandatory paid cool-down rest period is…", opts:["10 minutes every 2 hours","10 minutes every hour","15 minutes every hour","30 minutes every 4 hours"], a:2 },
+    { q:"Which beverage does NOT count toward the drinking water requirement?", opts:["Cool potable water","A caffeine-free sports drink","An energy drink","Bottled water"], a:2 },
+    { q:"Acclimatization is lost after how many consecutive days away from working in the heat?", opts:["2 days","4 days","7 or more days","30 days"], a:2 },
+    { q:"During a heat wave, close observation applies to…", opts:["Only new employees","Only employees returning from absence","All employees, including acclimatized ones","Only employees over 50"], a:2 },
+    { q:"Why must heat-retaining PPE be removed during rest and meal periods?", opts:["To keep it clean","So the body can actually cool down","Because it is required by the union","To check it for damage"], a:1 },
+    { q:"A co-worker is confused, has hot red skin and has stopped sweating. This is…", opts:["Heat rash — keep the area dry","Heat cramps — stretch the muscle","Heat stroke — call 911 immediately and cool them","Normal for hot days"], a:2 },
+    { q:"You start to feel dizzy and weak in the heat. What should you do?", opts:["Push through until the next scheduled break","Tell your supervisor immediately and get to shade","Wait to see if it passes on its own","Drink a large amount of water and keep working"], a:1 }
+  ],
+  passH:"Congratulations — You Passed!",
+  passSub:"Certificate of Completion",
+  passModule:"Outdoor Heat Exposure — Employee Training " + MODULE_VERSION,
+  scoreLabel:"Score",
+  dateLabel:"Date",
+  codeLabel:"Your completion code",
+  passInstr:"<b>Last step — record your completion:</b> tap the button below and submit the completion form. Enter your name, select <b>\"Outdoor Heat Exposure / Exposición al Calor al Aire Libre\"</b> from the module list, and enter the completion code shown above. Your training is not on record until you submit the form.",
+  recordBtn:"Record My Completion",
+  failH:"Not Yet — Keep Going",
+  failMsg:"You scored below 80%. Review the material — especially the temperature tiers, water and rest requirements, and the signs of heat stroke — and try again. There is no limit on attempts.",
+  reviewBtn:"Review the Material",
+  retakeBtn:"Retake the Quiz",
+  yourScore:"Your score"
+},
+es: {
+  basedOn: "Basado en el Programa de Exposición al Calor al Aire Libre de WKO Inc. v2.1 (WAC 296-62-095 a 296-62-09560). ¿Preguntas? Comuníquese con el Líder de Cumplimiento Ambiental y Seguridad.",
+  introH: "Bienvenido — Trabajar con Seguridad en el Calor",
+  introP1: "Las enfermedades por calor aparecen rápido, y el golpe de calor puede ser mortal. La regla de calor al aire libre de Washington protege a quienes trabajan afuera — en WKO Inc. esto incluye el patio de trozas, el patio de madera, las áreas de los hornos, la operación de equipo móvil, el mantenimiento afuera y cualquier tarea de apoyo a la producción realizada al aire libre.",
+  introP2: "La capacitación toma de 15 a 20 minutos. Debe obtener 80% o más en el examen final para recibir crédito. Puede repetir el examen si es necesario.",
+  nameLabel: "Escriba su nombre completo para comenzar:",
+  namePh: "Nombre y apellido",
+  startBtn: "Comenzar la Capacitación",
+  continueBtn: "Continuar",
+  checkBtn: "Verificar Respuesta",
+  kcOk: "Correcto — muy bien.",
+  kcBad: "No exactamente — la respuesta correcta está resaltada. Revísela y continúe.",
+  secLabel: "Sección",
+  ofLabel: "de",
+  sections: [
+    { h:"1. Cuándo Aplica la Regla del Calor", body:
+      "<p>La regla de calor al aire libre de Washington (WAC 296-62-095) aplica <b>todo el año</b> — no solo en verano. Entra en vigor cuando la temperatura exterior alcanza el <b>nivel de acción</b> correspondiente a la ropa que usted debe usar:</p>"+
+      "<table class='mini'><tr><th>Lo que usted usa</th><th>Nivel de acción</th></tr>"+
+      "<tr><td>Toda otra ropa — ropa de trabajo normal, una o dos capas, casco, impermeable normal</td><td><b>80&deg;F</b></td></tr>"+
+      "<tr><td>Ropa no transpirable — ropa con barrera de vapor, trajes resistentes a químicos, trajes encapsulados</td><td><b>52&deg;F</b></td></tr></table>"+
+      "<p>La regla cubre el trabajo en un <b>ambiente exterior</b>. Esto también incluye lugares como cabinas de vehículos, cobertizos y carpas cuando la temperatura ahí no está controlada — así que una cabina de equipo sin aire acondicionado funcionando cuenta como exterior.</p>"+
+      "<div class='notice'><b>Exposición incidental:</b> si está afuera 15 minutos o menos en cualquier período de 60 minutos, los requisitos no aplican a esa hora. Salir un momento y volver a entrar es incidental. Pasar más de 15 minutos de una hora afuera sí está cubierto.</div>",
+      kc:{ q:"Usted usa ropa de trabajo normal y casco. ¿A qué temperatura exterior entra en vigor la regla del calor?", opts:["52&deg;F","80&deg;F","90&deg;F","100&deg;F"], a:1 } },
+
+    { h:"2. Lo Que Aumenta Su Riesgo", body:
+      "<p>Los <b>factores ambientales</b> — las condiciones a su alrededor — aumentan el riesgo de enfermedad por calor:</p>"+
+      "<ul><li>Temperatura del aire y humedad relativa</li>"+
+      "<li>Calor radiante del sol, los hornos, motores y otros equipos calientes</li>"+
+      "<li>Calor conductivo del suelo, las plataformas y la maquinaria</li>"+
+      "<li>Cuánto aire se está moviendo</li>"+
+      "<li>Qué tan pesado y prolongado es su trabajo</li>"+
+      "<li>La ropa y el EPP que debe usar</li></ul>"+
+      "<p>Los <b>factores personales</b> también importan. Varían de persona a persona, y esta información es para <b>su propio uso personal</b>:</p>"+
+      "<ul><li>Edad y condición física</li>"+
+      "<li>Qué tan aclimatado está al trabajo en el calor</li>"+
+      "<li>Condiciones médicas</li>"+
+      "<li>Cuánta agua potable consume</li>"+
+      "<li>Consumo de alcohol</li>"+
+      "<li>Enfermedad por calor previa</li>"+
+      "<li>Embarazo</li>"+
+      "<li>Medicamentos que afectan cómo su cuerpo responde al calor</li></ul>"+
+      "<p>Si toma algún medicamento y no está seguro de si afecta su respuesta al calor, pregunte a su médico o farmacéutico. No está obligado a informar a su empleador sobre una condición médica o un medicamento.</p>" },
+
+    { h:"3. Agua Potable", body:
+      "<p>Cuando la temperatura está en o por encima del nivel de acción, WKO Inc. proporciona al menos <b>un cuarto de galón (32 oz) de agua potable suficientemente fresca por empleado, por hora</b> de trabajo — y debe estar fácilmente accesible donde usted esté trabajando.</p>"+
+      "<ul><li>Beba <b>cantidades pequeñas con frecuencia</b> — como una taza cada 15 a 20 minutos — en lugar de mucho de una vez</li>"+
+      "<li>No espere a tener sed. Cuando siente sed, ya va atrasado</li>"+
+      "<li>Se colocan recipientes portátiles de agua cerca de las áreas de trabajo alejadas de fuentes fijas de agua</li></ul>"+
+      "<p><b>Qué cuenta:</b> agua potable y bebidas deportivas con electrolitos que <u>no</u> contengan cafeína.</p>"+
+      "<div class='notice'><b>Qué NO cuenta:</b> el café, el té, las bebidas energéticas y cualquier otra bebida con cafeína no cumplen con el requisito de agua.</div>",
+      kc:{ q:"¿Cuánta agua potable debe estar disponible por empleado por hora en o por encima del nivel de acción?", opts:["Una pinta (16 oz)","Un cuarto de galón (32 oz)","Un galón","No hay cantidad establecida"], a:1 } },
+
+    { h:"4. Sombra y Períodos de Descanso para Refrescarse", body:
+      "<p>En o por encima del nivel de acción, se debe proporcionar sombra u otro medio de enfriamiento igualmente efectivo — cerca de donde trabaja, suficiente para que todos los que estén en descanso se sienten completamente en la sombra, y abierta al aire. La sombra puede ser árboles, toldos, lonas, carpas, aleros de edificios, una cabina con aire acondicionado o una sala de descanso enfriada.</p>"+
+      "<p>A medida que sube la temperatura, los requisitos se acumulan:</p>"+
+      "<div class='tier t1'><div class='tt'>En o por encima del nivel de acción (80&deg;F / 52&deg;F)</div>"+
+      "Agua, sombra, capacitación — y <b>descanso preventivo para refrescarse cuando sienta la necesidad</b>. Este descanso es pagado, y nunca se le debe desalentar ni penalizar por tomarlo.</div>"+
+      "<div class='tier t2'><div class='tt'>En o por encima de 90&deg;F</div>"+
+      "Todo lo anterior, <b>más un período obligatorio pagado de descanso de al menos 10 minutos cada 2 horas</b>, tomado en la sombra o con enfriamiento igualmente efectivo — más observación cercana de todos los empleados.</div>"+
+      "<div class='tier t3'><div class='tt'>En o por encima de 100&deg;F</div>"+
+      "Todo lo anterior, <b>más un período obligatorio pagado de descanso de al menos 15 minutos cada hora</b> — más observación cercana de todos los empleados.</div>"+
+      "<p>El descanso obligatorio puede tomarse al mismo tiempo que una comida o descanso que ya le corresponde. Los supervisores también pueden ajustar los horarios — por ejemplo, comenzar más temprano — para reducir el trabajo durante lo peor del calor.</p>",
+      kc:{ q:"La temperatura llega a 92&deg;F. ¿A qué descanso obligatorio tiene derecho?", opts:["A ninguno hasta que llegue a 100&deg;F","Al menos 10 minutos cada 2 horas, pagado","Al menos 15 minutos cada hora, pagado","Solo a su almuerzo normal"], a:1 } },
+
+    { h:"5. Aclimatación y Observación Cercana", body:
+      "<p>La <b>aclimatación</b> es la adaptación gradual de su cuerpo al trabajo en el calor. Se desarrolla durante <b>7 a 14 días</b> de exposición, y gran parte de la adaptación ocurre en los primeros cuatro o cinco días. Se <b>pierde después de 7 o más días consecutivos</b> sin trabajar en el calor — así que después de vacaciones o de una racha de clima fresco, comienza de nuevo.</p>"+
+      "<p>WKO Inc. observa de cerca a los empleados durante <b>14 días consecutivos</b> cuando están:</p>"+
+      "<ul><li><b>Recién asignados</b> a trabajo exterior en o por encima del nivel de acción</li>"+
+      "<li><b>Regresando</b> a ese trabajo después de una ausencia de 7 días o más</li></ul>"+
+      "<p><b>Durante una ola de calor, todos son observados de cerca</b> — incluso los empleados totalmente aclimatados. Una ola de calor es cualquier día en que la temperatura máxima pronosticada esté en o por encima del nivel de acción <i>y</i> sea al menos 10&deg;F más alta que el promedio de las máximas de los cinco días anteriores.</p>"+
+      "<div class='notice'><b>Importante:</b> <b>no se puede desarrollar tolerancia al calor durante una ola de calor</b>. Un aumento repentino de temperatura es peligroso para todos, sin importar cuánto tiempo haya trabajado afuera.</div>"+
+      "<p><b>Observación cercana</b> significa que alguien está pendiente de usted: observación directa del supervisor, un sistema obligatorio de compañeros, o comunicación regular por radio o teléfono si trabaja solo o en una parte alejada del patio.</p>",
+      kc:{ q:"Usted regresa de dos semanas de vacaciones en julio. ¿Qué le aplica?", opts:["Nada — usted ya trabaja aquí","Observación cercana por 14 días, porque la aclimatación se pierde después de 7 días o más de ausencia","Debe repetir esta capacitación antes de trabajar","No puede trabajar afuera por una semana"], a:1 } },
+
+    { h:"6. EPP, Ropa y Cómo Refrescarse", body:
+      "<p>El equipo que lo protege de otros peligros también retiene el calor. Durante <b>todos los descansos y comidas</b>, quítese el EPP que retiene calor — ropa no transpirable o resistente a químicos, y cualquier otro equipo que atrape el calor — para que su cuerpo realmente pueda enfriarse. Sentarse en la sombra con un traje de barrera de vapor sirve de muy poco.</p>"+
+      "<ul><li>Use ropa clara, holgada y transpirable cuando el trabajo lo permita</li>"+
+      "<li>Use sombra, ventiladores, rociado o paños húmedos y frescos en el cuello y la cara durante el descanso</li>"+
+      "<li>Aproveche las cabinas con aire acondicionado y las áreas de descanso enfriadas</li></ul>"+
+      "<div class='notice'>Nunca se quite el EPP requerido para un peligro mientras sigue trabajando — la respuesta al calor es descanso, agua, sombra y cambios de horario, no quedarse sin protección.</div>" },
+
+    { h:"7. Reconocer las Enfermedades por Calor", body:
+      "<p>Aprenda estas señales — en usted mismo y en quienes trabajan a su alrededor.</p>"+
+      "<table class='mini'><tr><th>Condición</th><th>Señales y síntomas</th><th>Qué hacer</th></tr>"+
+      "<tr><td><b>Sarpullido por calor</b></td><td>Grupos de granitos rojos en la piel — cuello, pecho, pliegues de la piel</td><td>Mantener el área seca; ir a un ambiente más fresco</td></tr>"+
+      "<tr><td><b>Calambres por calor</b></td><td>Calambres o espasmos musculares, normalmente en piernas o abdomen; sudoración abundante</td><td>Ir a la sombra, descansar, beber agua, estirar suavemente</td></tr>"+
+      "<tr><td><b>Agotamiento por calor</b></td><td>Sudoración abundante; debilidad; piel fría, pálida y pegajosa; pulso rápido y débil; náusea o vómito; dolor de cabeza; mareo; desmayo</td><td>Ir a la sombra o aire acondicionado; aflojar la ropa; paños húmedos frescos; sorbos de agua. <b>Si vomita o empeora — llame al 911</b></td></tr>"+
+      "<tr><td><b>Golpe de calor</b><br><span style='color:#C00000'>PELIGRO DE MUERTE</span></td><td>Temperatura corporal de 104&deg;F o más; piel caliente y roja, seca o húmeda; pulso rápido y fuerte; dolor de cabeza; mareo; náusea; <b>confusión, irritabilidad, habla arrastrada</b>; convulsiones; pérdida del conocimiento</td><td><b>LLAME AL 911 INMEDIATAMENTE</b>; llevar a la sombra; enfriar rápido con agua y bolsas de hielo en axilas e ingle; NO dar líquidos si está inconsciente</td></tr></table>"+
+      "<div class='danger'><b>La confusión es la señal de alarma.</b> Un compañero que deja de hablar con sentido, se pone agresivo o deja de sudar en el calor puede estar sufriendo un golpe de calor. No espere a ver si mejora — es una emergencia.</div>",
+      kc:{ q:"Un compañero en el patio está confundido, agresivo y tiene la piel caliente y roja. ¿Cuál es su PRIMERA acción?", opts:["Darle agua fría para beber","Llamar al 911 inmediatamente y comenzar a enfriarlo","Sentarlo y observarlo por 30 minutos","Llevarlo a su casa"], a:1 } },
+
+    { h:"8. Reportar y Responder a Emergencias", body:
+      "<p><b>Reporte los síntomas de inmediato</b> — los suyos o los de un compañero — a su supervisor. Reportar temprano es lo que evita que una mala tarde se convierta en un viaje en ambulancia. Nunca será disciplinado por reportar síntomas de calor ni por tomar un descanso preventivo para refrescarse.</p>"+
+      "<p>Si alguien muestra señales o síntomas de enfermedad por calor:</p>"+
+      "<ul><li><b>Detenga el trabajo</b> y llévelo a la sombra o a un ambiente fresco</li>"+
+      "<li>Afloje o quite la ropa y el EPP pesados que retienen calor</li>"+
+      "<li>Dele agua fresca si está consciente y alerta</li>"+
+      "<li>Enfríelo activamente — abanicar, rociar o pasar agua fresca, paños húmedos, bolsas de hielo en axilas e ingle</li>"+
+      "<li><b>Quédese con esa persona.</b> Nunca deje solo a un empleado afectado</li>"+
+      "<li>Si no mejora rápidamente, o muestra confusión, pérdida del conocimiento o cualquier señal de golpe de calor — <b>LLAME AL 911 INMEDIATAMENTE</b></li>"+
+      "<li>Asegúrese de que los servicios de emergencia puedan llegar; si la persona está en un área alejada del patio, coordine trasladarla a donde pueda llegar una ambulancia</li></ul>"+
+      "<p>WKO Inc. mantiene comunicación efectiva — radio, teléfono celular o contacto directo — entre empleados y supervisores para que los síntomas se reporten y se pida ayuda rápidamente.</p>"+
+      "<h2>Números de Emergencia</h2>"+
+      "<p>Emergencia (médica / incendio): <span class='phone'>911</span><br>"+
+      "Sala de Emergencias del su hospital más cercano: <span class='phone'>see posted emergency contact sheet</span> — see posted emergency contact sheet (aproximadamente 3–4 minutos del aserradero)</p>" }
+  ],
+  quizH: "Examen Final",
+  quizIntro: "Responda las 10 preguntas. Necesita 8 correctas (80%) para aprobar. Tómese su tiempo — puede revisar sus respuestas antes de enviar.",
+  submitBtn: "Enviar Examen",
+  answerAll: "Por favor responda todas las preguntas antes de enviar.",
+  quiz: [
+    { q:"Con ropa de trabajo normal y casco, ¿a qué temperatura entra en vigor la regla del calor?", opts:["52&deg;F","80&deg;F","90&deg;F","100&deg;F"], a:1 },
+    { q:"¿Cuánta agua potable suficientemente fresca debe haber por empleado por hora en o por encima del nivel de acción?", opts:["Una pinta","Un cuarto de galón","Dos cuartos de galón","No hay cantidad establecida"], a:1 },
+    { q:"En o por encima de 90&deg;F, el descanso obligatorio pagado para refrescarse es de…", opts:["5 minutos cada hora","10 minutos cada 2 horas","15 minutos cada 2 horas","No hay ninguno hasta los 100&deg;F"], a:1 },
+    { q:"En o por encima de 100&deg;F, el descanso obligatorio pagado para refrescarse es de…", opts:["10 minutos cada 2 horas","10 minutos cada hora","15 minutos cada hora","30 minutos cada 4 horas"], a:2 },
+    { q:"¿Cuál bebida NO cuenta para el requisito de agua potable?", opts:["Agua potable fresca","Una bebida deportiva sin cafeína","Una bebida energética","Agua embotellada"], a:2 },
+    { q:"¿Después de cuántos días consecutivos sin trabajar en el calor se pierde la aclimatación?", opts:["2 días","4 días","7 días o más","30 días"], a:2 },
+    { q:"Durante una ola de calor, la observación cercana aplica a…", opts:["Solo empleados nuevos","Solo empleados que regresan de una ausencia","Todos los empleados, incluidos los aclimatados","Solo empleados mayores de 50 años"], a:2 },
+    { q:"¿Por qué debe quitarse el EPP que retiene calor durante los descansos y las comidas?", opts:["Para mantenerlo limpio","Para que el cuerpo realmente pueda enfriarse","Porque lo exige el sindicato","Para revisar si está dañado"], a:1 },
+    { q:"Un compañero está confundido, tiene la piel caliente y roja y dejó de sudar. Esto es…", opts:["Sarpullido por calor — mantener el área seca","Calambres por calor — estirar el músculo","Golpe de calor — llamar al 911 inmediatamente y enfriarlo","Normal en días calurosos"], a:2 },
+    { q:"Usted empieza a sentirse mareado y débil por el calor. ¿Qué debe hacer?", opts:["Aguantar hasta el siguiente descanso programado","Avisar a su supervisor de inmediato e ir a la sombra","Esperar a ver si se le pasa solo","Beber mucha agua de una vez y seguir trabajando"], a:1 }
+  ],
+  passH:"¡Felicidades — Aprobó!",
+  passSub:"Certificado de Finalización",
+  passModule:"Exposición al Calor al Aire Libre — Capacitación para Empleados " + MODULE_VERSION,
+  scoreLabel:"Puntaje",
+  dateLabel:"Fecha",
+  codeLabel:"Su código de finalización",
+  passInstr:"<b>Último paso — registre su finalización:</b> toque el botón de abajo y envíe el formulario de finalización. Escriba su nombre, seleccione <b>\"Outdoor Heat Exposure / Exposición al Calor al Aire Libre\"</b> en la lista de módulos e ingrese el código de finalización que aparece arriba. Su capacitación no queda registrada hasta que envíe el formulario.",
+  recordBtn:"Registrar Mi Finalización",
+  failH:"Todavía No — Siga Adelante",
+  failMsg:"Obtuvo menos del 80%. Revise el material — especialmente los niveles de temperatura, los requisitos de agua y descanso, y las señales del golpe de calor — e intente de nuevo. No hay límite de intentos.",
+  reviewBtn:"Revisar el Material",
+  retakeBtn:"Repetir el Examen",
+  yourScore:"Su puntaje"
+}
+};
+
+var ANSWER_KEY = STR.en.quiz.map(function(q){ return q.a; });
+
+/* ------------ State ------------ */
+var state = { lang:null, screen:"lang", section:0, name:"", kcDone:{}, quizAnswers:{}, lastScore:null, code:null };
+
+/* ------------ Helpers ------------ */
+function T(){ return STR[state.lang]; }
+function $(id){ return document.getElementById(id); }
+function esc(s){ var d=document.createElement("div"); d.appendChild(document.createTextNode(s)); return d.innerHTML; }
+
+function generateCode(){
+  var chars="ABCDEFGHJKMNPQRSTUVWXYZ23456789", out="";
+  for(var i=0;i<5;i++){ out+=chars.charAt(Math.floor(Math.random()*chars.length)); }
+  return CODE_PREFIX+out;
+}
+function gradeQuiz(answers){
+  var correct=0;
+  for(var i=0;i<ANSWER_KEY.length;i++){ if(answers[i]===ANSWER_KEY[i]) correct++; }
+  var pct=Math.round(correct/ANSWER_KEY.length*100);
+  return { correct:correct, total:ANSWER_KEY.length, pct:pct, pass: pct>=PASS_PCT };
+}
+
+/* ------------ Rendering ------------ */
+function setLang(l){
+  state.lang=l;
+  if(state.screen==="lang") state.screen="intro";
+  $("langBar").className="langbar";
+  $("btnEN").className = l==="en"?"active":"";
+  $("btnES").className = l==="es"?"active":"";
+  render();
+}
+function progress(){
+  if(state.screen==="lang"){ $("progBar").style.width="0%"; return; }
+  var total = T().sections.length + 2;
+  var pos = state.screen==="intro"?0 : state.screen==="quiz"?total-1 : state.screen==="pass"||state.screen==="fail"?total : state.section+1;
+  $("progBar").style.width = Math.round(pos/total*100)+"%";
+}
+function renderLang(){
+  $("app").innerHTML =
+    '<div class="card splash">'+
+    '<div class="co">WKO INC.</div>'+
+    '<div class="ti-en">Outdoor Heat Exposure Training</div>'+
+    '<div class="ti-es">Capacitación sobre Exposición al Calor al Aire Libre</div>'+
+    '<div class="choose">Choose your language / Elija su idioma:</div>'+
+    '<div class="langbtns">'+
+    '<button id="langBtnEN">English</button>'+
+    '<button id="langBtnES">Español</button>'+
+    '</div></div>';
+  $("langBtnEN").addEventListener("click", function(){ setLang("en"); });
+  $("langBtnES").addEventListener("click", function(){ setLang("es"); });
+}
+function render(){
+  progress();
+  if(state.screen==="lang") renderLang();
+  else if(state.screen==="intro") renderIntro();
+  else if(state.screen==="section") renderSection();
+  else if(state.screen==="quiz") renderQuiz();
+  else if(state.screen==="pass") renderPass();
+  else if(state.screen==="fail") renderFail();
+}
+function renderIntro(){
+  var t=T();
+  $("app").innerHTML =
+    '<div class="card"><h1>'+t.introH+'</h1><p>'+t.introP1+'</p><p>'+t.introP2+'</p>'+
+    '<h2>'+t.nameLabel+'</h2>'+
+    '<input type="text" id="nameInput" placeholder="'+t.namePh+'" value="'+esc(state.name)+'" autocomplete="name">'+
+    '<br><button class="btn" id="startBtn" disabled>'+t.startBtn+'</button>'+
+    '<p style="color:var(--gray);font-size:.85em;margin-top:16px">'+t.basedOn+'</p></div>';
+  var inp=$("nameInput"), btn=$("startBtn");
+  function gate(){ state.name=inp.value.trim(); btn.disabled = state.name.length<2; }
+  inp.addEventListener("input", gate); gate();
+  btn.addEventListener("click", function(){ if(state.name.length>=2){ state.screen="section"; state.section=0; render(); window.scrollTo(0,0);} });
+}
+function renderSection(){
+  var t=T(), s=t.sections[state.section];
+  var html = '<div class="card"><div class="qnum">'+t.secLabel+' '+(state.section+1)+' '+t.ofLabel+' '+t.sections.length+'</div><h1>'+s.h+'</h1>'+s.body;
+  var kcPassed = !!state.kcDone[state.section];
+  if(s.kc){
+    html += '<div class="kc"><div class="kct">✔ '+s.kc.q+'</div>';
+    for(var i=0;i<s.kc.opts.length;i++){
+      html += '<label class="opt" id="kcOpt'+i+'"><input type="radio" name="kc" value="'+i+'"'+(kcPassed?' disabled':'')+'>'+s.kc.opts[i]+'</label>';
+    }
+    html += '<div class="fb" id="kcFb"></div>';
+    if(!kcPassed) html += '<button class="btn secondary" id="kcCheck">'+t.checkBtn+'</button>';
+    html += '</div>';
+  }
+  html += '<br><button class="btn" id="contBtn"'+((s.kc&&!kcPassed)?' disabled':'')+'>'+t.continueBtn+'</button></div>';
+  $("app").innerHTML = html;
+  if(s.kc && !kcPassed){
+    $("kcCheck").addEventListener("click", function(){
+      var sel=document.querySelector('input[name="kc"]:checked');
+      if(!sel) return;
+      var v=parseInt(sel.value,10), fb=$("kcFb");
+      if(v===s.kc.a){
+        state.kcDone[state.section]=true;
+        $("kcOpt"+v).className="opt correct";
+        fb.className="fb ok"; fb.textContent=t.kcOk;
+        $("contBtn").disabled=false; $("kcCheck").disabled=true;
+      } else {
+        $("kcOpt"+v).className="opt wrong";
+        $("kcOpt"+s.kc.a).className="opt correct";
+        fb.className="fb bad"; fb.textContent=t.kcBad;
+        state.kcDone[state.section]=true;
+        $("contBtn").disabled=false; $("kcCheck").disabled=true;
+      }
+    });
+  }
+  $("contBtn").addEventListener("click", function(){
+    if(state.section < t.sections.length-1){ state.section++; } else { state.screen="quiz"; }
+    render(); window.scrollTo(0,0);
+  });
+}
+function renderQuiz(){
+  var t=T();
+  var html='<div class="card"><h1>'+t.quizH+'</h1><p>'+t.quizIntro+'</p>';
+  for(var i=0;i<t.quiz.length;i++){
+    var q=t.quiz[i];
+    html+='<div class="quizq"><div class="qt">'+(i+1)+'. '+q.q+'</div>';
+    for(var j=0;j<q.opts.length;j++){
+      var checked = state.quizAnswers[i]===j ? ' checked' : '';
+      html+='<label class="opt"><input type="radio" name="q'+i+'" value="'+j+'"'+checked+'>'+q.opts[j]+'</label>';
+    }
+    html+='</div>';
+  }
+  html+='<div class="fb bad" id="quizWarn" style="display:none">'+t.answerAll+'</div>';
+  html+='<button class="btn" id="quizSubmit">'+t.submitBtn+'</button></div>';
+  $("app").innerHTML=html;
+  var radios=document.querySelectorAll('#app input[type=radio]');
+  for(var r=0;r<radios.length;r++){
+    radios[r].addEventListener("change", function(e){
+      var name=e.target.name, idx=parseInt(name.substring(1),10);
+      state.quizAnswers[idx]=parseInt(e.target.value,10);
+    });
+  }
+  $("quizSubmit").addEventListener("click", function(){
+    var answers=[];
+    for(var i=0;i<t.quiz.length;i++){
+      if(typeof state.quizAnswers[i]==="undefined"){ $("quizWarn").style.display="block"; return; }
+      answers.push(state.quizAnswers[i]);
+    }
+    var res=gradeQuiz(answers);
+    state.lastScore=res;
+    if(res.pass){ state.code=generateCode(); state.screen="pass"; }
+    else { state.screen="fail"; }
+    render(); window.scrollTo(0,0);
+  });
+}
+function fmtDate(){
+  var d=new Date();
+  var m=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+  var mes=["ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic"];
+  return state.lang==="es" ? d.getDate()+" "+mes[d.getMonth()]+" "+d.getFullYear() : m[d.getMonth()]+" "+d.getDate()+", "+d.getFullYear();
+}
+function renderPass(){
+  var t=T(), r=state.lastScore;
+  $("app").innerHTML =
+    '<div class="card"><p class="passmsg">'+t.passH+'</p></div>'+
+    '<div class="cert" id="certBox">'+
+      '<div>'+t.passSub+'</div>'+
+      '<div class="big" id="certName">'+esc(state.name)+'</div>'+
+      '<div>'+t.passModule+'</div>'+
+      '<div style="margin:8px 0">'+t.scoreLabel+': <b>'+r.correct+'/'+r.total+' ('+r.pct+'%)</b> &nbsp;·&nbsp; '+t.dateLabel+': <b id="certDate">'+fmtDate()+'</b></div>'+
+      '<div>'+t.codeLabel+':</div>'+
+      '<div class="code" id="certCode">'+state.code+'</div>'+
+    '</div>'+
+    '<div class="card"><p>'+t.passInstr+'</p>'+
+    '<a class="btn" id="recordLink" href="'+FORM_URL+'" target="_blank" rel="noopener">'+t.recordBtn+'</a></div>';
+}
+function renderFail(){
+  var t=T(), r=state.lastScore;
+  $("app").innerHTML =
+    '<div class="card" id="failBox"><p class="failmsg">'+t.failH+'</p>'+
+    '<p>'+t.yourScore+': <b>'+r.correct+'/'+r.total+' ('+r.pct+'%)</b></p>'+
+    '<p>'+t.failMsg+'</p>'+
+    '<button class="btn secondary" id="reviewBtn">'+t.reviewBtn+'</button> '+
+    '<button class="btn" id="retakeBtn">'+t.retakeBtn+'</button></div>';
+  $("reviewBtn").addEventListener("click", function(){ state.quizAnswers={}; state.screen="section"; state.section=0; render(); window.scrollTo(0,0); });
+  $("retakeBtn").addEventListener("click", function(){ state.quizAnswers={}; state.screen="quiz"; render(); window.scrollTo(0,0); });
+}
+
+/* ------------ Test hooks ------------ */
+window.APP = { STR:STR, state:state, gradeQuiz:gradeQuiz, generateCode:generateCode, ANSWER_KEY:ANSWER_KEY, FORM_URL:FORM_URL, PASS_PCT:PASS_PCT, MODULE_VERSION:MODULE_VERSION, CODE_PREFIX:CODE_PREFIX, setLang:setLang, render:render };
+window.setLang = setLang;
+
+render();
+</script>
+</body>
+</html>

@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WKO Inc. — Wildfire Smoke SUPERVISOR Training</title>
+<style>
+  :root { --blue:#2E75B6; --dark:#1F4E79; --gray:#666; --light:#F2F2F2;
+          --green:#2E8B57; --amber:#E8A317; --orange:#D2691E; --red:#B22222; --maroon:#701C1C; }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:Arial,Helvetica,sans-serif; background:var(--light); color:#222; line-height:1.5; -webkit-text-size-adjust:100%; }
+  .wrap { max-width:640px; margin:0 auto; min-height:100vh; display:flex; flex-direction:column; background:#fff; box-shadow:0 0 24px rgba(0,0,0,.08); }
+  header { background:var(--dark); color:#fff; padding:14px 20px; }
+  header .co { font-weight:bold; font-size:15px; letter-spacing:.5px; }
+  header .prog { font-size:12px; color:#cfe0f0; }
+  .badge { display:inline-block; background:var(--amber); color:#2b1c00; font-weight:bold; font-size:11px; letter-spacing:1px; padding:2px 8px; border-radius:999px; margin-top:5px; }
+  .bar { height:6px; background:#dce7f2; } .bar span { display:block; height:100%; background:var(--blue); width:0%; transition:width .3s; }
+  main { flex:1; padding:24px 20px 32px; }
+  h1 { color:var(--dark); font-size:24px; margin-bottom:12px; }
+  p { margin-bottom:12px; font-size:16px; }
+  ul, ol { margin:0 0 12px 22px; } li { margin-bottom:7px; font-size:16px; }
+  .eyebrow { text-transform:uppercase; letter-spacing:1.5px; font-size:11px; color:var(--gray); font-weight:bold; margin-bottom:6px; }
+  .card { background:var(--light); border-left:4px solid var(--blue); padding:12px 14px; margin:14px 0; border-radius:0 6px 6px 0; font-size:15px; }
+  .card.warn { border-left-color:var(--red); }
+  .card.do { border-left-color:var(--green); }
+  .btn { display:block; width:100%; background:var(--blue); color:#fff; border:none; border-radius:8px; padding:15px; font-size:17px; font-weight:bold; font-family:inherit; cursor:pointer; margin-top:18px; }
+  .btn:active { background:var(--dark); } .btn:disabled { background:#b9c8d6; cursor:default; }
+  .btn.secondary { background:#fff; color:var(--blue); border:2px solid var(--blue); }
+  a.btn { text-decoration:none; text-align:center; box-sizing:border-box; }
+  input[type=text] { width:100%; padding:13px; font-size:17px; font-family:inherit; border:2px solid #c6d4e2; border-radius:8px; margin-top:6px; }
+  input[type=text]:focus { outline:none; border-color:var(--blue); }
+  label { font-weight:bold; font-size:14px; color:var(--dark); }
+  .ladder { margin:16px 0; }
+  .rung { display:flex; border-radius:8px; overflow:hidden; margin-bottom:8px; }
+  .rung .lvl { flex:0 0 112px; color:#fff; font-weight:bold; padding:10px 8px; font-size:13px; text-align:center; display:flex; flex-direction:column; justify-content:center; }
+  .rung .lvl small { font-weight:normal; font-size:11px; opacity:.9; }
+  .rung .act { flex:1; background:var(--light); padding:10px 12px; font-size:14px; display:flex; align-items:center; }
+  .opt { display:block; width:100%; text-align:left; background:#fff; border:2px solid #c6d4e2; border-radius:8px; padding:13px 14px; font-size:16px; font-family:inherit; margin-top:10px; cursor:pointer; }
+  .opt.sel { border-color:var(--blue); background:#eaf2fa; }
+  .opt.right { border-color:var(--green); background:#e8f5ee; }
+  .opt.wrong { border-color:var(--red); background:#fbeaea; }
+  .feedback { margin-top:12px; padding:12px 14px; border-radius:8px; font-size:15px; display:none; }
+  .feedback.good { background:#e8f5ee; border-left:4px solid var(--green); display:block; }
+  .feedback.bad { background:#fbeaea; border-left:4px solid var(--red); display:block; }
+  .qnum { font-size:12px; color:var(--gray); font-weight:bold; text-transform:uppercase; letter-spacing:1px; margin-bottom:4px; }
+  .cert { border:3px solid var(--dark); border-radius:10px; padding:22px; text-align:center; margin-top:16px; }
+  .cert .big { font-size:22px; font-weight:bold; color:var(--dark); margin:8px 0; }
+  .cert .code { font-size:26px; letter-spacing:3px; font-weight:bold; color:var(--blue); background:var(--light); border-radius:8px; padding:10px; margin:12px 0; }
+  .score-pill { display:inline-block; background:var(--green); color:#fff; border-radius:999px; padding:6px 18px; font-weight:bold; font-size:18px; }
+  .score-pill.fail { background:var(--red); }
+  .steps { counter-reset:s; list-style:none; margin-left:0; }
+  .steps li { counter-increment:s; position:relative; padding-left:34px; margin-bottom:10px; }
+  .steps li:before { content:counter(s); position:absolute; left:0; top:1px; background:var(--blue); color:#fff; width:24px; height:24px; border-radius:50%; text-align:center; font-weight:bold; font-size:14px; line-height:24px; }
+  footer { padding:12px 20px; font-size:11px; color:var(--gray); text-align:center; border-top:1px solid #e4e9ef; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="co">WKO INC.</div>
+    <div class="prog">Wildfire Smoke Training — WAC 296-820-825(3)</div>
+    <div class="badge">SUPERVISOR MODULE</div>
+  </header>
+  <div class="bar"><span id="prog"></span></div>
+  <main id="main"></main>
+  <footer>WKO Inc. · Carson, WA · WAC 296-820-825(3) · Supervisor Module v1.0 (2026)</footer>
+</div>
+
+<script>
+const FORM_URL = "https://forms.cloud.microsoft/r/YHYEJNbAMt";
+
+let empName = "", slideIdx = 0, quizIdx = 0, quizScore = 0;
+
+const slides = [
+{ t:'content', eyebrow:'Section 1 of 8', title:'Why Supervisors Get Extra Training', html:`
+  <p>Washington's wildfire smoke rule requires <b>supervisors to receive additional training beyond what employees get</b> (WAC 296-820-825(3)). That's because when smoke rolls in, you are the one who checks the air, makes the call, and takes care of your crew.</p>
+  <p>The rule says your training must cover three things:</p>
+  <ul>
+    <li>The procedures you must follow to implement the wildfire smoke rule</li>
+    <li>What to do if an employee shows symptoms of smoke exposure</li>
+    <li>How to move or transport an employee to medical care if needed</li>
+  </ul>
+  <div class="card warn"><b>This module does not replace the employee training.</b> You must complete the employee Wildfire Smoke module as well — it covers health effects, symptoms, and respirator use. This module covers your duties on top of that.</div>
+`},
+{ t:'content', eyebrow:'Section 2 of 8', title:'Duty 1 — Check the Air', html:`
+  <p>WKO Inc.'s <b>official method</b> for determining the current PM2.5 is the <b>EPA AirNow reading (airnow.gov)</b> — the NowCast PM2.5 and AQI for the <b>Carson/Stevenson area</b>. That is the number the company acts on.</p>
+  <p>The on-site particulate sensor is a helpful real-time tool and can prompt you to act early, but AirNow is the official reading of record.</p>
+  <p><b>How often you check:</b></p>
+  <ul>
+    <li><b>Before the start of every outdoor work shift</b></li>
+    <li><b>At least every two hours</b> once PM2.5 reaches 20.5 µg/m³ or more</li>
+    <li><b>Immediately</b> if employees report worsening conditions, visible smoke increase, or symptoms</li>
+  </ul>
+  <div class="card do"><b>Write it down.</b> Log the time, the reading, and what you did about it. Documentation of your monitoring checks is part of your job under this program — and it's the proof that protections were applied when they were needed.</div>
+`},
+{ t:'check', q:'What is the official reading WKO acts on, and how often do you check it once PM2.5 hits 20.5 µg/m³?',
+  opts:['The on-site sensor; once a day','EPA AirNow for Carson/Stevenson; at least every two hours','Whatever looks right; when you remember','The weather app; once a week'], a:1,
+  why:'Correct. AirNow for Carson/Stevenson is the official reading — before each outdoor shift, then at least every two hours at 20.5 µg/m³ or above.' },
+{ t:'content', eyebrow:'Section 3 of 8', title:'Duty 2 — Tell the Crew', html:`
+  <p>The rule requires a <b>two-way</b> hazard communication system. That means you tell them the conditions, <i>and</i> they can tell you about hazards and symptoms without fear of reprisal.</p>
+  <p><b>How WKO communicates smoke levels:</b></p>
+  <ul>
+    <li>Announce the current level at the <b>crew safety meeting at shift start</b> during smoke events</li>
+    <li><b>Post updates</b> at the break rooms and time clocks</li>
+    <li>Update by <b>radio or verbally</b> during the shift when conditions change</li>
+    <li>Answer any employee who asks what the current PM2.5 is</li>
+  </ul>
+  <div class="card">Tell them the number <b>and</b> what it means — which protections are now in effect and what's available to them. "It's 60 today, so we're moving the sorting work inside after lunch and there are N95s in the break room" beats reciting a number.</div>
+`},
+{ t:'content', eyebrow:'Section 4 of 8', title:'Duty 3 — Implement the Right Level', html:`
+  <p>Your job is to match the protections to the reading. Here is what YOU do at each level:</p>
+  <div class="ladder">
+    <div class="rung"><div class="lvl" style="background:var(--amber)">Level 1<small>20.5 µg/m³</small></div><div class="act">Communicate the level. Make N95/KN95 available on request. Verify everyone working outdoors has been trained.</div></div>
+    <div class="rung"><div class="lvl" style="background:var(--orange)">Level 2<small>35.5 µg/m³</small></div><div class="act">Provide respirators at no cost to ALL exposed employees — either hand them out or keep a stocked supply at each work location — and encourage use.</div></div>
+    <div class="rung"><div class="lvl" style="background:var(--red)">Level 3<small>55.5 µg/m³</small></div><div class="act">Implement feasible exposure controls: move work indoors, reschedule, rotate tasks, add breaks, use filtered-cab equipment.</div></div>
+    <div class="rung"><div class="lvl" style="background:var(--red)">Level 4<small>150.5 µg/m³</small></div><div class="act">Additional controls. Watch your people closely for symptoms.</div></div>
+    <div class="rung"><div class="lvl" style="background:var(--maroon)">Level 5<small>250.5 µg/m³</small></div><div class="act">HAND a respirator directly to each exposed employee — personally. Anyone with symptoms needing medical attention goes to clean air.</div></div>
+    <div class="rung"><div class="lvl" style="background:#4A1010">Level 6<small>500.4 µg/m³+</small></div><div class="act">Respirator use is MANDATORY — stop work until the Respiratory Protection Program requirements are met. Contact the Safety Lead.</div></div>
+  </div>
+  <div class="card warn"><b>Only trained employees work outdoors when the rule is in effect.</b> If someone hasn't completed wildfire smoke training, they don't work in it until they have.</div>
+`},
+{ t:'check', q:'PM2.5 hits 260 µg/m³. Respirators are stocked in the break room and you told everyone they\u2019re there. Is that enough?',
+  opts:['Yes — they know where they are','No — at 250.5 and above you must personally hand a respirator to each exposed employee','Yes, as long as you announced it twice','No — you must send everyone home'], a:1,
+  why:'Right. At 250.5 µg/m³ and above, "available" is no longer enough — each exposed employee must personally be handed a respirator. Wearing it is still their choice at this level.' },
+{ t:'content', eyebrow:'Section 5 of 8', title:'Duty 4 — Respond to Symptoms', html:`
+  <p>Watch for coughing, wheezing, shortness of breath, chest tightness, eye or throat irritation, headache, or dizziness — and take any report seriously, even on a day the number looks fine.</p>
+  <p><b>When an employee reports symptoms:</b></p>
+  <ol class="steps">
+    <li><b>Move them to clean air</b> — an enclosed building with filtered air, or an enclosed filtered cab.</li>
+    <li><b>Let them rest and monitor them.</b> Don't leave them alone to "shake it off."</li>
+    <li><b>Ask whether they need medical attention</b>, and let them follow any medical advice they've already been given for a condition like asthma.</li>
+    <li><b>If symptoms persist or worsen — get them medical care.</b> Don't wait it out.</li>
+    <li><b>Report it</b> to the Environmental Compliance and Safety Lead and document what happened.</li>
+  </ol>
+  <div class="card warn"><b>Never retaliate, and never let it look like retaliation.</b> No discipline, no lost hours, no grief for reporting symptoms or seeking medical attention. That is a protected right under the rule — and the fastest way to make a small problem into a serious one is to make a worker afraid to speak up.</div>
+`},
+{ t:'content', eyebrow:'Section 6 of 8', title:'Duty 5 — Getting Medical Care', html:`
+  <p><b>Emergency — severe difficulty breathing, chest pain, confusion, loss of consciousness:</b></p>
+  <div class="card warn"><b>Call 911 immediately.</b> Do not drive someone who is in serious distress yourself.</div>
+  <p><b>Non-emergency medical evaluation:</b></p>
+  <ul>
+    <li><b>your nearest hospital</b> — see posted emergency contact sheet, WA · <b>see posted emergency contact sheet</b></li>
+    <li>Roughly <b>3–4 minutes</b> from the mill</li>
+  </ul>
+  <p><b>Transporting an employee:</b> arrange a ride — do not have a symptomatic employee drive themselves. Notify the Safety Lead, and make sure someone knows where they went and follows up.</p>
+  <div class="card">At <b>250.5 µg/m³ and above</b>, if an employee has symptoms requiring immediate medical attention, moving them to a clean-air location is <b>required</b>, not optional.</div>
+`},
+{ t:'check', q:'An employee on the log deck is struggling to breathe and seems confused. What do you do first?',
+  opts:['Drive them to the nearest hospital yourself','Call 911','Have them sit down and finish the shift','Send them home to rest'], a:1,
+  why:'Correct. Severe difficulty breathing or confusion is an emergency — call 911. your nearest hospital is for evaluation of non-emergency symptoms.' },
+{ t:'content', eyebrow:'Section 7 of 8', title:'Duty 6 — Paperwork That Protects You', html:`
+  <p>If it isn't written down, it didn't happen. Three things you document:</p>
+  <p><b>1. Your monitoring checks.</b> Time, reading, and action taken. This is the record that shows protections were in place when they were required.</p>
+  <p><b>2. Symptom reports and what you did.</b> Who, when, symptoms, action taken, outcome. Give it to the Safety Lead.</p>
+  <p><b>3. Paper training completions.</b> When you grade an employee's written test:</p>
+  <ul>
+    <li>Grade it against the <b>Supervisor Answer Key</b> — 8 of 10 correct passes</li>
+    <li>Below 8? They review the handout and retake it. Don't record a failing attempt.</li>
+    <li>Sign and date the "Graded By" line</li>
+    <li><b>Submit the SDS Training Completion form on their behalf</b> — scan the supervisor QR notice or use your bookmark. Set Format to "Paper handout" and leave the completion code blank.</li>
+    <li>File or scan the graded test — it goes to the Safety Lead or into the Graded Paper Tests folder</li>
+  </ul>
+  <div class="card warn"><b>Never hand the answer key to an employee.</b> Employees who take the online module record their own completion — the module gives them a button after they pass. You only submit the form for paper tests.</div>
+`},
+{ t:'content', eyebrow:'Section 8 of 8', title:'Before Fire Season, and Where to Get Help', html:`
+  <p><b>Before each fire season:</b></p>
+  <ul>
+    <li>Confirm every employee who works outdoors has current wildfire smoke training</li>
+    <li>Check that N95/KN95 stock is on hand and accessible at your work locations</li>
+    <li>Know which of your work areas can move indoors or to filtered cabs, and which can't</li>
+    <li>Know where your clean-air break locations are</li>
+  </ul>
+  <p><b>Where to get answers:</b> the written <b>WKO Inc. Wildfire Smoke Response Program</b> is the controlling document — your supervisor copy or the Environmental Compliance and Safety Lead. When you're not sure whether a level has been reached or what's required, ask before the shift starts, not after.</p>
+  <div class="card do">You are the part of this program the crew actually sees. The reading on a website doesn't protect anybody — you checking it, calling it, and acting on it does.</div>
+  <p>That's the material. Ten questions next, 80% to pass.</p>
+`},
+];
+
+const quiz = [
+ { q:'Supervisor training is required in addition to employee training because the rule requires supervisors to know:',
+   opts:['Only how to read a thermometer','Procedures to implement the rule, how to respond to symptoms, and how to arrange medical transport','Nothing extra — it is the same training','How to file workers\u2019 comp claims'], a:1 },
+ { q:'WKO Inc.\u2019s official method for determining the current PM2.5 is:',
+   opts:['The EPA AirNow reading for the Carson/Stevenson area','The on-site sensor only','A visual estimate from the log deck','The Portland monitor'], a:0 },
+ { q:'Once PM2.5 reaches 20.5 µg/m³, how often must you check the level?',
+   opts:['Once per shift','At least every two hours','Once a week','Only if someone complains'], a:1 },
+ { q:'At 35.5 µg/m³ (Level 2), your duty is to:',
+   opts:['Send everyone home','Provide respirators at no cost to ALL exposed employees and encourage use','Do nothing until 250.5','Provide respirators only to employees who ask twice'], a:1 },
+ { q:'At 250.5 µg/m³ and above, providing respirators means:',
+   opts:['Keeping a supply in the break room','Personally handing a respirator to each exposed employee','Telling them where the box is','Ordering more for next week'], a:1 },
+ { q:'Feasible exposure controls — moving work indoors, rescheduling, adding breaks — are formally required starting at:',
+   opts:['55.5 µg/m³ (Level 3)','20.5 µg/m³ (Level 1)','500.4 µg/m³ (Level 6)','They are never required'], a:0 },
+ { q:'An employee reports coughing and chest tightness. Your FIRST step is to:',
+   opts:['Tell them to finish the task','Move them to a clean-air environment and monitor them','Write them up for slowing production','Wait until break'], a:1 },
+ { q:'An employee has severe difficulty breathing and appears confused. You should:',
+   opts:['Call 911 immediately','Drive them to the nearest hospital yourself','Have them rest in the truck','Send them home alone'], a:0 },
+ { q:'If an employee reports symptoms or seeks medical attention, you may:',
+   opts:['Dock their hours','Discipline them for leaving','Never retaliate — it is a protected right','Require a doctor\u2019s note before they report anything'], a:2 },
+ { q:'After you grade an employee\u2019s paper test and they pass, you must:',
+   opts:['Give them the answer key','Submit the SDS Training Completion form on their behalf and file the graded test','Nothing — it records itself','Wait until the end of the year'], a:1 },
+];
+
+const main = document.getElementById('main');
+const progEl = document.getElementById('prog');
+const totalSteps = slides.length + quiz.length + 2;
+function setProg(n){ progEl.style.width = Math.min(100, Math.round(n/totalSteps*100)) + '%'; }
+function esc(s){ const d=document.createElement('div'); d.textContent=s; return d.innerHTML; }
+
+function showStart(){
+  setProg(0);
+  main.innerHTML = `
+    <div class="eyebrow">WKO Inc. · Safety Department</div>
+    <h1>Wildfire Smoke — Supervisor Training</h1>
+    <p>Required annual supervisor training under WAC 296-820-825(3). About 15 minutes.</p>
+    <div class="card warn"><b>Complete the employee Wildfire Smoke module first.</b> This module covers your additional duties as a supervisor — it does not replace the employee training, and both are required of you.</div>
+    <div class="card">Pass the 10-question quiz with <b>80% or better</b> to finish. You'll get a completion code and a button to record it.</div>
+    <label for="nm">Enter your full name to begin</label>
+    <input type="text" id="nm" autocomplete="name" placeholder="First and last name">
+    <button class="btn" id="startBtn" disabled>Start Supervisor Training</button>`;
+  const nm=document.getElementById('nm'), b=document.getElementById('startBtn');
+  nm.addEventListener('input', ()=>{ b.disabled = nm.value.trim().split(/\s+/).length < 2; });
+  b.addEventListener('click', ()=>{ empName=nm.value.trim(); slideIdx=0; showSlide(); });
+}
+
+function showSlide(){
+  if (slideIdx >= slides.length){ quizIdx=0; quizScore=0; showQuizIntro(); return; }
+  setProg(1+slideIdx);
+  const s = slides[slideIdx];
+  if (s.t === 'content'){
+    main.innerHTML = `<div class="eyebrow">${esc(s.eyebrow)}</div><h1>${esc(s.title)}</h1>${s.html}
+      <button class="btn" id="nextBtn">Continue</button>`;
+    document.getElementById('nextBtn').addEventListener('click', ()=>{ slideIdx++; showSlide(); window.scrollTo(0,0); });
+  } else {
+    main.innerHTML = `<div class="eyebrow">Knowledge Check</div><h1>Quick Question</h1><p><b>${esc(s.q)}</b></p>
+      <div id="opts"></div><div class="feedback" id="fb"></div>
+      <button class="btn" id="nextBtn" style="display:none">Continue</button>`;
+    const optsEl=document.getElementById('opts');
+    s.opts.forEach((o,i)=>{
+      const b=document.createElement('button');
+      b.className='opt'; b.textContent=o;
+      b.addEventListener('click', ()=>{
+        const fb=document.getElementById('fb');
+        [...optsEl.children].forEach(c=>c.disabled=true);
+        if (i===s.a){ b.classList.add('right'); fb.className='feedback good'; fb.textContent=s.why;
+          document.getElementById('nextBtn').style.display='block'; }
+        else { b.classList.add('wrong'); fb.className='feedback bad'; fb.textContent='Not quite — take another look and try again.';
+          setTimeout(()=>{ [...optsEl.children].forEach(c=>{c.disabled=false;c.classList.remove('wrong');}); fb.className='feedback'; },1600); }
+      });
+      optsEl.appendChild(b);
+    });
+    document.getElementById('nextBtn').addEventListener('click', ()=>{ slideIdx++; showSlide(); window.scrollTo(0,0); });
+  }
+}
+
+function showQuizIntro(){
+  setProg(1+slides.length);
+  main.innerHTML = `<div class="eyebrow">Final Quiz</div>
+    <h1>Ready, ${esc(empName.split(' ')[0])}?</h1>
+    <p>10 questions. You need <b>8 correct (80%)</b> to pass. If you don't pass, review the material and retake it.</p>
+    <button class="btn" id="goBtn">Begin Quiz</button>
+    <button class="btn secondary" id="revBtn">Review Material First</button>`;
+  document.getElementById('goBtn').addEventListener('click', ()=>{ showQuizQ(); window.scrollTo(0,0); });
+  document.getElementById('revBtn').addEventListener('click', ()=>{ slideIdx=0; showSlide(); window.scrollTo(0,0); });
+}
+
+function showQuizQ(){
+  if (quizIdx >= quiz.length){ showResult(); return; }
+  setProg(1+slides.length+quizIdx);
+  const qq = quiz[quizIdx];
+  main.innerHTML = `<div class="qnum">Question ${quizIdx+1} of ${quiz.length}</div>
+    <h1 style="font-size:20px">${esc(qq.q)}</h1><div id="opts"></div>
+    <button class="btn" id="subBtn" disabled>Submit Answer</button>`;
+  const optsEl=document.getElementById('opts');
+  let sel=-1;
+  qq.opts.forEach((o,i)=>{
+    const b=document.createElement('button');
+    b.className='opt'; b.textContent=o;
+    b.addEventListener('click', ()=>{ sel=i; [...optsEl.children].forEach(c=>c.classList.remove('sel')); b.classList.add('sel');
+      document.getElementById('subBtn').disabled=false; });
+    optsEl.appendChild(b);
+  });
+  document.getElementById('subBtn').addEventListener('click', ()=>{
+    if (sel===qq.a) quizScore++;
+    quizIdx++; showQuizQ(); window.scrollTo(0,0);
+  });
+}
+
+function completionCode(){
+  const d=new Date();
+  const ds=d.getFullYear()+String(d.getMonth()+1).padStart(2,'0')+String(d.getDate()).padStart(2,'0');
+  let h=0; const src=empName.toUpperCase()+ds+quizScore+'SUP';
+  for (let i=0;i<src.length;i++){ h=((h<<5)-h+src.charCodeAt(i))|0; }
+  return 'WFS26S-' + Math.abs(h).toString(36).toUpperCase().slice(0,5).padStart(5,'0');
+}
+
+function showResult(){
+  setProg(totalSteps);
+  const pct = Math.round(quizScore/quiz.length*100);
+  const passed = pct >= 80;
+  const dateStr = new Date().toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'});
+  if (passed){
+    main.innerHTML = `<div class="eyebrow">Training Complete</div><h1>Congratulations!</h1>
+      <p style="text-align:center"><span class="score-pill">Score: ${pct}%</span></p>
+      <div class="cert">
+        <div class="eyebrow">Certificate of Completion</div>
+        <div class="big">${esc(empName)}</div>
+        <p>has completed <b>Wildfire Smoke SUPERVISOR Training</b><br>per WAC 296-820-825(3)</p>
+        <p><b>${dateStr}</b> · Score: <b>${quizScore}/${quiz.length} (${pct}%)</b></p>
+        <div class="code">${completionCode()}</div>
+        <p style="font-size:13px;color:var(--gray)">WKO Inc. · Carson, WA</p>
+      </div>
+      <div class="card"><b>Final step — record your completion:</b> Tap the button below to open the SDS Training Completion form. Select the module <b>Wildfire Smoke — Supervisor</b>, enter today's date, your score, and the completion code above, then submit. Screenshot this screen for your own records. Your training is not documented until the form is submitted.</div>
+      <a class="btn" href="${FORM_URL}" target="_blank" rel="noopener">Record My Completion</a>`;
+  } else {
+    main.innerHTML = `<div class="eyebrow">Quiz Result</div><h1>Not Quite — Let's Try Again</h1>
+      <p style="text-align:center"><span class="score-pill fail">Score: ${pct}%</span></p>
+      <p>You need 80% to pass. Review the material and take the quiz again — your crew is counting on you knowing this cold.</p>
+      <button class="btn" id="revBtn">Review Material</button>
+      <button class="btn secondary" id="retryBtn">Retake Quiz Now</button>`;
+    document.getElementById('revBtn').addEventListener('click', ()=>{ slideIdx=0; showSlide(); window.scrollTo(0,0); });
+    document.getElementById('retryBtn').addEventListener('click', ()=>{ quizIdx=0; quizScore=0; showQuizQ(); window.scrollTo(0,0); });
+  }
+}
+
+showStart();
+</script>
+</body>
+</html>
