@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WKO Inc. — Hot Work Safety / Seguridad en Trabajo en Caliente</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Arial,sans-serif;background:#f5f5f5;color:#222;line-height:1.5}
+.container{max-width:800px;margin:0 auto;padding:16px}
+.header{background:#1F4E79;color:#fff;padding:18px 20px;text-align:center;position:relative}
+.header h1{font-size:1.3em;margin-bottom:2px}
+.header .sub{font-size:.85em;opacity:.9}
+.prog{background:#2E75B6;color:#fff;text-align:center;padding:6px 10px;font-size:.82em}
+.lang-bar{display:flex;justify-content:center;gap:8px;padding:10px;background:#e8e8e8}
+.lang-btn{padding:6px 18px;border:2px solid #2E75B6;border-radius:4px;cursor:pointer;font-weight:bold;background:#fff;color:#2E75B6;font-size:.95em}
+.lang-btn.active{background:#2E75B6;color:#fff}
+.card{background:#fff;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,.1);margin:16px 0;padding:20px;display:none}
+.card.active{display:block}
+.card h2{color:#1F4E79;margin-bottom:10px;font-size:1.15em;border-bottom:2px solid #2E75B6;padding-bottom:6px}
+.card h3{color:#2E75B6;margin:12px 0 6px;font-size:1em}
+.warn{background:#FFF3CD;border-left:4px solid #FFC107;padding:10px 14px;margin:10px 0;border-radius:4px;font-size:.92em}
+.danger{background:#F8D7DA;border-left:4px solid #DC3545;padding:10px 14px;margin:10px 0;border-radius:4px;font-size:.92em}
+.info{background:#D1ECF1;border-left:4px solid #17A2B8;padding:10px 14px;margin:10px 0;border-radius:4px;font-size:.92em}
+.success-box{background:#D4EDDA;border-left:4px solid #28A745;padding:10px 14px;margin:10px 0;border-radius:4px;font-size:.92em}
+ul,ol{margin:8px 0 8px 20px}
+li{margin-bottom:5px;font-size:.95em}
+.btn{display:inline-block;padding:10px 28px;border:none;border-radius:4px;font-size:1em;font-weight:bold;cursor:pointer;margin:6px 4px}
+.btn-primary{background:#2E75B6;color:#fff}
+.btn-primary:hover{background:#1F4E79}
+.btn-secondary{background:#6c757d;color:#fff}
+.btn-success{background:#28a745;color:#fff}
+.btn-danger{background:#dc3545;color:#fff}
+.nav-row{display:flex;justify-content:space-between;margin-top:14px;flex-wrap:wrap;gap:8px}
+.quiz-option{display:block;width:100%;text-align:left;padding:12px 16px;margin:6px 0;border:2px solid #ddd;border-radius:6px;background:#fff;cursor:pointer;font-size:.95em;transition:border-color .2s}
+.quiz-option:hover{border-color:#2E75B6}
+.quiz-option.selected{border-color:#2E75B6;background:#EBF3FB}
+.quiz-option.correct{border-color:#28a745;background:#D4EDDA}
+.quiz-option.incorrect{border-color:#dc3545;background:#F8D7DA}
+.quiz-option:disabled{cursor:default}
+.progress-bar{background:#e0e0e0;border-radius:10px;height:8px;margin:10px 0}
+.progress-fill{background:#2E75B6;height:100%;border-radius:10px;transition:width .3s}
+.score-display{font-size:1.3em;font-weight:bold;text-align:center;margin:14px 0}
+.cert{border:3px solid #2E75B6;border-radius:10px;padding:24px;text-align:center;margin:16px 0;background:#FAFCFF}
+.cert h2{border:none;color:#1F4E79}
+.cert .code{font-size:1.4em;font-weight:bold;color:#2E75B6;letter-spacing:2px;margin:10px 0}
+.hidden{display:none}
+input[type=text]{padding:8px 12px;border:2px solid #ddd;border-radius:4px;font-size:1em;width:100%;max-width:350px}
+.splash-title{font-size:1.6em;color:#1F4E79;font-weight:bold;margin:10px 0}
+.kc-feedback{padding:10px 14px;border-radius:6px;margin:8px 0;font-weight:bold;font-size:.95em}
+.kc-correct{background:#D4EDDA;color:#155724;border:1px solid #C3E6CB}
+.kc-incorrect{background:#F8D7DA;color:#721C24;border:1px solid #F5C6CB}
+.cross-ref{background:#E8EAF6;border-left:4px solid #3F51B5;padding:10px 14px;margin:10px 0;border-radius:4px;font-size:.92em}
+@media(max-width:600px){.container{padding:10px}.card{padding:14px}.btn{padding:8px 18px;font-size:.9em}}
+</style>
+</head>
+<body>
+<div class="header">
+<h1 id="headerTitle"></h1>
+<div class="sub" id="headerSub"></div>
+</div>
+<div class="prog" id="progBanner"></div>
+<div class="lang-bar">
+<button class="lang-btn active" onclick="setLang('en')">English</button>
+<button class="lang-btn" onclick="setLang('es')">Español</button>
+</div>
+<div class="container" id="appContainer"></div>
+
+<script>
+// ============================================================
+// LANGUAGE PACKS
+// ============================================================
+const LANG = {
+en: {
+  headerTitle: "Hot Work Safety Training",
+  headerSub: "WKO Inc. — Carson, WA",
+  progBanner: "Hot Work Program · 29 CFR 1910.252 · NFPA 51B (2024) · WAC 296-24 · WAC 296-78",
+  splashTitle: "Hot Work Safety",
+  splashText: "This training covers fire prevention during welding, cutting, grinding, and other hot work at WKO Inc. As a wood products facility, we operate in a combustible-material environment that requires strict controls when performing hot work.",
+  splashNote: "This training is required for all employees who perform, supervise, authorize, or provide fire watch for hot work operations.",
+  enterName: "Enter your full name to begin:",
+  namePlaceholder: "First and Last Name",
+  beginBtn: "Begin Training",
+  nameError: "Please enter your first and last name.",
+  nextBtn: "Next",
+  prevBtn: "Back",
+  checkBtn: "Check Answer",
+  continueBtn: "Continue",
+  startQuiz: "Start Quiz",
+  submitAnswer: "Submit Answer",
+  nextQuestion: "Next Question",
+  seeResults: "See Results",
+  tryAgain: "Review & Try Again",
+  questionOf: "Question {n} of {t}",
+  quizTitle: "Knowledge Quiz",
+  quizIntro: "Answer 5 questions. You need 4 correct (80%) to pass.",
+  passTitle: "Training Complete!",
+  passMsg: "{name}, you passed with a score of {score}/5.",
+  failTitle: "Not Yet — Review and Retry",
+  failMsg: "{name}, you scored {score}/5. You need at least 4/5 to pass. Review the material and try again.",
+  certTitle: "Certificate of Completion",
+  certBody: "This certifies that",
+  certModule: "has completed the WKO Inc. Hot Work Safety Training",
+  certDate: "Date: {date}",
+  certCode: "Completion Code: {code}",
+  recordBtn: "Record Your Completion",
+  passH: "Congratulations — You Passed!",
+  passSub: "Certificate of Completion",
+  scoreLabel: "Score",
+  dateLabel: "Date",
+  codeLabel: "Your completion code",
+  failH: "Not Yet — Keep Going",
+  yourScore: "Your score",
+  reviewBtn: "Review the Material",
+  retakeBtn: "Retake the Quiz",
+  passInstr: "<b>Last step — record your completion:</b> tap the button below and submit the completion form. Enter your name, select <b>\"Hot Work Safety / Seguridad en Trabajo en Caliente\"</b> from the module list, and enter the completion code shown above. Your training is not on record until you submit the form.",
+  passModule: "Hot Work Safety Training " + "v1.0",
+  secLabel: "Section",
+  ofLabel: "of",
+  failDetail: "Review the material — especially the designated hot work area, the 35-foot combustible clearance, fire watch duties and the 60-minute minimum, and compressed gas cylinder separation — and try again. There is no limit on attempts.",
+  quizDetail: "Take your time — you can review the material and retake the quiz if needed.",
+  sections: [
+    // SECTION 0: Why Hot Work Fires Happen
+    {
+      title: "Section 1: Why Hot Work Fires Happen",
+      content: `<p>WKO Inc. is a wood products manufacturing facility. Every day, our mill produces the very materials that make hot work dangerous: sawdust, wood chips, bark, shavings, and dried lumber. These combustible materials are present in production areas, on equipment, in conveyors, in dust collection systems, and on the ground.</p>
+      <h3>What Makes Our Facility High-Risk</h3>
+      <ul>
+        <li><strong>Combustible dust</strong> — fine wood dust accumulates on surfaces, in cracks, and on equipment. A single spark can ignite it.</li>
+        <li><strong>Bulk combustible materials</strong> — lumber, bark piles, chip piles, and wood shavings are fuel sources throughout the facility.</li>
+        <li><strong>Hidden pathways</strong> — sparks and slag can travel through cracks in floors, along conveyors, through dust collection ducts, and into areas you cannot see.</li>
+        <li><strong>Delayed ignition</strong> — a hot work fire may not show itself for hours. Smoldering material can ignite long after the work is done.</li>
+      </ul>
+      <div class="warn">⚠️ Hot work fires are among the most common causes of industrial fires. In sawmill environments, the risk is amplified by the combustible materials all around us.</div>
+      <h3>Common Causes of Hot Work Fires</h3>
+      <ul>
+        <li>Sparks or slag landing on combustible materials that were not removed or protected</li>
+        <li>Heat conducted through metal walls, pipes, or surfaces to combustibles on the other side</li>
+        <li>Cutting or welding on containers that held flammable materials</li>
+        <li>Inadequate or missing fire watch — no one watching for fires after work is done</li>
+        <li>Sparks traveling through floor or wall openings into hidden spaces</li>
+      </ul>`
+    },
+    // SECTION 1: Know Your Designated Areas
+    {
+      title: "Section 2: Know Your Designated Areas",
+      content: `<p>WKO Inc. has <strong>one designated hot work area</strong>. These areas are specifically designed, equipped, and maintained for hot work. Combustible materials are controlled and fire protection systems are functional in these areas.</p>
+      <h3>The Designated Hot Work Area</h3>
+      <p>WKO Carson has <strong>one designated hot work area: the WKO Maintenance Shop</strong>. It is specifically equipped and maintained for hot work.</p>
+      <div class="success-box">✅ Hot work performed in this designated area does <strong>not</strong> require a Hot Work Permit — as long as the area is maintained in its normal condition (combustibles controlled, fire protection functional).</div>
+      <div class="danger">🚫 Hot work performed <strong>anywhere outside</strong> this area — including production areas, the yard, dry kilns, boiler plant, and any other location — <strong>requires a Hot Work Permit regardless of the type of work being performed</strong>.</div>
+      <h3>The Key Rule</h3>
+      <p>Before starting any hot work, ask yourself: <em>"Am I in the designated area?"</em></p>
+      <ul>
+        <li><strong>Yes</strong> → Verify the area is in normal condition and proceed.</li>
+        <li><strong>No</strong> → STOP. Obtain a Hot Work Permit from your supervisor (Permit Authorizing Individual) before beginning work.</li>
+      </ul>
+      <p>When practical, move the work or the object to a designated hot work area rather than performing hot work in the field.</p>`,
+      kc: {
+        question: "You need to grind a bracket in the dry kiln area. What must you do?",
+        options: [
+          "Proceed — grinding is not hot work",
+          "Obtain a Hot Work Permit from your supervisor before beginning work",
+          "Move to the kiln control room — it is a designated area",
+          "Grind quickly and watch for sparks yourself"
+        ],
+        correct: 1,
+        rightMsg: "Correct! The dry kiln area is not a designated hot work area. Any hot work outside the designated shop requires a permit.",
+        wrongMsg: "Not quite. The dry kiln is not one of the one designated hot work area. A Hot Work Permit is required for any hot work performed outside the WKO Maintenance Shop."
+      }
+    },
+    // SECTION 2: The Hot Work Permit System
+    {
+      title: "Section 3: The Hot Work Permit System",
+      content: `<p>The Hot Work Permit system ensures fire prevention precautions are evaluated and in place before work begins. <strong>Your supervisor (Permit Authorizing Individual / PAI) inspects the area, verifies precautions, and issues the permit.</strong> You are trained on what the process looks like so you understand what must be in place before you start.</p>
+      <h3>Before Hot Work — The 35-Foot Rule</h3>
+      <p>The PAI verifies all precautions on the permit checklist before issuing the permit. Key precautions include:</p>
+      <ul>
+        <li><strong>Remove all combustible materials within a 35-foot radius</strong> — sawdust, wood chips, bark, lumber, shavings, oily rags, and any other combustible debris</li>
+        <li>Shield, cover, or wet down combustibles that cannot be removed</li>
+        <li>Sweep floors of all loose combustible debris within the 35-foot radius</li>
+        <li>Seal all cracks, holes, and openings in floors, walls, and ceilings where sparks or slag may travel</li>
+        <li>Protect conveyors and dust collection ducts from spark travel</li>
+        <li>Verify fire sprinklers in the area are operational — if impaired, hot work does not proceed</li>
+        <li>Position at least one 2A:10B:C rated fire extinguisher within immediate reach</li>
+        <li>Assign a fire watcher and post warning signs</li>
+      </ul>
+      <div class="warn">⚠️ The permit is valid only for the specific date, time, and location listed on it. A new permit is required for each new location or day.</div>
+      <h3>During Hot Work</h3>
+      <ul>
+        <li>The fire watcher maintains continuous observation</li>
+        <li>If conditions change (wind shifts, unexpected dust, sprinkler impairment), the supervisor suspends hot work until conditions are corrected</li>
+        <li>Keep combustible floors wet or protected</li>
+        <li>Compressed gas cylinders must be stored upright and secured at all times</li>
+      </ul>
+      <h3>When Hot Work Is Suspended</h3>
+      <p>When you stop for breaks, meals, or shift changes:</p>
+      <ul>
+        <li>Remove electrodes from holders</li>
+        <li>Shut off gas valves</li>
+        <li>De-energize welding machines</li>
+      </ul>
+      <h3>After Hot Work</h3>
+      <ul>
+        <li>The fire watcher remains for at least <strong>60 minutes</strong> after work is completed</li>
+        <li>The PAI determines if additional fire monitoring is needed (up to 3 additional hours)</li>
+        <li>The fire watcher inspects the area, adjacent areas, and areas above and below for smoldering, heat, or fire</li>
+        <li>Complete all sections of the permit and return it to the safety office</li>
+      </ul>`
+    },
+    // SECTION 3: Fire Watch
+    {
+      title: "Section 4: Fire Watch",
+      content: `<p>The fire watcher is the last line of defense against a hot work fire. Fire watch is a <strong>critical, dedicated assignment</strong> — it is not something done casually while performing other tasks.</p>
+      <h3>Fire Watch Rules</h3>
+      <ul>
+        <li><strong>Sole duty</strong> — fire watch is the fire watcher's only responsibility during the watch period. No concurrent tasks.</li>
+        <li><strong>Trained</strong> — fire watchers must be trained in hot work fire hazards, fire extinguisher use, and emergency reporting</li>
+        <li><strong>Equipped</strong> — appropriate fire extinguisher(s) must be within immediate reach before work begins</li>
+        <li><strong>Continuous</strong> — maintain watch of the hot work area AND adjacent spaces during all operations</li>
+        <li><strong>60-minute minimum</strong> — remain at the site for at least 60 minutes after hot work is completed (per NFPA 51B)</li>
+      </ul>
+      <div class="danger">🚫 Abandoning a fire watch is a serious safety violation that can result in termination. Never leave the watch area during your assigned watch period.</div>
+      <h3>Fire Monitoring</h3>
+      <p>After the 60-minute fire watch, the PAI may require additional <strong>fire monitoring</strong> — periodic patrols of the hot work area and adjacent spaces for up to 3 additional hours, depending on conditions and the nature of the work performed.</p>
+      <h3>What to Watch For</h3>
+      <ul>
+        <li>Smoke, smoldering, or discoloration on surfaces</li>
+        <li>Unusual odors (burning wood, smoldering dust)</li>
+        <li>Heat on walls, floors, or surfaces adjacent to or below the hot work area</li>
+        <li>Sparks or slag landing outside the protected area</li>
+      </ul>
+      <h3>If You Discover a Fire</h3>
+      <ul>
+        <li>Attempt to extinguish only if safe to do so and the fire is small</li>
+        <li>Report the fire immediately — activate the alarm, notify your supervisor, call 911</li>
+        <li>Evacuate if the fire cannot be controlled</li>
+      </ul>
+      <div class="cross-ref">📋 <strong>See also:</strong> WKO Inc. Emergency Evacuation procedures. Fire extinguisher selection and operation will be covered in a separate Fire Extinguisher Training module.</div>`,
+      kc: {
+        question: "How long must a fire watcher remain at the site after hot work is completed?",
+        options: [
+          "15 minutes",
+          "30 minutes",
+          "At least 60 minutes",
+          "Until the end of the shift"
+        ],
+        correct: 2,
+        rightMsg: "Correct! Per NFPA 51B, the fire watcher must remain at the site for at least 60 minutes after hot work is completed. Additional fire monitoring of up to 3 hours may be required.",
+        wrongMsg: "Not quite. Per NFPA 51B, the fire watch minimum is 60 minutes after hot work is completed. The PAI may extend monitoring up to 3 additional hours beyond that."
+      }
+    },
+    // SECTION 4: Compressed Gas Cylinder Safety
+    {
+      title: "Section 5: Compressed Gas Cylinder Safety",
+      content: `<p>Compressed gas cylinders are used in oxygen-fuel gas welding and cutting operations. Improper storage and handling can cause fires, explosions, and serious injuries.</p>
+      <h3>Storage and Handling Rules</h3>
+      <ul>
+        <li><strong>Store upright and secured</strong> — cylinders must be chained or clamped to prevent falling at all times</li>
+        <li><strong>20-foot separation</strong> — oxygen cylinders must be separated from fuel gas cylinders by at least 20 feet, OR by a non-combustible barrier at least 5 feet high with a minimum half-hour fire resistance rating</li>
+        <li><strong>Keep away from combustibles</strong> — store at least 20 feet from highly combustible materials</li>
+        <li><strong>Valve protection caps</strong> — must be in place when cylinders are not in use, being moved, or in storage</li>
+        <li><strong>Do not store near exits</strong> — cylinders shall not be stored near elevators, stairs, or gangways</li>
+        <li><strong>Mark empty cylinders</strong> — label "EMPTY" or "MT" and store separately from full cylinders</li>
+      </ul>
+      <div class="danger">🚫 <strong>NEVER</strong> use oil, grease, or any organic lubricant on oxygen regulators, fittings, or equipment. Oil and oxygen can react explosively.</div>
+      <ul>
+        <li>Protect cylinders from excessive temperature, physical damage, and unauthorized access</li>
+        <li>Never drag, slide, or drop cylinders — use a proper cylinder cart</li>
+        <li>Never use a cylinder as a roller, support, or for any purpose other than its intended use</li>
+      </ul>`,
+      kc: {
+        question: "What is the minimum separation distance between oxygen and fuel gas cylinders?",
+        options: [
+          "5 feet",
+          "10 feet",
+          "20 feet or a non-combustible barrier at least 5 feet high",
+          "They can be stored together if valve caps are on"
+        ],
+        correct: 2,
+        rightMsg: "Correct! Oxygen and fuel gas cylinders must be separated by at least 20 feet, or by a non-combustible barrier at least 5 feet high with a minimum half-hour fire resistance rating.",
+        wrongMsg: "Not quite. The requirement is 20 feet of separation OR a non-combustible barrier at least 5 feet high with a minimum half-hour fire resistance rating."
+      }
+    },
+    // SECTION 5: Ventilation & Welding Fumes
+    {
+      title: "Section 6: Ventilation & Welding Fumes",
+      content: `<p>Hot work produces fumes and gases that can be harmful to your health. Adequate ventilation is required for all hot work to keep exposure below permissible limits.</p>
+      <h3>When Is General Ventilation Enough?</h3>
+      <p>In the <strong>one designated hot work area</strong>, general mechanical ventilation — open doors, fans, roof vents — is typically sufficient for routine welding and cutting operations.</p>
+      <h3>When Is Local Exhaust Required?</h3>
+      <ul>
+        <li>Hot work in <strong>confined or enclosed areas</strong> — local exhaust ventilation or supplied-air respirators are required</li>
+        <li>Welding or cutting <strong>coated metals</strong> — zinc (galvanized), cadmium, chromium, lead, or other toxic coatings require local exhaust ventilation</li>
+        <li>If local exhaust is not feasible, approved respiratory protection is required</li>
+      </ul>
+      <div class="warn">⚠️ If you don't know what a metal is coated with, treat the coating as potentially toxic. Use appropriate ventilation and/or respiratory protection.</div>
+      <div class="cross-ref">📋 <strong>See also:</strong> WKO Inc. Respiratory Protection Program for respirator selection and fit testing requirements. Confined space hot work requires both a Hot Work Permit AND a Confined Space Entry Permit — see the WKO Inc. Confined Space Program.</div>
+      <h3>Signs of Inadequate Ventilation</h3>
+      <ul>
+        <li>Visible fume accumulation in the work area</li>
+        <li>Irritation of eyes, nose, or throat</li>
+        <li>Metallic taste in your mouth</li>
+        <li>Dizziness, headache, or nausea</li>
+      </ul>
+      <p>If you experience any of these symptoms, <strong>stop work immediately</strong>, move to fresh air, and notify your supervisor.</p>`
+    },
+    // SECTION 6: PPE for Hot Work
+    {
+      title: "Section 7: PPE for Hot Work",
+      content: `<p>Personal protective equipment protects you from burns, eye injury, fume inhalation, and noise exposure during hot work operations.</p>
+      <h3>Required PPE for Hot Work Operators</h3>
+      <ul>
+        <li><strong>Welding helmet</strong> with proper shade lens — shade selected based on welding process and amperage per AWS/ANSI guidelines</li>
+        <li><strong>Safety glasses with side shields</strong> — worn under the welding helmet at all times</li>
+        <li><strong>Flame-resistant clothing</strong> — long sleeves, long pants. <strong>No synthetic fabrics that melt</strong> (polyester, nylon, acrylic)</li>
+        <li><strong>Leather welding gloves</strong> appropriate to the hot work being performed</li>
+        <li><strong>Leather apron</strong> for heavy welding or cutting operations</li>
+        <li><strong>Hearing protection</strong> when noise levels warrant (grinding, chipping)</li>
+        <li><strong>Respiratory protection</strong> when ventilation is inadequate or when working on coated metals</li>
+      </ul>
+      <h3>Fire Watcher PPE</h3>
+      <ul>
+        <li>Safety glasses with side shields</li>
+        <li>Flame-resistant clothing</li>
+        <li>Filter lenses or shaded safety glasses when observing arc welding operations</li>
+      </ul>
+      <div class="warn">⚠️ Synthetic fabrics (polyester, nylon, acrylic) can melt onto your skin when exposed to sparks or radiant heat, causing severe burns. Always wear flame-resistant or natural-fiber clothing (cotton, wool, leather) during hot work.</div>
+      <div class="cross-ref">📋 <strong>See also:</strong> WKO Inc. PPE Program and certified hazard assessments for complete PPE requirements.</div>`,
+      kc: {
+        question: "Why must synthetic fabrics like polyester NOT be worn during hot work?",
+        options: [
+          "They are too expensive to replace",
+          "They can melt onto your skin, causing severe burns",
+          "They create static electricity",
+          "They are not allowed by company dress code"
+        ],
+        correct: 1,
+        rightMsg: "Correct! Synthetic fabrics can melt when exposed to sparks or radiant heat, bonding to the skin and causing severe burns. Flame-resistant or natural-fiber clothing (cotton, wool, leather) must be worn.",
+        wrongMsg: "Not quite. The danger is that synthetic fabrics melt when exposed to heat or sparks, bonding to the skin and causing severe burns. That's why flame-resistant or natural-fiber clothing is required."
+      }
+    }
+  ],
+  // QUIZ
+  quizQuestions: [
+    {
+      q: "Which of the following is a designated hot work area at WKO Inc.?",
+      opts: ["Dry Kiln building", "WKO Maintenance Shop", "Boiler plant", "Log yard"],
+      ans: 1
+    },
+    {
+      q: "What is the minimum radius for removing combustible materials before hot work outside a designated area?",
+      opts: ["10 feet", "20 feet", "35 feet", "50 feet"],
+      ans: 2
+    },
+    {
+      q: "What is the fire watcher's responsibility during the watch period?",
+      opts: ["Assist the welder with material handling", "Monitor the area for fire — sole duty, no concurrent tasks", "Complete the hot work permit paperwork", "Inspect cylinders and regulators"],
+      ans: 1
+    },
+    {
+      q: "What must you do when hot work is suspended for breaks or shift changes?",
+      opts: ["Leave equipment running so it is ready when you return", "Remove electrodes from holders, shut off gas valves, and de-energize equipment", "Cover the work with a tarp", "Have the fire watcher continue working"],
+      ans: 1
+    },
+    {
+      q: "When welding on galvanized (zinc-coated) metal, what additional precaution is required?",
+      opts: ["Use a darker shade lens", "Local exhaust ventilation or respiratory protection", "Double the fire watch time", "Wet the metal surface first"],
+      ans: 1
+    }
+  ]
+},
+// ============================================================
+es: {
+  headerTitle: "Capacitación de Seguridad en Trabajo en Caliente",
+  headerSub: "WKO Inc. — Carson, WA",
+  progBanner: "Programa de Trabajo en Caliente · 29 CFR 1910.252 · NFPA 51B (2024) · WAC 296-24 · WAC 296-78",
+  splashTitle: "Seguridad en Trabajo en Caliente",
+  splashText: "Esta capacitación cubre la prevención de incendios durante soldadura, corte, esmerilado y otros trabajos en caliente en WKO Inc. Como instalación de productos de madera, operamos en un ambiente de materiales combustibles que requiere controles estrictos al realizar trabajos en caliente.",
+  splashNote: "Esta capacitación es requerida para todos los empleados que realizan, supervisan, autorizan o proporcionan vigilancia de incendios para operaciones de trabajo en caliente.",
+  enterName: "Ingrese su nombre completo para comenzar:",
+  namePlaceholder: "Nombre y Apellido",
+  beginBtn: "Comenzar Capacitación",
+  nameError: "Por favor ingrese su nombre y apellido.",
+  nextBtn: "Siguiente",
+  prevBtn: "Atrás",
+  checkBtn: "Verificar Respuesta",
+  continueBtn: "Continuar",
+  startQuiz: "Comenzar Examen",
+  submitAnswer: "Enviar Respuesta",
+  nextQuestion: "Siguiente Pregunta",
+  seeResults: "Ver Resultados",
+  tryAgain: "Revisar e Intentar de Nuevo",
+  questionOf: "Pregunta {n} de {t}",
+  quizTitle: "Examen de Conocimiento",
+  quizIntro: "Responda 5 preguntas. Necesita 4 correctas (80%) para aprobar.",
+  passTitle: "¡Capacitación Completada!",
+  passMsg: "{name}, aprobó con una puntuación de {score}/5.",
+  failTitle: "Aún No — Revise e Intente de Nuevo",
+  failMsg: "{name}, obtuvo {score}/5. Necesita al menos 4/5 para aprobar. Revise el material e intente de nuevo.",
+  certTitle: "Certificado de Finalización",
+  certBody: "Esto certifica que",
+  certModule: "ha completado la Capacitación de Seguridad en Trabajo en Caliente de WKO Inc.",
+  certDate: "Fecha: {date}",
+  certCode: "Código de Finalización: {code}",
+  recordBtn: "Registre Su Finalización",
+  passH: "¡Felicidades — Aprobó!",
+  passSub: "Certificado de Finalización",
+  scoreLabel: "Puntuación",
+  dateLabel: "Fecha",
+  codeLabel: "Su código de finalización",
+  failH: "Todavía No — Siga Adelante",
+  yourScore: "Su puntuación",
+  reviewBtn: "Revisar el Material",
+  retakeBtn: "Volver a Tomar el Examen",
+  passInstr: "<b>Último paso — registre su finalización:</b> toque el botón de abajo y envíe el formulario de finalización. Escriba su nombre, seleccione <b>\"Hot Work Safety / Seguridad en Trabajo en Caliente\"</b> de la lista de módulos, e ingrese el código de finalización mostrado arriba. Su capacitación no queda registrada hasta que envíe el formulario.",
+  passModule: "Capacitación de Seguridad en Trabajo en Caliente " + "v1.0",
+  secLabel: "Sección",
+  ofLabel: "de",
+  failDetail: "Revise el material — especialmente las un área designada, la distancia de 35 pies para materiales combustibles, los deberes de vigilancia de incendios y el mínimo de 60 minutos, y la separación de cilindros de gas comprimido — e intente de nuevo. No hay límite de intentos.",
+  quizDetail: "Tómese su tiempo — puede revisar el material y volver a tomar el examen si es necesario.",
+  sections: [
+    {
+      title: "Sección 1: Por Qué Ocurren Incendios en Trabajo en Caliente",
+      content: `<p>WKO Inc. es una instalación de fabricación de productos de madera. Todos los días, nuestro aserradero produce los materiales que hacen peligroso el trabajo en caliente: aserrín, astillas de madera, corteza, virutas y madera seca. Estos materiales combustibles están presentes en las áreas de producción, en los equipos, en los transportadores, en los sistemas de recolección de polvo y en el suelo.</p>
+      <h3>Lo Que Hace Nuestra Instalación de Alto Riesgo</h3>
+      <ul>
+        <li><strong>Polvo combustible</strong> — el polvo fino de madera se acumula en superficies, grietas y equipos. Una sola chispa puede encenderlo.</li>
+        <li><strong>Materiales combustibles a granel</strong> — madera, pilas de corteza, pilas de astillas y virutas son fuentes de combustible en toda la instalación.</li>
+        <li><strong>Caminos ocultos</strong> — las chispas y la escoria pueden viajar por grietas en pisos, a lo largo de transportadores, por ductos de recolección de polvo y hacia áreas que no puede ver.</li>
+        <li><strong>Ignición retardada</strong> — un incendio por trabajo en caliente puede no manifestarse durante horas. El material humeante puede encenderse mucho después de que el trabajo haya terminado.</li>
+      </ul>
+      <div class="warn">⚠️ Los incendios por trabajo en caliente están entre las causas más comunes de incendios industriales. En ambientes de aserradero, el riesgo se amplifica por los materiales combustibles a nuestro alrededor.</div>
+      <h3>Causas Comunes de Incendios en Trabajo en Caliente</h3>
+      <ul>
+        <li>Chispas o escoria que caen sobre materiales combustibles que no fueron retirados o protegidos</li>
+        <li>Calor conducido a través de paredes, tuberías o superficies metálicas hacia combustibles del otro lado</li>
+        <li>Cortar o soldar en contenedores que contenían materiales inflamables</li>
+        <li>Vigilancia de incendios inadecuada o ausente — nadie vigilando después de que el trabajo termina</li>
+        <li>Chispas que viajan a través de aberturas en pisos o paredes hacia espacios ocultos</li>
+      </ul>`
+    },
+    {
+      title: "Sección 2: Conozca Sus Áreas Designadas",
+      content: `<p>WKO Inc. tiene <strong>un área designada para trabajo en caliente</strong>. Estas áreas están específicamente diseñadas, equipadas y mantenidas para trabajo en caliente. Los materiales combustibles están controlados y los sistemas de protección contra incendios son funcionales.</p>
+      <h3>El Área Designada para Trabajo en Caliente</h3>
+      <p>WKO Carson tiene <strong>un área designada para trabajo en caliente: el Taller de Mantenimiento de WKO</strong>. Está específicamente equipada y mantenida para trabajo en caliente.</p>
+      <div class="success-box">✅ El trabajo en caliente realizado en estas un área designada <strong>no</strong> requiere un Permiso de Trabajo en Caliente — siempre que el área se mantenga en su condición normal (combustibles controlados, protección contra incendios funcional).</div>
+      <div class="danger">🚫 El trabajo en caliente realizado <strong>fuera</strong> de esta área — incluyendo áreas de producción, el patio, secadores, planta de caldera y cualquier otra ubicación — <strong>requiere un Permiso de Trabajo en Caliente sin importar el tipo de trabajo</strong>.</div>
+      <h3>La Regla Clave</h3>
+      <p>Antes de comenzar cualquier trabajo en caliente, pregúntese: <em>"¿Estoy en una de las un área designada?"</em></p>
+      <ul>
+        <li><strong>Sí</strong> → Verifique que el área está en condición normal y proceda.</li>
+        <li><strong>No</strong> → DETÉNGASE. Obtenga un Permiso de Trabajo en Caliente de su supervisor antes de comenzar.</li>
+      </ul>
+      <p>Cuando sea práctico, mueva el trabajo o el objeto a un área designada en lugar de realizar trabajo en caliente en el campo.</p>`,
+      kc: {
+        question: "Necesita esmerilar un soporte en el área del secador. ¿Qué debe hacer?",
+        options: [
+          "Proceder — el esmerilado no es trabajo en caliente",
+          "Obtener un Permiso de Trabajo en Caliente de su supervisor antes de comenzar",
+          "Moverse a la sala de control del secador — es un área designada",
+          "Esmerilar rápidamente y vigilar las chispas usted mismo"
+        ],
+        correct: 1,
+        rightMsg: "¡Correcto! El área del secador no es un área designada para trabajo en caliente. Cualquier trabajo en caliente fuera de los cuatro talleres designados requiere un permiso.",
+        wrongMsg: "No exactamente. El secador no es una de las un área designada. Se requiere un Permiso de Trabajo en Caliente para cualquier trabajo en caliente realizado fuera del Taller de Mantenimiento de WKO."
+      }
+    },
+    {
+      title: "Sección 3: El Sistema de Permisos de Trabajo en Caliente",
+      content: `<p>El sistema de permisos asegura que las precauciones de prevención de incendios sean evaluadas y estén en su lugar antes de que comience el trabajo. <strong>Su supervisor (Individuo Autorizador de Permisos / PAI) inspecciona el área, verifica las precauciones y emite el permiso.</strong></p>
+      <h3>Antes del Trabajo en Caliente — La Regla de los 35 Pies</h3>
+      <p>El PAI verifica todas las precauciones de la lista de verificación del permiso antes de emitirlo. Las precauciones clave incluyen:</p>
+      <ul>
+        <li><strong>Retirar todos los materiales combustibles dentro de un radio de 35 pies</strong> — aserrín, astillas, corteza, madera, virutas, trapos aceitosos y cualquier otro material combustible</li>
+        <li>Proteger, cubrir o mojar los combustibles que no puedan ser retirados</li>
+        <li>Barrer los pisos de todo material combustible suelto dentro del radio de 35 pies</li>
+        <li>Sellar todas las grietas, agujeros y aberturas en pisos, paredes y techos</li>
+        <li>Proteger transportadores y ductos de recolección de polvo del viaje de chispas</li>
+        <li>Verificar que los rociadores contra incendios estén operativos</li>
+        <li>Colocar al menos un extintor clasificado 2A:10B:C al alcance inmediato</li>
+        <li>Asignar un vigilante de incendios y colocar señales de advertencia</li>
+      </ul>
+      <div class="warn">⚠️ El permiso es válido solo para la fecha, hora y ubicación específicas indicadas. Se requiere un nuevo permiso para cada nueva ubicación o día.</div>
+      <h3>Durante el Trabajo en Caliente</h3>
+      <ul>
+        <li>El vigilante mantiene observación continua</li>
+        <li>Si las condiciones cambian, el supervisor suspende el trabajo hasta que se corrijan</li>
+        <li>Mantener pisos combustibles mojados o protegidos</li>
+        <li>Los cilindros de gas comprimido deben estar verticales y asegurados</li>
+      </ul>
+      <h3>Cuando el Trabajo en Caliente Se Suspende</h3>
+      <p>Cuando se detiene para descansos, comidas o cambios de turno:</p>
+      <ul>
+        <li>Retire los electrodos de los porta-electrodos</li>
+        <li>Cierre las válvulas de gas</li>
+        <li>Desactive las máquinas de soldar</li>
+      </ul>
+      <h3>Después del Trabajo en Caliente</h3>
+      <ul>
+        <li>El vigilante permanece al menos <strong>60 minutos</strong> después de completar el trabajo</li>
+        <li>El PAI determina si se necesita monitoreo adicional (hasta 3 horas adicionales)</li>
+        <li>El vigilante inspecciona el área, áreas adyacentes y áreas arriba y abajo</li>
+        <li>Complete todas las secciones del permiso y devuélvalo a la oficina de seguridad</li>
+      </ul>`
+    },
+    {
+      title: "Sección 4: Vigilancia de Incendios",
+      content: `<p>El vigilante de incendios es la última línea de defensa contra un incendio por trabajo en caliente. La vigilancia es una <strong>asignación crítica y dedicada</strong> — no es algo que se hace casualmente mientras se realizan otras tareas.</p>
+      <h3>Reglas de Vigilancia de Incendios</h3>
+      <ul>
+        <li><strong>Deber exclusivo</strong> — la vigilancia de incendios es la única responsabilidad del vigilante. Sin tareas simultáneas.</li>
+        <li><strong>Capacitado</strong> — los vigilantes deben estar capacitados en peligros de incendio, uso de extintores y procedimientos de emergencia</li>
+        <li><strong>Equipado</strong> — extintores apropiados deben estar al alcance inmediato antes de que comience el trabajo</li>
+        <li><strong>Continuo</strong> — mantener vigilancia del área de trabajo en caliente Y espacios adyacentes</li>
+        <li><strong>Mínimo 60 minutos</strong> — permanecer en el sitio al menos 60 minutos después de completar el trabajo (según NFPA 51B)</li>
+      </ul>
+      <div class="danger">🚫 Abandonar la vigilancia de incendios es una violación grave de seguridad que puede resultar en terminación. Nunca abandone el área de vigilancia durante su período asignado.</div>
+      <h3>Monitoreo de Incendios</h3>
+      <p>Después de la vigilancia de 60 minutos, el PAI puede requerir <strong>monitoreo de incendios</strong> adicional — patrullas periódicas hasta por 3 horas adicionales.</p>
+      <h3>Qué Vigilar</h3>
+      <ul>
+        <li>Humo, material humeante o decoloración en superficies</li>
+        <li>Olores inusuales (madera quemándose, polvo humeante)</li>
+        <li>Calor en paredes, pisos o superficies adyacentes o debajo del área de trabajo</li>
+        <li>Chispas o escoria que caen fuera del área protegida</li>
+      </ul>
+      <h3>Si Descubre un Incendio</h3>
+      <ul>
+        <li>Intente extinguir solo si es seguro y el incendio es pequeño</li>
+        <li>Reporte el incendio inmediatamente — active la alarma, notifique a su supervisor, llame al 911</li>
+        <li>Evacúe si el incendio no puede ser controlado</li>
+      </ul>
+      <div class="cross-ref">📋 <strong>Vea también:</strong> Procedimientos de Evacuación de Emergencia de WKO Inc. La selección y operación de extintores se cubrirá en un módulo separado.</div>`,
+      kc: {
+        question: "¿Cuánto tiempo debe permanecer el vigilante en el sitio después de completar el trabajo en caliente?",
+        options: [
+          "15 minutos",
+          "30 minutos",
+          "Al menos 60 minutos",
+          "Hasta el final del turno"
+        ],
+        correct: 2,
+        rightMsg: "¡Correcto! Según NFPA 51B, el vigilante debe permanecer en el sitio al menos 60 minutos después de completar el trabajo. El PAI puede extender el monitoreo hasta 3 horas adicionales.",
+        wrongMsg: "No exactamente. Según NFPA 51B, el mínimo de vigilancia es 60 minutos después de completar el trabajo. El PAI puede extender el monitoreo hasta 3 horas adicionales."
+      }
+    },
+    {
+      title: "Sección 5: Seguridad de Cilindros de Gas Comprimido",
+      content: `<p>Los cilindros de gas comprimido se utilizan en operaciones de soldadura y corte con oxígeno-gas combustible. El almacenamiento y manejo inadecuado puede causar incendios, explosiones y lesiones graves.</p>
+      <h3>Reglas de Almacenamiento y Manejo</h3>
+      <ul>
+        <li><strong>Almacenar verticalmente y asegurados</strong> — los cilindros deben estar encadenados o sujetados para evitar caídas en todo momento</li>
+        <li><strong>Separación de 20 pies</strong> — los cilindros de oxígeno deben estar separados de los cilindros de gas combustible por al menos 20 pies, O por una barrera no combustible de al menos 5 pies de altura</li>
+        <li><strong>Mantener alejados de combustibles</strong> — almacenar al menos 20 pies de materiales altamente combustibles</li>
+        <li><strong>Tapas protectoras de válvulas</strong> — deben estar en su lugar cuando los cilindros no estén en uso, siendo movidos o almacenados</li>
+        <li><strong>No almacenar cerca de salidas</strong> — no almacenar cerca de elevadores, escaleras o pasarelas</li>
+        <li><strong>Marcar cilindros vacíos</strong> — etiquetar "VACÍO" o "MT" y almacenar separados de los cilindros llenos</li>
+      </ul>
+      <div class="danger">🚫 <strong>NUNCA</strong> use aceite, grasa o cualquier lubricante orgánico en reguladores, conexiones o equipos de oxígeno. El aceite y el oxígeno pueden reaccionar explosivamente.</div>
+      <ul>
+        <li>Proteger los cilindros del calor excesivo, daño físico y acceso no autorizado</li>
+        <li>Nunca arrastre, deslice o deje caer cilindros — use un carro apropiado</li>
+        <li>Nunca use un cilindro como rodillo, soporte o para cualquier propósito que no sea su uso previsto</li>
+      </ul>`,
+      kc: {
+        question: "¿Cuál es la distancia mínima de separación entre cilindros de oxígeno y gas combustible?",
+        options: [
+          "5 pies",
+          "10 pies",
+          "20 pies o una barrera no combustible de al menos 5 pies de altura",
+          "Pueden almacenarse juntos si las tapas de válvulas están puestas"
+        ],
+        correct: 2,
+        rightMsg: "¡Correcto! Los cilindros de oxígeno y gas combustible deben estar separados por al menos 20 pies, o por una barrera no combustible de al menos 5 pies de altura con resistencia al fuego mínima de media hora.",
+        wrongMsg: "No exactamente. El requisito es 20 pies de separación O una barrera no combustible de al menos 5 pies de altura con resistencia al fuego mínima de media hora."
+      }
+    },
+    {
+      title: "Sección 6: Ventilación y Humos de Soldadura",
+      content: `<p>El trabajo en caliente produce humos y gases que pueden ser dañinos para su salud. Se requiere ventilación adecuada para todo trabajo en caliente para mantener la exposición por debajo de los límites permisibles.</p>
+      <h3>¿Cuándo Es Suficiente la Ventilación General?</h3>
+      <p>En las <strong>un área designada</strong>, la ventilación mecánica general — puertas abiertas, ventiladores, ventilaciones de techo — es típicamente suficiente para operaciones rutinarias.</p>
+      <h3>¿Cuándo Se Requiere Extracción Local?</h3>
+      <ul>
+        <li>Trabajo en caliente en <strong>áreas confinadas o cerradas</strong> — se requiere ventilación de extracción local o respiradores de aire suministrado</li>
+        <li>Soldadura o corte de <strong>metales recubiertos</strong> — zinc (galvanizado), cadmio, cromo, plomo u otros recubrimientos tóxicos requieren extracción local</li>
+        <li>Si la extracción local no es factible, se requiere protección respiratoria aprobada</li>
+      </ul>
+      <div class="warn">⚠️ Si no sabe con qué está recubierto un metal, trátelo como potencialmente tóxico. Use ventilación y/o protección respiratoria apropiada.</div>
+      <div class="cross-ref">📋 <strong>Vea también:</strong> Programa de Protección Respiratoria de WKO Inc. El trabajo en caliente en espacio confinado requiere AMBOS permisos — vea el Programa de Espacios Confinados.</div>
+      <h3>Señales de Ventilación Inadecuada</h3>
+      <ul>
+        <li>Acumulación visible de humos en el área de trabajo</li>
+        <li>Irritación de ojos, nariz o garganta</li>
+        <li>Sabor metálico en la boca</li>
+        <li>Mareos, dolor de cabeza o náuseas</li>
+      </ul>
+      <p>Si experimenta alguno de estos síntomas, <strong>detenga el trabajo inmediatamente</strong>, muévase al aire fresco y notifique a su supervisor.</p>`
+    },
+    {
+      title: "Sección 7: EPP para Trabajo en Caliente",
+      content: `<p>El equipo de protección personal lo protege de quemaduras, lesiones oculares, inhalación de humos y exposición al ruido durante operaciones de trabajo en caliente.</p>
+      <h3>EPP Requerido para Operadores de Trabajo en Caliente</h3>
+      <ul>
+        <li><strong>Casco de soldadura</strong> con lente de sombra apropiada — seleccionada según el proceso y amperaje</li>
+        <li><strong>Gafas de seguridad con protectores laterales</strong> — usadas debajo del casco de soldadura en todo momento</li>
+        <li><strong>Ropa resistente al fuego</strong> — mangas largas, pantalones largos. <strong>No telas sintéticas que se derritan</strong> (poliéster, nylon, acrílico)</li>
+        <li><strong>Guantes de cuero para soldadura</strong> apropiados para el trabajo</li>
+        <li><strong>Delantal de cuero</strong> para operaciones pesadas de soldadura o corte</li>
+        <li><strong>Protección auditiva</strong> cuando los niveles de ruido lo requieran (esmerilado, cincelado)</li>
+        <li><strong>Protección respiratoria</strong> cuando la ventilación sea inadecuada o al trabajar con metales recubiertos</li>
+      </ul>
+      <h3>EPP del Vigilante de Incendios</h3>
+      <ul>
+        <li>Gafas de seguridad con protectores laterales</li>
+        <li>Ropa resistente al fuego</li>
+        <li>Lentes con filtro o gafas con sombra al observar soldadura con arco</li>
+      </ul>
+      <div class="warn">⚠️ Las telas sintéticas (poliéster, nylon, acrílico) pueden derretirse sobre su piel cuando se exponen a chispas o calor radiante, causando quemaduras graves. Siempre use ropa resistente al fuego o de fibra natural (algodón, lana, cuero).</div>
+      <div class="cross-ref">📋 <strong>Vea también:</strong> Programa de EPP de WKO Inc. y evaluaciones de peligros certificadas para requisitos completos de EPP.</div>`,
+      kc: {
+        question: "¿Por qué NO deben usarse telas sintéticas como poliéster durante el trabajo en caliente?",
+        options: [
+          "Son demasiado caras de reemplazar",
+          "Pueden derretirse sobre la piel, causando quemaduras graves",
+          "Crean electricidad estática",
+          "No están permitidas por el código de vestimenta"
+        ],
+        correct: 1,
+        rightMsg: "¡Correcto! Las telas sintéticas pueden derretirse cuando se exponen a chispas o calor radiante, adhiriéndose a la piel y causando quemaduras graves. Se debe usar ropa resistente al fuego o de fibra natural.",
+        wrongMsg: "No exactamente. El peligro es que las telas sintéticas se derriten cuando se exponen al calor o chispas, adhiriéndose a la piel y causando quemaduras graves. Por eso se requiere ropa resistente al fuego o de fibra natural."
+      }
+    }
+  ],
+  quizQuestions: [
+    {
+      q: "¿Cuál de las siguientes es un área designada para trabajo en caliente en WKO Inc.?",
+      opts: ["Edificio del Secador", "Taller de Mantenimiento de WKO", "Planta de caldera", "Patio de trozas"],
+      ans: 1
+    },
+    {
+      q: "¿Cuál es el radio mínimo para retirar materiales combustibles antes del trabajo en caliente fuera de un área designada?",
+      opts: ["10 pies", "20 pies", "35 pies", "50 pies"],
+      ans: 2
+    },
+    {
+      q: "¿Cuál es la responsabilidad del vigilante de incendios durante el período de vigilancia?",
+      opts: ["Asistir al soldador con el manejo de materiales", "Monitorear el área contra incendios — deber exclusivo, sin tareas simultáneas", "Completar el papeleo del permiso", "Inspeccionar cilindros y reguladores"],
+      ans: 1
+    },
+    {
+      q: "¿Qué debe hacer cuando el trabajo en caliente se suspende para descansos o cambios de turno?",
+      opts: ["Dejar el equipo funcionando para que esté listo al regresar", "Retirar electrodos, cerrar válvulas de gas y desactivar el equipo", "Cubrir el trabajo con una lona", "Hacer que el vigilante continúe trabajando"],
+      ans: 1
+    },
+    {
+      q: "Al soldar metal galvanizado (recubierto de zinc), ¿qué precaución adicional se requiere?",
+      opts: ["Usar un lente de sombra más oscuro", "Ventilación de extracción local o protección respiratoria", "Duplicar el tiempo de vigilancia", "Mojar la superficie del metal primero"],
+      ans: 1
+    }
+  ]
+}
+};
+// ============================================================
+// ENGINE
+// ============================================================
+const ANSWER_KEY = [1,2,1,1,1];
+const FORM_URL = "https://forms.cloud.microsoft/r/YHYEJNbAMt";
+const MODULE_VERSION = "v1.0";
+const CODE_PREFIX = "HW26-";
+const PASS_PCT = 80;
+let lang = 'en', userName = '', currentScreen = 'splash', sectionIdx = 0, completionCode = null;
+let quizIdx = 0, quizScore = 0, quizAnswers = [], quizLocked = false;
+
+function L() { return LANG[lang]; }
+function setLang(l) {
+  lang = l;
+  document.querySelectorAll('.lang-btn').forEach(b => b.classList.toggle('active', b.textContent.trim() === (l==='en'?'English':'Español')));
+  render();
+}
+function genCode() {
+  const c = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  let r = ''; for (let i=0;i<5;i++) r += c[Math.floor(Math.random()*c.length)];
+  return CODE_PREFIX + r;
+}
+function render() {
+  const l = L();
+  document.getElementById('headerTitle').textContent = l.headerTitle;
+  document.getElementById('headerSub').textContent = l.headerSub;
+  document.getElementById('progBanner').textContent = l.progBanner;
+  document.title = l.headerTitle + ' — WKO Inc.';
+  const c = document.getElementById('appContainer');
+  if (currentScreen === 'splash') renderSplash(c, l);
+  else if (currentScreen === 'section') renderSection(c, l);
+  else if (currentScreen === 'quiz') renderQuiz(c, l);
+  else if (currentScreen === 'results') renderResults(c, l);
+}
+function renderSplash(c, l) {
+  c.innerHTML = `<div class="card active">
+    <div class="splash-title">${l.splashTitle}</div>
+    <p>${l.splashText}</p>
+    <div class="info" style="margin:12px 0">${l.splashNote}</div>
+    <p style="margin-top:14px"><strong>${l.enterName}</strong></p>
+    <input type="text" id="nameInput" placeholder="${l.namePlaceholder}" style="margin:8px 0">
+    <div id="nameErr" class="hidden" style="color:#dc3545;font-size:.9em">${l.nameError}</div>
+    <div><button class="btn btn-primary" onclick="startTraining()">${l.beginBtn}</button></div>
+  </div>`;
+  const inp = document.getElementById('nameInput');
+  if (inp) { inp.value = userName; inp.addEventListener('keydown', e => { if (e.key === 'Enter') startTraining(); }); }
+}
+function startTraining() {
+  const v = document.getElementById('nameInput').value.trim();
+  if (!v || v.split(/\s+/).length < 2) { document.getElementById('nameErr').classList.remove('hidden'); return; }
+  userName = v; currentScreen = 'section'; sectionIdx = 0; render();
+}
+function renderSection(c, l) {
+  const sec = l.sections[sectionIdx];
+  const totalSteps = l.sections.length + 1; // sections + quiz
+  const pct = Math.round((sectionIdx / totalSteps) * 100);
+  let html = `<div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div>`;
+  html += `<div class="card active"><div style="color:#666;font-size:.85em;margin-bottom:6px">${l.secLabel} ${sectionIdx+1} ${l.ofLabel} ${l.sections.length}</div><h2>${sec.title}</h2>${sec.content}`;
+  if (sec.kc) {
+    html += `<div style="margin-top:16px;padding-top:12px;border-top:2px solid #e0e0e0">
+      <h3 style="color:#1F4E79">✓ ${lang==='en'?'Knowledge Check':'Verificación de Conocimiento'}</h3>
+      <p style="margin:8px 0"><strong>${sec.kc.question}</strong></p>`;
+    sec.kc.options.forEach((o, i) => {
+      html += `<button class="quiz-option" id="kc-opt-${i}" onclick="selectKC(${i})">${o}</button>`;
+    });
+    html += `<div id="kcFeedback"></div>
+      <div id="kcBtnRow" class="hidden"><button class="btn btn-primary" onclick="kcContinue()">${l.continueBtn}</button></div>
+    </div>`;
+  }
+  html += `<div class="nav-row">`;
+  if (sectionIdx > 0) html += `<button class="btn btn-secondary" onclick="prevSection()">${l.prevBtn}</button>`;
+  else html += `<span></span>`;
+  if (!sec.kc) {
+    if (sectionIdx < l.sections.length - 1) html += `<button class="btn btn-primary" onclick="nextSection()">${l.nextBtn}</button>`;
+    else html += `<button class="btn btn-success" onclick="goQuiz()">${l.startQuiz}</button>`;
+  }
+  html += `</div></div>`;
+  c.innerHTML = html;
+  window.scrollTo(0, 0);
+}
+let kcAnswered = false;
+function selectKC(i) {
+  if (kcAnswered) return;
+  kcAnswered = true;
+  const sec = L().sections[sectionIdx];
+  const correct = sec.kc.correct;
+  document.getElementById(`kc-opt-${i}`).classList.add(i===correct?'correct':'incorrect');
+  if (i !== correct) document.getElementById(`kc-opt-${correct}`).classList.add('correct');
+  document.querySelectorAll('.quiz-option').forEach(b => b.disabled = true);
+  const fb = document.getElementById('kcFeedback');
+  fb.innerHTML = `<div class="kc-feedback ${i===correct?'kc-correct':'kc-incorrect'}">${i===correct?sec.kc.rightMsg:sec.kc.wrongMsg}</div>`;
+  document.getElementById('kcBtnRow').classList.remove('hidden');
+}
+function kcContinue() {
+  kcAnswered = false;
+  if (sectionIdx < L().sections.length - 1) nextSection();
+  else goQuiz();
+}
+function prevSection() { if (sectionIdx > 0) { sectionIdx--; kcAnswered = false; render(); } }
+function nextSection() { sectionIdx++; kcAnswered = false; render(); }
+function goQuiz() { currentScreen = 'quiz'; quizIdx = 0; quizScore = 0; quizAnswers = []; quizLocked = false; completionCode = null; render(); }
+function renderQuiz(c, l) {
+  const qs = l.quizQuestions;
+  const q = qs[quizIdx];
+  const totalSteps = l.sections.length + 1;
+  const prog = Math.round(((l.sections.length + quizIdx/qs.length) / totalSteps) * 100);
+  let html = `<div class="card active"><h2>${l.quizTitle}</h2>`;
+  if (quizIdx === 0) html += `<p style="font-size:.9em;color:#444;margin-bottom:8px">${l.quizIntro} ${l.quizDetail||''}</p>`;
+  html += `
+    <div class="progress-bar"><div class="progress-fill" style="width:${prog}%"></div></div>
+    <p style="font-size:.9em;color:#666;margin-bottom:4px">${l.questionOf.replace('{n}',quizIdx+1).replace('{t}',qs.length)}</p>
+    <p style="margin:12px 0"><strong>${q.q}</strong></p>`;
+  q.opts.forEach((o, i) => {
+    html += `<button class="quiz-option" id="q-opt-${i}" onclick="selectQuizOpt(${i})">${o}</button>`;
+  });
+  html += `<div id="quizBtnRow"><button class="btn btn-primary" id="quizSubmitBtn" onclick="submitQuizAnswer()" disabled>${l.submitAnswer}</button></div></div>`;
+  c.innerHTML = html;
+  window.scrollTo(0, 0);
+}
+let selectedQuizOpt = -1;
+function selectQuizOpt(i) {
+  if (quizLocked) return;
+  selectedQuizOpt = i;
+  document.querySelectorAll('.quiz-option').forEach((b, j) => b.classList.toggle('selected', j===i));
+  document.getElementById('quizSubmitBtn').disabled = false;
+}
+function submitQuizAnswer() {
+  if (quizLocked || selectedQuizOpt < 0) return;
+  quizLocked = true;
+  const correct = ANSWER_KEY[quizIdx];
+  quizAnswers.push(selectedQuizOpt);
+  if (selectedQuizOpt === correct) quizScore++;
+  document.getElementById(`q-opt-${selectedQuizOpt}`).classList.add(selectedQuizOpt===correct?'correct':'incorrect');
+  if (selectedQuizOpt !== correct) document.getElementById(`q-opt-${correct}`).classList.add('correct');
+  document.querySelectorAll('.quiz-option').forEach(b => b.disabled = true);
+  const l = L();
+  const isLast = quizIdx >= l.quizQuestions.length - 1;
+  document.getElementById('quizBtnRow').innerHTML = isLast
+    ? `<button class="btn btn-success" onclick="showResults()">${l.seeResults}</button>`
+    : `<button class="btn btn-primary" onclick="nextQuizQ()">${l.nextQuestion}</button>`;
+}
+function nextQuizQ() { quizIdx++; quizLocked = false; selectedQuizOpt = -1; render(); }
+function showResults() { currentScreen = 'results'; render(); }
+function renderResults(c, l) {
+  const needed = Math.ceil(l.quizQuestions.length * PASS_PCT / 100);
+  const passed = quizScore >= needed;
+  const totalQ = l.quizQuestions.length;
+  const pct = Math.round(quizScore / totalQ * 100);
+  const today = new Date().toLocaleDateString(lang==='es'?'es-US':'en-US', {year:'numeric',month:'long',day:'numeric'});
+  let html = '';
+  if (passed) {
+    if (!completionCode) completionCode = genCode();
+    html += '<div class="card active"><p style="font-size:1.15em;font-weight:bold;color:#28a745">'+l.passH+'</p></div>';
+    html += '<div class="cert">';
+    html += '<div style="font-size:.95em;color:#666">'+l.passSub+'</div>';
+    html += '<div style="font-size:1.5em;font-weight:bold;color:#1F4E79;margin:10px 0">'+userName+'</div>';
+    html += '<div>'+l.passModule+'</div>';
+    html += '<div style="margin:8px 0">'+l.scoreLabel+': <b>'+quizScore+'/'+totalQ+' ('+pct+'%)</b> &middot; '+l.dateLabel+': <b>'+today+'</b></div>';
+    html += '<div style="margin-top:10px">'+l.codeLabel+':</div>';
+    html += '<div class="code">'+completionCode+'</div>';
+    html += '</div>';
+    html += '<div class="card active" style="margin-top:12px"><p>'+l.passInstr+'</p>';
+    html += '<div style="text-align:center;margin:12px 0"><a href="'+FORM_URL+'" target="_blank" class="btn btn-success" style="text-decoration:none;color:#fff">'+l.recordBtn+'</a></div>';
+    html += '</div>';
+  } else {
+    html += '<div class="card active">';
+    html += '<p style="font-size:1.15em;font-weight:bold;color:#dc3545">'+l.failH+'</p>';
+    html += '<p style="margin:8px 0">'+l.yourScore+': <b>'+quizScore+'/'+totalQ+' ('+pct+'%)</b></p>';
+    html += '<p style="margin:8px 0;font-size:.95em">'+(l.failDetail||'')+'</p>';
+    html += '<div style="margin-top:14px;display:flex;gap:10px;flex-wrap:wrap">';
+    html += '<button class="btn btn-secondary" onclick="retryFromSections()">'+l.reviewBtn+'</button>';
+    html += '<button class="btn btn-primary" onclick="retakeQuiz()">'+l.retakeBtn+'</button>';
+    html += '</div></div>';
+  }
+  c.innerHTML = html;
+  window.scrollTo(0, 0);
+}
+function retryFromSections() { currentScreen = 'section'; sectionIdx = 0; render(); }
+function retakeQuiz() { currentScreen = 'quiz'; quizIdx = 0; quizScore = 0; quizAnswers = []; quizLocked = false; selectedQuizOpt = -1; render(); }
+render();
+</script>
+</body>
+</html>
