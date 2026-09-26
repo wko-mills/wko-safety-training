@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WKO Inc. — Contractor Site Orientation v1.0</title>
+<style>
+  :root { --blue:#2E75B6; --dark:#1F4E79; --light:#F2F2F2; --gray:#666666; --red:#C00000; --green:#2E7D32; --amber:#E07B00; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { font-family: Arial, Helvetica, sans-serif; background:#f7f9fb; color:#222; line-height:1.5; }
+  .wrap { max-width:760px; margin:0 auto; padding:16px; }
+  header.bar { background:var(--dark); color:#fff; padding:14px 20px; }
+  header.bar .co { font-weight:bold; font-size:1.05em; letter-spacing:.5px; }
+  header.bar .sub { font-size:.85em; margin-top:2px; opacity:.9; }
+  header.bar .prog { font-size:.75em; margin-top:2px; opacity:.75; }
+  .splash { text-align:center; padding:34px 22px; }
+  .splash .co { color:var(--gray); font-size:.85em; letter-spacing:2px; font-weight:bold; }
+  .splash .ti-en { color:var(--dark); font-size:1.6em; font-weight:bold; margin:10px 0 4px; }
+  .splash .ti-es { color:var(--blue); font-size:1.4em; font-weight:bold; margin-bottom:18px; }
+  .splash .choose { margin-bottom:16px; }
+  .splash .langbtns { display:flex; gap:14px; justify-content:center; flex-wrap:wrap; }
+  .splash .langbtns button { font-family:Arial; background:var(--blue); color:#fff; border:none; border-radius:6px; padding:14px 0; width:240px; max-width:45%; font-size:1.05em; font-weight:bold; cursor:pointer; }
+  .langbar { text-align:right; padding:10px 16px 0; }
+  .langbar button { font-family:Arial; border:2px solid var(--blue); background:#fff; color:var(--blue); padding:6px 14px; font-weight:bold; cursor:pointer; border-radius:4px; margin-left:6px; font-size:.95em; }
+  .langbar button.active { background:var(--blue); color:#fff; }
+  .card { background:#fff; border:1px solid #d9e2ec; border-radius:8px; padding:22px; margin:16px 0; box-shadow:0 1px 3px rgba(0,0,0,.06); }
+  h1 { color:var(--dark); font-size:1.35em; margin-bottom:12px; }
+  h2 { color:var(--blue); font-size:1.1em; margin:16px 0 8px; }
+  p, li { margin-bottom:10px; }
+  ul { padding-left:22px; }
+  .progress { background:#e1e8f0; border-radius:6px; height:10px; overflow:hidden; margin:4px 0 14px; }
+  .progress > div { background:var(--blue); height:100%; width:0; transition:width .3s; }
+  .btn { font-family:Arial; display:inline-block; background:var(--blue); color:#fff; border:none; padding:12px 26px; font-size:1em; font-weight:bold; border-radius:6px; cursor:pointer; margin-top:14px; }
+  .btn:disabled { background:#9db8d2; cursor:not-allowed; }
+  .btn.secondary { background:#fff; color:var(--blue); border:2px solid var(--blue); }
+  input[type=text] { font-family:Arial; width:100%; padding:12px; font-size:1em; border:2px solid #b8c7d9; border-radius:6px; margin-top:6px; }
+  input[type=text]:focus { border-color:var(--blue); outline:none; }
+  .kc { background:var(--light); border-left:4px solid var(--blue); padding:16px; border-radius:0 6px 6px 0; margin-top:16px; }
+  .kc .kct { font-weight:bold; color:var(--dark); margin-bottom:8px; }
+  .opt { display:block; background:#fff; border:2px solid #c9d6e4; border-radius:6px; padding:10px 12px; margin:8px 0; cursor:pointer; }
+  .opt input { margin-right:10px; }
+  .opt.correct { border-color:var(--green); background:#eef7ee; }
+  .opt.wrong { border-color:var(--red); background:#fdecec; }
+  .fb { font-weight:bold; margin-top:8px; display:none; }
+  .fb.ok { color:var(--green); display:block; }
+  .fb.bad { color:var(--red); display:block; }
+  .qnum { color:var(--gray); font-size:.85em; }
+  .quizq { border-bottom:1px solid #e4eaf1; padding:14px 0; }
+  .quizq .qt { font-weight:bold; margin-bottom:6px; }
+  .cert { border:3px solid var(--dark); border-radius:10px; padding:26px; text-align:center; background:#fff; }
+  .cert .big { font-size:1.5em; color:var(--dark); font-weight:bold; margin:10px 0; }
+  .cert .code { font-size:1.6em; letter-spacing:2px; font-weight:bold; color:var(--blue); background:var(--light); display:inline-block; padding:8px 20px; border-radius:6px; margin:10px 0; }
+  .passmsg { color:var(--green); font-weight:bold; font-size:1.2em; }
+  .failmsg { color:var(--red); font-weight:bold; font-size:1.2em; }
+  .notice { background:#fff8e1; border-left:4px solid #f0a500; padding:12px; border-radius:0 6px 6px 0; margin:12px 0; font-size:.95em; }
+  .danger { background:#fdecec; border-left:4px solid var(--red); padding:12px; border-radius:0 6px 6px 0; margin:12px 0; }
+  .phone { font-weight:bold; color:var(--dark); }
+  table.mini { border-collapse:collapse; width:100%; margin:10px 0; font-size:.95em; }
+  table.mini th { background:var(--blue); color:#fff; padding:8px; text-align:left; }
+  table.mini td { border:1px solid #d9e2ec; padding:8px; vertical-align:top; }
+  table.mini tr:nth-child(even) td { background:var(--light); }
+  footer { text-align:center; color:var(--gray); font-size:.8em; padding:20px 0 30px; }
+  .hidden { display:none !important; }
+</style>
+</head>
+<body>
+<header class="bar">
+  <div class="co">WKO INC.</div>
+  <div class="sub">Contractor Site Orientation / Orientación de Seguridad para Contratistas</div>
+  <div class="prog">Carson, WA · Wood Products Manufacturing</div>
+</header>
+<div class="langbar hidden" id="langBar">
+  <button id="btnEN" onclick="setLang('en')">English</button>
+  <button id="btnES" onclick="setLang('es')">Español</button>
+</div>
+<div class="wrap">
+  <div class="progress" id="progWrap"><div id="progBar"></div></div>
+  <div id="app"></div>
+</div>
+<footer id="ftr">WKO Inc. &middot; Carson, WA &middot; Contractor Site Orientation &middot; Module v1.0 (2026)</footer>
+<script>
+"use strict";
+var FORM_URL = "https://forms.cloud.microsoft/r/yaTUJ2hm0c";
+var MODULE_VERSION = "v1.0";
+var CODE_PREFIX = "CT26-";
+var PASS_PCT = 80;
+
+/* ------------ Language packs ------------ */
+var STR = {
+en: {
+  basedOn: "WKO Inc. has developed this site orientation for the convenience and safety of contractors and visitors working at our facility. Questions? Ask your WKO site contact, who can put you in touch with the Safety Manager.",
+  introH: "Welcome to WKO Inc.",
+  introP1: "Thank you for working at our facility. WKO Inc. operates a sawmill in Carson, Washington. Our site includes production areas with heavy equipment, a maintenance shop, and an active log yard.",
+  introP2: "</p><div class='notice'>We have prepared this brief orientation for your convenience and safety. It covers the essential safety information you will need while on WKO Inc. property — emergency procedures, personal protective equipment, site hazards, and the general expectations for safe work at our facility. It takes about 10 minutes.</div><p>This orientation is designed for all outside personnel — contractors, service providers, truck drivers, and visitors performing work on site.",
+  nameLabel: "Enter your full name to begin:",
+  namePh: "First and last name",
+  startBtn: "Start Orientation",
+  continueBtn: "Continue",
+  checkBtn: "Check Answer",
+  kcOk: "Correct — thank you.",
+  kcBad: "Not quite — the correct answer is highlighted. Please review it, then continue.",
+  secLabel: "Section",
+  ofLabel: "of",
+  sections: [
+    { h:"1. Emergency Procedures", body:
+      "<p>Before you begin any work, it is important to know what to do in an emergency at WKO Inc.</p>"+
+      "<h2>Emergency Alarm</h2>"+
+      "<p>When you hear an emergency alarm or are notified of an emergency — by radio, by phone, or in person — <b>stop work immediately</b> and go to the muster point with your WKO site contact.</p>"+
+      "<h2>Muster Points</h2>"+
+      "<p>WKO Inc. has a primary and an alternate muster point. The emergency order names which one to use. <b>Ask your WKO site contact to show you the muster points and your exit route before you start work.</b></p>"+
+      "<h2>Key Rules</h2>"+
+      "<ul><li><b>Do not re-enter the facility</b> after evacuating until a WKO supervisor gives the all-clear.</li>"+
+      "<li>Report to the muster point and check in with your WKO site contact so everyone can be accounted for.</li>"+
+      "<li>If you witness an injury or medical emergency, call <b class='phone'>911</b> and notify your WKO site contact.</li></ul>"+
+      "<h2>Emergency Contacts</h2>"+
+      "<table class='mini'><tr><th>Contact</th><th>Number</th></tr>"+
+      "<tr><td>Emergency Services</td><td class='phone'>911</td></tr>"+
+      "<tr><td>Nearest hospital emergency department</td><td>See the posted emergency contact sheet</td></tr>"+
+      "<tr><td>WKO Inc. (non-emergency)</td><td>Your WKO site contact</td></tr></table>",
+      kc:{ q:"If you hear the emergency alarm, what should you do?", opts:["Continue working until your supervisor contacts you","Stop work immediately and go to the muster point with your WKO site contact","Call the WKO main office for instructions","Wait at your vehicle"], a:1 } },
+
+    { h:"2. Personal Protective Equipment", body:
+      "<p>WKO Inc. is an active manufacturing environment. The following personal protective equipment expectations apply while you are on site:</p>"+
+      "<table class='mini'><tr><th>PPE</th><th>Where / When</th></tr>"+
+      "<tr><td><b>Eye protection</b> (safety glasses with side shields)</td><td>All production areas</td></tr>"+
+      "<tr><td><b>Hearing protection</b></td><td>All areas where noise levels are elevated — if you need to raise your voice to be heard, wear hearing protection</td></tr>"+
+      "<tr><td><b>Hard hat</b></td><td>Areas with overhead hazards, as posted or directed by your WKO site contact</td></tr>"+
+      "<tr><td><b>High-visibility vest or clothing</b> (Class 2 minimum)</td><td>Log yard, areas with rolling stock or mobile equipment</td></tr>"+
+      "<tr><td><b>Sturdy footwear</b> (ankle-height minimum)</td><td>All areas — steel or safety toe recommended</td></tr></table>"+
+      "<p>If you are unsure about PPE expectations for your work area, please ask your WKO site contact.</p>"+
+      "<h2>General Site Rules</h2>"+
+      "<ul><li>Observe posted speed limits at all times.</li>"+
+      "<li>Smoking is permitted only in designated areas.</li>"+
+      "<li>Alcohol and controlled substances are prohibited on WKO property.</li>"+
+      "<li>Stay alert for mobile equipment, forklifts, log trucks, and chip trucks — they have the right of way.</li>"+
+      "<li>Stay on designated walkways and access routes. Do not take shortcuts through production equipment.</li></ul>",
+      kc:{ q:"What PPE is expected in all WKO Inc. production areas?", opts:["Hard hat and gloves","Safety glasses with side shields","Full face shield and hearing protection","High-visibility vest only"], a:1 } },
+
+    { h:"3. Hazardous Energy — Lockout/Tagout Awareness", body:
+      "<p>WKO Inc. operates heavy industrial equipment with multiple energy sources — electrical, pneumatic, hydraulic, and others. Our facility follows a formal lockout/tagout program to protect people working on or near this equipment.</p>"+
+      "<div class='danger'><b>Critical rules for all outside personnel:</b>"+
+      "<ul style='margin-top:8px'>"+
+      "<li><b>Never touch, remove, or bypass a lock or tag</b> on any disconnect, valve, or energy-isolating device. A lock means someone's safety depends on it staying there.</li>"+
+      "<li><b>Do not operate any equipment</b> that has a lock, tag, or \"Do Not Operate\" sign on it.</li>"+
+      "<li>If your work involves equipment that must be de-energized, <b>coordinate with your WKO site contact before beginning</b>. WKO personnel will handle lockout/tagout according to our procedures.</li></ul></div>"+
+      "<h2>Confined Spaces</h2>"+
+      "<p>WKO Inc. has permit-required confined spaces on site. These spaces are identified with posted signage.</p>"+
+      "<ul><li><b>Do not enter any confined space</b> unless you have coordinated with WKO in advance.</li>"+
+      "<li>If your work requires confined space entry, your WKO site contact will arrange the necessary coordination, including hazard information and entry procedures.</li></ul>",
+      kc:{ q:"You see a lock and tag on a machine disconnect. What should you do?", opts:["Remove it if it is preventing your work","Ask another contractor to check if it can be removed","Leave it in place — it means someone's safety depends on it staying there","Call the WKO main office to have it removed"], a:2 } },
+
+    { h:"4. Chemical Hazards & Hot Work", body:
+      "<h2>Hazardous Chemicals</h2>"+
+      "<p>As a wood products manufacturing facility, WKO Inc. works with a variety of materials. Some chemicals present on site include fuels, lubricants, hydraulic fluids, cleaning solvents, and shop chemicals. Wood dust — which is present throughout the facility — is a combustible material and a recognized health hazard at elevated concentrations.</p>"+
+      "<ul><li>WKO Inc. uses the <b>Globally Harmonized System (GHS)</b> for chemical labeling. If you see a GHS label on a container, the pictograms and signal words tell you the hazard category.</li>"+
+      "<li><b>Safety Data Sheets (SDSs)</b> for chemicals used at WKO Inc. are available upon request. If you need an SDS for a chemical you may encounter during your work, ask your WKO site contact.</li>"+
+      "<li>If you are bringing chemicals onto WKO property for your work, please inform your WKO site contact and have the relevant SDSs available.</li></ul>"+
+      "<h2>Hot Work</h2>"+
+      "<p>Hot work — welding, cutting, grinding, brazing, or any operation that produces sparks or open flame — presents elevated fire risk in a wood products facility where combustible dust and materials are present.</p>"+
+      "<div class='danger'><b>Hot work outside the WKO Maintenance Shop requires a WKO hot work permit.</b> The permit is issued by an authorized WKO supervisor (Permit Authorizing Individual) after the work area has been inspected and fire prevention precautions are confirmed. This includes assignment of a fire watch.</div>"+
+      "<p>WKO Inc.'s <b>designated hot work area</b> — the WKO Maintenance Shop — is equipped and maintained for hot work. Work in this area does not require a permit when the area is in its normal condition.</p>"+
+      "<p>If your scope of work involves hot work, coordinate with your WKO site contact before beginning.</p>",
+      kc:{ q:"Hot work (welding, cutting, grinding) outside the WKO Maintenance Shop requires:", opts:["A hot work permit issued by an authorized WKO supervisor","Only a fire extinguisher nearby","Verbal approval from any employee","No special requirements if the area looks clear"], a:0 } },
+
+    { h:"5. Environmental & Seasonal Hazards", body:
+      "<p>Depending on the time of year, additional hazards may be present at WKO Inc.:</p>"+
+      "<h2>Wildfire Smoke</h2>"+
+      "<p>During fire season, outdoor air quality may be affected by wildfire smoke. WKO Inc. monitors air quality and has procedures in place to protect workers when PM2.5 concentrations are elevated. If smoke conditions are present during your visit, your WKO site contact can provide information on current conditions and any precautions in effect.</p>"+
+      "<h2>Outdoor Heat</h2>"+
+      "<p>During warm weather, outdoor heat exposure is a recognized hazard. Water, shade, and rest breaks are available. If you or a coworker are experiencing symptoms of heat-related illness — dizziness, nausea, confusion, rapid heartbeat — stop work, move to shade, drink water, and notify your WKO site contact immediately. Heat illness can become a medical emergency.</p>"+
+      "<h2>Winter Conditions</h2>"+
+      "<p>During cold weather, be aware of ice on walkways, steps, and equipment surfaces. Report any slippery conditions to your WKO site contact.</p>" },
+
+    { h:"6. Working Safely at Our Facility", body:
+      "<p>WKO Inc. is committed to providing a safe working environment for everyone on our property — employees, contractors, truck drivers, and visitors. Here is a summary of what we ask of outside personnel:</p>"+
+      "<ul><li><b>Check in with your WKO site contact</b> when you arrive and when you leave.</li>"+
+      "<li><b>Report any injury, incident, or near-miss</b> to your WKO site contact immediately, no matter how minor.</li>"+
+      "<li><b>Report any hazard you observe</b> — damaged guardrails, spills, unsafe conditions — to your WKO site contact.</li>"+
+      "<li><b>Know your exit routes</b> and the location of the nearest muster point before starting work.</li>"+
+      "<li><b>Stay aware of your surroundings.</b> This is an active industrial facility with heavy equipment, log trucks, forklifts, conveyors, and other moving machinery.</li>"+
+      "<li>If your work involves <b>lockout/tagout, confined space entry, hot work, or work at heights</b>, coordinate with your WKO site contact before beginning. These are high-hazard activities that require specific WKO coordination.</li></ul>"+
+      "<div class='notice'><b>Thank you</b> for taking the time to review this orientation. Your safety and the safety of everyone at WKO Inc. is important to us. If you have any questions at any time, please don't hesitate to ask your WKO site contact.</div>" }
+  ],
+  quiz: [
+    { q:"What should you do when you hear the emergency alarm at WKO Inc.?",
+      opts:["Continue working until your own supervisor contacts you","Stop work immediately and go to the muster point with your WKO site contact","Call the WKO main office for instructions","Wait at your work location for further direction"], a:1 },
+    { q:"You see a lock and tag on a machine disconnect that you need for your work. What should you do?",
+      opts:["Remove it so you can proceed with your task","Wait for a few minutes to see if someone returns for it","Leave it in place and contact your WKO site contact to coordinate","Ask another contractor working nearby to check on it"], a:2 },
+    { q:"Hot work (welding, cutting, grinding) outside the WKO Maintenance Shop requires:",
+      opts:["A hot work permit issued by an authorized WKO supervisor","Only a fire extinguisher within reach","Verbal approval from any available employee","No special requirements as long as the area is swept clean"], a:0 },
+    { q:"When an evacuation is ordered, what should you do?",
+      opts:["Go to your vehicle and leave the property","Stay at your work location until the emergency is over","Go back inside to collect your tools","Go to the muster point with your WKO site contact and check in so you are accounted for"], a:3 },
+    { q:"If you are injured while working at WKO Inc., what should you do?",
+      opts:["Finish your current task, then report it at the end of the day","Report it to your own company when you return","Continue working if it seems minor","Report it immediately to your WKO site contact"], a:3 }
+  ],
+  quizH: "Orientation Review",
+  quizIntro: "Please answer the following five questions to confirm you have received the key safety information for WKO Inc. You may select one answer per question.",
+  submitBtn: "Submit Answers",
+  answerAll: "Please answer all questions before submitting.",
+  passH: "Thank you — orientation complete!",
+  passSub: "WKO Inc. Contractor Site Orientation",
+  passModule: "Contractor Site Orientation — Completed",
+  scoreLabel: "Score",
+  dateLabel: "Date",
+  codeLabel: "Completion Code",
+  passInstr: "<b>Last step — record your completion:</b> tap the button below and submit the completion form. Enter your name, your company, the name of your WKO site contact, and the completion code shown above.",
+  recordBtn: "Record My Completion",
+  failH: "Please review and try again.",
+  failMsg: "Your score was below 80%. We encourage you to review the orientation material — especially the emergency procedures, lockout/tagout rules, and hot work requirements — and try again. There is no limit on attempts.",
+  reviewBtn: "Review Material",
+  retakeBtn: "Retake Quiz",
+  yourScore: "Your score"
+},
+es: {
+  basedOn: "WKO Inc. ha preparado esta orientación de seguridad para la conveniencia y seguridad de los contratistas y visitantes que trabajan en nuestras instalaciones. ¿Preguntas? Consulte con su contacto de WKO, quien puede comunicarlo con el Gerente de Seguridad.",
+  introH: "Bienvenido a WKO Inc.",
+  introP1: "Gracias por trabajar en nuestras instalaciones. WKO Inc. opera un aserradero en Carson, Washington. Nuestro sitio incluye áreas de producción con equipo pesado, un taller de mantenimiento y un patio de troncos activo.",
+  introP2: "</p><div class='notice'>Hemos preparado esta breve orientación para su conveniencia y seguridad. Cubre la información de seguridad esencial que necesitará mientras esté en la propiedad de WKO Inc. — procedimientos de emergencia, equipo de protección personal, peligros del sitio y las expectativas generales para trabajar de manera segura en nuestras instalaciones. Toma aproximadamente 10 minutos.</div><p>Esta orientación está diseñada para todo el personal externo — contratistas, proveedores de servicios, camioneros y visitantes que realizan trabajos en el sitio.",
+  nameLabel: "Ingrese su nombre completo para comenzar:",
+  namePh: "Nombre y apellido",
+  startBtn: "Comenzar Orientación",
+  continueBtn: "Continuar",
+  checkBtn: "Verificar Respuesta",
+  kcOk: "Correcto — gracias.",
+  kcBad: "No es correcto — la respuesta correcta está resaltada. Por favor revísela y continúe.",
+  secLabel: "Sección",
+  ofLabel: "de",
+  sections: [
+    { h:"1. Procedimientos de Emergencia", body:
+      "<p>Antes de comenzar cualquier trabajo, es importante saber qué hacer en una emergencia en WKO Inc.</p>"+
+      "<h2>Alarma de Emergencia</h2>"+
+      "<p>Cuando escuche una alarma de emergencia o sea notificado de una emergencia — por radio, por teléfono o en persona — <b>detenga el trabajo inmediatamente</b> y vaya al punto de reunión con su contacto de WKO.</p>"+
+      "<h2>Puntos de Reunión</h2>"+
+      "<p>WKO Inc. tiene un punto de reunión principal y uno alternativo. La orden de emergencia indica cuál usar. <b>Pida a su contacto de WKO que le muestre los puntos de reunión y su ruta de salida antes de comenzar a trabajar.</b></p>"+
+      "<h2>Reglas Importantes</h2>"+
+      "<ul><li><b>No vuelva a entrar a las instalaciones</b> después de evacuar hasta que un supervisor de WKO dé la autorización.</li>"+
+      "<li>Repórtese al punto de reunión con su contacto de WKO para que se pueda dar cuenta de todo el personal.</li>"+
+      "<li>Si presencia una lesión o emergencia médica, llame al <b class='phone'>911</b> y notifique a su contacto de WKO.</li></ul>"+
+      "<h2>Contactos de Emergencia</h2>"+
+      "<table class='mini'><tr><th>Contacto</th><th>Número</th></tr>"+
+      "<tr><td>Servicios de Emergencia</td><td class='phone'>911</td></tr>"+
+      "<tr><td>Sala de emergencias del hospital más cercano</td><td>Vea la hoja de contactos de emergencia publicada</td></tr>"+
+      "<tr><td>WKO Inc. (no emergencia)</td><td>Su contacto de WKO</td></tr></table>",
+      kc:{ q:"Si escucha la alarma de emergencia, ¿qué debe hacer?", opts:["Continuar trabajando hasta que su supervisor lo contacte","Detener el trabajo inmediatamente e ir al punto de reunión con su contacto de WKO","Llamar a la oficina principal de WKO para recibir instrucciones","Esperar en su vehículo"], a:1 } },
+
+    { h:"2. Equipo de Protección Personal", body:
+      "<p>WKO Inc. es un entorno de fabricación activo. Las siguientes expectativas de equipo de protección personal aplican mientras esté en el sitio:</p>"+
+      "<table class='mini'><tr><th>EPP</th><th>Dónde / Cuándo</th></tr>"+
+      "<tr><td><b>Protección ocular</b> (lentes de seguridad con protectores laterales)</td><td>Todas las áreas de producción</td></tr>"+
+      "<tr><td><b>Protección auditiva</b></td><td>Todas las áreas donde los niveles de ruido son elevados — si necesita alzar la voz para que lo escuchen, use protección auditiva</td></tr>"+
+      "<tr><td><b>Casco</b></td><td>Áreas con peligros aéreos, según lo indicado o señalado por su contacto de WKO</td></tr>"+
+      "<tr><td><b>Chaleco o ropa de alta visibilidad</b> (Clase 2 mínimo)</td><td>Patio de troncos, áreas con equipo rodante o equipo móvil</td></tr>"+
+      "<tr><td><b>Calzado resistente</b> (altura mínima al tobillo)</td><td>Todas las áreas — se recomienda punta de acero o de seguridad</td></tr></table>"+
+      "<p>Si no está seguro sobre las expectativas de EPP para su área de trabajo, consulte con su contacto de WKO.</p>"+
+      "<h2>Reglas Generales del Sitio</h2>"+
+      "<ul><li>Respete los límites de velocidad publicados en todo momento.</li>"+
+      "<li>Fumar solo está permitido en áreas designadas.</li>"+
+      "<li>El alcohol y las sustancias controladas están prohibidos en la propiedad de WKO.</li>"+
+      "<li>Esté atento al equipo móvil, montacargas, camiones de troncos y camiones de astillas — ellos tienen el derecho de paso.</li>"+
+      "<li>Permanezca en los pasillos designados y las rutas de acceso. No tome atajos a través del equipo de producción.</li></ul>",
+      kc:{ q:"¿Qué EPP se espera en todas las áreas de producción de WKO Inc.?", opts:["Casco y guantes","Lentes de seguridad con protectores laterales","Careta facial completa y protección auditiva","Solo chaleco de alta visibilidad"], a:1 } },
+
+    { h:"3. Energía Peligrosa — Bloqueo y Etiquetado", body:
+      "<p>WKO Inc. opera equipo industrial pesado con múltiples fuentes de energía — eléctrica, neumática, hidráulica y otras. Nuestras instalaciones siguen un programa formal de bloqueo y etiquetado para proteger a las personas que trabajan en o cerca de este equipo.</p>"+
+      "<div class='danger'><b>Reglas críticas para todo el personal externo:</b>"+
+      "<ul style='margin-top:8px'>"+
+      "<li><b>Nunca toque, retire ni puentee un candado o etiqueta</b> en ningún desconectador, válvula o dispositivo de aislamiento de energía. Un candado significa que la seguridad de alguien depende de que permanezca allí.</li>"+
+      "<li><b>No opere ningún equipo</b> que tenga un candado, etiqueta o letrero de \"No Operar\".</li>"+
+      "<li>Si su trabajo involucra equipo que debe ser desenergizado, <b>coordine con su contacto de WKO antes de comenzar</b>. El personal de WKO se encargará del bloqueo y etiquetado según nuestros procedimientos.</li></ul></div>"+
+      "<h2>Espacios Confinados</h2>"+
+      "<p>WKO Inc. tiene espacios confinados que requieren permiso en el sitio. Estos espacios están identificados con señalización.</p>"+
+      "<ul><li><b>No entre a ningún espacio confinado</b> a menos que haya coordinado con WKO de antemano.</li>"+
+      "<li>Si su trabajo requiere entrada a un espacio confinado, su contacto de WKO coordinará lo necesario, incluyendo información sobre peligros y procedimientos de entrada.</li></ul>",
+      kc:{ q:"Ve un candado y etiqueta en un desconectador de máquina. ¿Qué debe hacer?", opts:["Retirarlo si impide su trabajo","Pedir a otro contratista que verifique si se puede retirar","Dejarlo en su lugar — significa que la seguridad de alguien depende de que permanezca allí","Llamar a la oficina principal de WKO para que lo retiren"], a:2 } },
+
+    { h:"4. Peligros Químicos y Trabajo en Caliente", body:
+      "<h2>Productos Químicos Peligrosos</h2>"+
+      "<p>Como instalación de fabricación de productos de madera, WKO Inc. trabaja con una variedad de materiales. Algunos productos químicos presentes en el sitio incluyen combustibles, lubricantes, fluidos hidráulicos, solventes de limpieza y productos químicos de taller. El aserrín — que está presente en todas las instalaciones — es un material combustible y un peligro para la salud reconocido en concentraciones elevadas.</p>"+
+      "<ul><li>WKO Inc. utiliza el <b>Sistema Globalmente Armonizado (SGA)</b> para el etiquetado de productos químicos. Si ve una etiqueta SGA en un recipiente, los pictogramas y las palabras de señal le indican la categoría de peligro.</li>"+
+      "<li>Las <b>Hojas de Datos de Seguridad (HDS)</b> de los productos químicos utilizados en WKO Inc. están disponibles a solicitud. Si necesita una HDS para un producto químico que pueda encontrar durante su trabajo, consulte con su contacto de WKO.</li>"+
+      "<li>Si va a traer productos químicos a la propiedad de WKO para su trabajo, informe a su contacto de WKO y tenga las HDS relevantes disponibles.</li></ul>"+
+      "<h2>Trabajo en Caliente</h2>"+
+      "<p>El trabajo en caliente — soldadura, corte, esmerilado, soldadura fuerte, o cualquier operación que produzca chispas o llama abierta — presenta un riesgo elevado de incendio en una instalación de productos de madera donde hay polvo y materiales combustibles.</p>"+
+      "<div class='danger'><b>El trabajo en caliente fuera del Taller de Mantenimiento de WKO requiere un permiso de trabajo en caliente de WKO.</b> El permiso es emitido por un supervisor autorizado de WKO (Individuo Autorizador de Permisos) después de que el área de trabajo ha sido inspeccionada y se confirman las precauciones de prevención de incendios. Esto incluye la asignación de un vigía de incendios.</div>"+
+      "<p>El <b>área designada para trabajo en caliente</b> de WKO Inc. — el Taller de Mantenimiento de WKO — está equipada y mantenida para trabajo en caliente. El trabajo en esta área no requiere permiso cuando el área está en su condición normal.</p>"+
+      "<p>Si su alcance de trabajo incluye trabajo en caliente, coordine con su contacto de WKO antes de comenzar.</p>",
+      kc:{ q:"El trabajo en caliente (soldadura, corte, esmerilado) fuera del Taller de Mantenimiento de WKO requiere:", opts:["Un permiso de trabajo en caliente emitido por un supervisor autorizado de WKO","Solo un extintor de incendios cerca","Aprobación verbal de cualquier empleado","No se requiere nada especial si el área se ve limpia"], a:0 } },
+
+    { h:"5. Peligros Ambientales y Estacionales", body:
+      "<p>Dependiendo de la época del año, pueden estar presentes peligros adicionales en WKO Inc.:</p>"+
+      "<h2>Humo de Incendios Forestales</h2>"+
+      "<p>Durante la temporada de incendios, la calidad del aire exterior puede verse afectada por el humo de incendios forestales. WKO Inc. monitorea la calidad del aire y tiene procedimientos para proteger a los trabajadores cuando las concentraciones de PM2.5 están elevadas. Si hay condiciones de humo durante su visita, su contacto de WKO puede proporcionarle información sobre las condiciones actuales y cualquier precaución vigente.</p>"+
+      "<h2>Calor al Aire Libre</h2>"+
+      "<p>Durante el clima cálido, la exposición al calor al aire libre es un peligro reconocido. Agua, sombra y descansos están disponibles. Si usted o un compañero de trabajo experimentan síntomas de enfermedad relacionada con el calor — mareos, náuseas, confusión, latidos cardíacos rápidos — detengan el trabajo, muévanse a la sombra, beban agua y notifiquen a su contacto de WKO inmediatamente. La enfermedad por calor puede convertirse en una emergencia médica.</p>"+
+      "<h2>Condiciones Invernales</h2>"+
+      "<p>Durante el clima frío, tenga cuidado con el hielo en pasillos, escalones y superficies de equipos. Reporte cualquier condición resbalosa a su contacto de WKO.</p>" },
+
+    { h:"6. Trabajando de Manera Segura en Nuestras Instalaciones", body:
+      "<p>WKO Inc. está comprometido con proporcionar un entorno de trabajo seguro para todos en nuestra propiedad — empleados, contratistas, camioneros y visitantes. Este es un resumen de lo que pedimos al personal externo:</p>"+
+      "<ul><li><b>Repórtese con su contacto de WKO</b> cuando llegue y cuando se vaya.</li>"+
+      "<li><b>Reporte cualquier lesión, incidente o casi-incidente</b> a su contacto de WKO inmediatamente, sin importar lo menor que sea.</li>"+
+      "<li><b>Reporte cualquier peligro que observe</b> — barandillas dañadas, derrames, condiciones inseguras — a su contacto de WKO.</li>"+
+      "<li><b>Conozca sus rutas de salida</b> y la ubicación del punto de reunión más cercano antes de comenzar a trabajar.</li>"+
+      "<li><b>Manténgase alerta de su entorno.</b> Esta es una instalación industrial activa con equipo pesado, camiones de troncos, montacargas, transportadores y otra maquinaria en movimiento.</li>"+
+      "<li>Si su trabajo involucra <b>bloqueo/etiquetado, entrada a espacios confinados, trabajo en caliente o trabajo en alturas</b>, coordine con su contacto de WKO antes de comenzar. Estas son actividades de alto riesgo que requieren coordinación específica con WKO.</li></ul>"+
+      "<div class='notice'><b>Gracias</b> por tomarse el tiempo de revisar esta orientación. Su seguridad y la seguridad de todos en WKO Inc. es importante para nosotros. Si tiene alguna pregunta en cualquier momento, no dude en preguntar a su contacto de WKO.</div>" }
+  ],
+  quiz: [
+    { q:"¿Qué debe hacer cuando escucha la alarma de emergencia en WKO Inc.?",
+      opts:["Continuar trabajando hasta que su propio supervisor lo contacte","Detener el trabajo inmediatamente e ir al punto de reunión con su contacto de WKO","Llamar a la oficina principal de WKO para instrucciones","Esperar en su ubicación de trabajo para más indicaciones"], a:1 },
+    { q:"Ve un candado y etiqueta en un desconectador de máquina que necesita para su trabajo. ¿Qué debe hacer?",
+      opts:["Retirarlo para poder continuar con su tarea","Esperar unos minutos para ver si alguien regresa por él","Dejarlo en su lugar y contactar a su contacto de WKO para coordinar","Pedir a otro contratista cercano que lo verifique"], a:2 },
+    { q:"El trabajo en caliente (soldadura, corte, esmerilado) fuera del Taller de Mantenimiento de WKO requiere:",
+      opts:["Un permiso de trabajo en caliente emitido por un supervisor autorizado de WKO","Solo un extintor de incendios al alcance","Aprobación verbal de cualquier empleado disponible","No se requiere nada especial si el área está barrida y limpia"], a:0 },
+    { q:"Cuando se ordena una evacuación, ¿qué debe hacer?",
+      opts:["Ir a su vehículo y salir de la propiedad","Quedarse en su lugar de trabajo hasta que termine la emergencia","Regresar adentro para recoger sus herramientas","Ir al punto de reunión con su contacto de WKO y reportarse para que se le cuente"], a:3 },
+    { q:"Si se lesiona mientras trabaja en WKO Inc., ¿qué debe hacer?",
+      opts:["Terminar su tarea actual, luego reportarlo al final del día","Reportarlo solo a su propia empresa cuando regrese","Continuar trabajando si parece menor","Reportarlo inmediatamente a su contacto de WKO"], a:3 }
+  ],
+  quizH: "Revisión de la Orientación",
+  quizIntro: "Por favor responda las siguientes cinco preguntas para confirmar que ha recibido la información de seguridad clave de WKO Inc. Puede seleccionar una respuesta por pregunta.",
+  submitBtn: "Enviar Respuestas",
+  answerAll: "Por favor responda todas las preguntas antes de enviar.",
+  passH: "¡Gracias — orientación completada!",
+  passSub: "Orientación de Seguridad para Contratistas de WKO Inc.",
+  passModule: "Orientación de Seguridad para Contratistas — Completada",
+  scoreLabel: "Puntuación",
+  dateLabel: "Fecha",
+  codeLabel: "Código de Finalización",
+  passInstr: "<b>Último paso — registre su finalización:</b> toque el botón de abajo y envíe el formulario de finalización. Ingrese su nombre, su empresa, el nombre de su contacto de WKO, y el código de finalización mostrado arriba.",
+  recordBtn: "Registrar Mi Finalización",
+  failH: "Por favor revise e intente de nuevo.",
+  failMsg: "Su puntuación fue inferior al 80%. Le invitamos a revisar el material de orientación — especialmente los procedimientos de emergencia, las reglas de bloqueo/etiquetado y los requisitos de trabajo en caliente — e intentar de nuevo. No hay límite de intentos.",
+  reviewBtn: "Revisar Material",
+  retakeBtn: "Repetir Cuestionario",
+  yourScore: "Su puntuación"
+}
+};
+
+/* ------------ Answer key ------------ */
+var ANSWER_KEY = [1, 2, 0, 3, 3];
+
+/* ------------ Engine (identical to employee modules) ------------ */
+var state = { lang:null, screen:"lang", name:"", section:0, kcDone:{}, quizAnswers:{}, lastScore:null, code:null };
+function $(id){ return document.getElementById(id); }
+function esc(s){ return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
+function T(){ return STR[state.lang||"en"]; }
+
+function generateCode(){
+  var chars="ABCDEFGHJKMNPQRSTUVWXYZ23456789", out="";
+  for(var i=0;i<5;i++){ out+=chars.charAt(Math.floor(Math.random()*chars.length)); }
+  return CODE_PREFIX+out;
+}
+function gradeQuiz(answers){
+  var correct=0;
+  for(var i=0;i<ANSWER_KEY.length;i++){ if(answers[i]===ANSWER_KEY[i]) correct++; }
+  var pct=Math.round(correct/ANSWER_KEY.length*100);
+  return { correct:correct, total:ANSWER_KEY.length, pct:pct, pass: pct>=PASS_PCT };
+}
+
+/* ------------ Rendering ------------ */
+function setLang(l){
+  state.lang=l;
+  if(state.screen==="lang") state.screen="intro";
+  $("langBar").className="langbar";
+  $("btnEN").className = l==="en"?"active":"";
+  $("btnES").className = l==="es"?"active":"";
+  render();
+}
+function progress(){
+  if(state.screen==="lang"){ $("progBar").style.width="0%"; return; }
+  var total = T().sections.length + 2;
+  var pos = state.screen==="intro"?0 : state.screen==="quiz"?total-1 : state.screen==="pass"||state.screen==="fail"?total : state.section+1;
+  $("progBar").style.width = Math.round(pos/total*100)+"%";
+}
+function renderLang(){
+  $("app").innerHTML =
+    '<div class="card splash">'+
+    '<div class="co">WKO INC.</div>'+
+    '<div class="ti-en">Contractor Site Orientation</div>'+
+    '<div class="ti-es">Orientación de Seguridad para Contratistas</div>'+
+    '<div class="choose">Choose your language / Elija su idioma:</div>'+
+    '<div class="langbtns">'+
+    '<button id="langBtnEN">English</button>'+
+    '<button id="langBtnES">Español</button>'+
+    '</div></div>';
+  $("langBtnEN").addEventListener("click", function(){ setLang("en"); });
+  $("langBtnES").addEventListener("click", function(){ setLang("es"); });
+}
+function render(){
+  progress();
+  if(state.screen==="lang") renderLang();
+  else if(state.screen==="intro") renderIntro();
+  else if(state.screen==="section") renderSection();
+  else if(state.screen==="quiz") renderQuiz();
+  else if(state.screen==="pass") renderPass();
+  else if(state.screen==="fail") renderFail();
+}
+function renderIntro(){
+  var t=T();
+  $("app").innerHTML =
+    '<div class="card"><h1>'+t.introH+'</h1><p>'+t.introP1+'</p><p>'+t.introP2+'</p>'+
+    '<h2>'+t.nameLabel+'</h2>'+
+    '<input type="text" id="nameInput" placeholder="'+t.namePh+'" value="'+esc(state.name)+'" autocomplete="name">'+
+    '<br><button class="btn" id="startBtn" disabled>'+t.startBtn+'</button>'+
+    '<p style="color:var(--gray);font-size:.85em;margin-top:16px">'+t.basedOn+'</p></div>';
+  var inp=$("nameInput"), btn=$("startBtn");
+  function gate(){ state.name=inp.value.trim(); btn.disabled = state.name.length<2; }
+  inp.addEventListener("input", gate); gate();
+  btn.addEventListener("click", function(){ if(state.name.length>=2){ state.screen="section"; state.section=0; render(); window.scrollTo(0,0);} });
+}
+function renderSection(){
+  var t=T(), s=t.sections[state.section];
+  var html = '<div class="card"><div class="qnum">'+t.secLabel+' '+(state.section+1)+' '+t.ofLabel+' '+t.sections.length+'</div><h1>'+s.h+'</h1>'+s.body;
+  var kcPassed = !!state.kcDone[state.section];
+  if(s.kc){
+    html += '<div class="kc"><div class="kct">✔ '+s.kc.q+'</div>';
+    for(var i=0;i<s.kc.opts.length;i++){
+      html += '<label class="opt" id="kcOpt'+i+'"><input type="radio" name="kc" value="'+i+'"'+(kcPassed?' disabled':'')+'>'+s.kc.opts[i]+'</label>';
+    }
+    html += '<div class="fb" id="kcFb"></div>';
+    if(!kcPassed) html += '<button class="btn secondary" id="kcCheck">'+t.checkBtn+'</button>';
+    html += '</div>';
+  }
+  html += '<br><button class="btn" id="contBtn"'+((s.kc&&!kcPassed)?' disabled':'')+'>'+t.continueBtn+'</button></div>';
+  $("app").innerHTML = html;
+  if(s.kc && !kcPassed){
+    $("kcCheck").addEventListener("click", function(){
+      var sel=document.querySelector('input[name="kc"]:checked');
+      if(!sel) return;
+      var v=parseInt(sel.value,10), fb=$("kcFb");
+      if(v===s.kc.a){
+        state.kcDone[state.section]=true;
+        $("kcOpt"+v).className="opt correct";
+        fb.className="fb ok"; fb.textContent=t.kcOk;
+        $("contBtn").disabled=false; $("kcCheck").disabled=true;
+      } else {
+        $("kcOpt"+v).className="opt wrong";
+        $("kcOpt"+s.kc.a).className="opt correct";
+        fb.className="fb bad"; fb.textContent=t.kcBad;
+        state.kcDone[state.section]=true;
+        $("contBtn").disabled=false; $("kcCheck").disabled=true;
+      }
+    });
+  }
+  $("contBtn").addEventListener("click", function(){
+    if(state.section < t.sections.length-1){ state.section++; } else { state.screen="quiz"; }
+    render(); window.scrollTo(0,0);
+  });
+}
+function renderQuiz(){
+  var t=T();
+  var html='<div class="card"><h1>'+t.quizH+'</h1><p>'+t.quizIntro+'</p>';
+  for(var i=0;i<t.quiz.length;i++){
+    var q=t.quiz[i];
+    html+='<div class="quizq"><div class="qt">'+(i+1)+'. '+q.q+'</div>';
+    for(var j=0;j<q.opts.length;j++){
+      var checked = state.quizAnswers[i]===j ? ' checked' : '';
+      html+='<label class="opt"><input type="radio" name="q'+i+'" value="'+j+'"'+checked+'>'+q.opts[j]+'</label>';
+    }
+    html+='</div>';
+  }
+  html+='<div class="fb bad" id="quizWarn" style="display:none">'+t.answerAll+'</div>';
+  html+='<button class="btn" id="quizSubmit">'+t.submitBtn+'</button></div>';
+  $("app").innerHTML=html;
+  var radios=document.querySelectorAll('#app input[type=radio]');
+  for(var r=0;r<radios.length;r++){
+    radios[r].addEventListener("change", function(e){
+      var name=e.target.name, idx=parseInt(name.substring(1),10);
+      state.quizAnswers[idx]=parseInt(e.target.value,10);
+    });
+  }
+  $("quizSubmit").addEventListener("click", function(){
+    var answers=[];
+    for(var i=0;i<t.quiz.length;i++){
+      if(typeof state.quizAnswers[i]==="undefined"){ $("quizWarn").style.display="block"; return; }
+      answers.push(state.quizAnswers[i]);
+    }
+    var res=gradeQuiz(answers);
+    state.lastScore=res;
+    if(res.pass){ state.code=generateCode(); state.screen="pass"; }
+    else { state.screen="fail"; }
+    render(); window.scrollTo(0,0);
+  });
+}
+function fmtDate(){
+  var d=new Date();
+  var m=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+  var mes=["ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic"];
+  return state.lang==="es" ? d.getDate()+" "+mes[d.getMonth()]+" "+d.getFullYear() : m[d.getMonth()]+" "+d.getDate()+", "+d.getFullYear();
+}
+function renderPass(){
+  var t=T(), r=state.lastScore;
+  $("app").innerHTML =
+    '<div class="card"><p class="passmsg">'+t.passH+'</p></div>'+
+    '<div class="cert" id="certBox">'+
+      '<div>'+t.passSub+'</div>'+
+      '<div class="big" id="certName">'+esc(state.name)+'</div>'+
+      '<div>'+t.passModule+'</div>'+
+      '<div style="margin:8px 0">'+t.scoreLabel+': <b>'+r.correct+'/'+r.total+' ('+r.pct+'%)</b> &nbsp;·&nbsp; '+t.dateLabel+': <b id="certDate">'+fmtDate()+'</b></div>'+
+      '<div>'+t.codeLabel+':</div>'+
+      '<div class="code" id="certCode">'+state.code+'</div>'+
+    '</div>'+
+    '<div class="card"><p>'+t.passInstr+'</p>'+
+    '<a class="btn" id="recordLink" href="'+FORM_URL+'" target="_blank" rel="noopener">'+t.recordBtn+'</a></div>';
+}
+function renderFail(){
+  var t=T(), r=state.lastScore;
+  $("app").innerHTML =
+    '<div class="card" id="failBox"><p class="failmsg">'+t.failH+'</p>'+
+    '<p>'+t.yourScore+': <b>'+r.correct+'/'+r.total+' ('+r.pct+'%)</b></p>'+
+    '<p>'+t.failMsg+'</p>'+
+    '<button class="btn secondary" id="reviewBtn">'+t.reviewBtn+'</button> '+
+    '<button class="btn" id="retakeBtn">'+t.retakeBtn+'</button></div>';
+  $("reviewBtn").addEventListener("click", function(){ state.quizAnswers={}; state.screen="section"; state.section=0; render(); window.scrollTo(0,0); });
+  $("retakeBtn").addEventListener("click", function(){ state.quizAnswers={}; state.screen="quiz"; render(); window.scrollTo(0,0); });
+}
+
+/* ------------ Test hooks ------------ */
+window.APP = { STR:STR, state:state, gradeQuiz:gradeQuiz, generateCode:generateCode, ANSWER_KEY:ANSWER_KEY, FORM_URL:FORM_URL, PASS_PCT:PASS_PCT, MODULE_VERSION:MODULE_VERSION, CODE_PREFIX:CODE_PREFIX, setLang:setLang, render:render };
+window.setLang = setLang;
+
+/* ------------ Boot ------------ */
+render();
+</script>
+</body>
+</html>
