@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WKO Inc. — Forklift Refresher Training v1.0</title>
+<style>
+  :root { --blue:#2E75B6; --dark:#1F4E79; --light:#F2F2F2; --gray:#666666; --red:#C00000; --green:#2E7D32; --amber:#E07B00; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { font-family: Arial, Helvetica, sans-serif; background:#f7f9fb; color:#222; line-height:1.5; }
+  .wrap { max-width:760px; margin:0 auto; padding:16px; }
+  header.bar { background:var(--dark); color:#fff; padding:14px 20px; }
+  header.bar .co { font-weight:bold; font-size:1.05em; letter-spacing:.5px; }
+  header.bar .sub { font-size:.85em; margin-top:2px; opacity:.9; }
+  .splash { text-align:center; padding:34px 22px; }
+  .splash .co { color:var(--gray); font-size:.85em; letter-spacing:2px; font-weight:bold; }
+  .splash .ti-en { color:var(--dark); font-size:1.6em; font-weight:bold; margin:10px 0 4px; }
+  .splash .ti-es { color:var(--blue); font-size:1.4em; font-weight:bold; margin-bottom:18px; }
+  .splash .choose { margin-bottom:16px; }
+  .splash .langbtns { display:flex; gap:14px; justify-content:center; flex-wrap:wrap; }
+  .splash .langbtns button { font-family:Arial; background:var(--blue); color:#fff; border:none; border-radius:6px; padding:14px 0; width:240px; max-width:45%; font-size:1.05em; font-weight:bold; cursor:pointer; }
+  .langbar { text-align:right; padding:10px 16px 0; }
+  .langbar button { font-family:Arial; border:2px solid var(--blue); background:#fff; color:var(--blue); padding:6px 14px; font-weight:bold; cursor:pointer; border-radius:4px; margin-left:6px; font-size:.95em; }
+  .langbar button.active { background:var(--blue); color:#fff; }
+  .card { background:#fff; border:1px solid #d9e2ec; border-radius:8px; padding:22px; margin:16px 0; box-shadow:0 1px 3px rgba(0,0,0,.06); }
+  h1 { color:var(--dark); font-size:1.35em; margin-bottom:12px; }
+  h2 { color:var(--blue); font-size:1.1em; margin:16px 0 8px; }
+  p, li { margin-bottom:10px; }
+  ul { padding-left:22px; }
+  .progress { background:#e1e8f0; border-radius:6px; height:10px; overflow:hidden; margin:4px 0 14px; }
+  .progress > div { background:var(--blue); height:100%; width:0; transition:width .3s; }
+  .btn { font-family:Arial; display:inline-block; background:var(--blue); color:#fff; border:none; padding:12px 26px; font-size:1em; font-weight:bold; border-radius:6px; cursor:pointer; margin-top:14px; }
+  .btn:disabled { background:#9db8d2; cursor:not-allowed; }
+  .btn.secondary { background:#fff; color:var(--blue); border:2px solid var(--blue); }
+  input[type=text] { font-family:Arial; width:100%; padding:12px; font-size:1em; border:2px solid #b8c7d9; border-radius:6px; margin-top:6px; }
+  input[type=text]:focus { border-color:var(--blue); outline:none; }
+  .kc { background:var(--light); border-left:4px solid var(--blue); padding:16px; border-radius:0 6px 6px 0; margin-top:16px; }
+  .kc .kct { font-weight:bold; color:var(--dark); margin-bottom:8px; }
+  .opt { display:block; background:#fff; border:2px solid #c9d6e4; border-radius:6px; padding:10px 12px; margin:8px 0; cursor:pointer; }
+  .opt input { margin-right:10px; }
+  .opt.correct { border-color:var(--green); background:#eef7ee; }
+  .opt.wrong { border-color:var(--red); background:#fdecec; }
+  .fb { font-weight:bold; margin-top:8px; display:none; }
+  .fb.ok { color:var(--green); display:block; }
+  .fb.bad { color:var(--red); display:block; }
+  .qnum { color:var(--gray); font-size:.85em; }
+  .quizq { border-bottom:1px solid #e4eaf1; padding:14px 0; }
+  .quizq .qt { font-weight:bold; margin-bottom:6px; }
+  .cert { border:3px solid var(--dark); border-radius:10px; padding:26px; text-align:center; background:#fff; }
+  .cert .big { font-size:1.5em; color:var(--dark); font-weight:bold; margin:10px 0; }
+  .cert .code { font-size:1.6em; letter-spacing:2px; font-weight:bold; color:var(--blue); background:var(--light); display:inline-block; padding:8px 20px; border-radius:6px; margin:10px 0; }
+  .passmsg { color:var(--green); font-weight:bold; font-size:1.2em; }
+  .failmsg { color:var(--red); font-weight:bold; font-size:1.2em; }
+  .notice { background:#fff8e1; border-left:4px solid #f0a500; padding:12px; border-radius:0 6px 6px 0; margin:12px 0; font-size:.95em; }
+  .danger { background:#fdecec; border-left:4px solid var(--red); padding:12px; border-radius:0 6px 6px 0; margin:12px 0; }
+  .phone { font-weight:bold; color:var(--dark); }
+  table.mini { border-collapse:collapse; width:100%; margin:10px 0; font-size:.95em; }
+  table.mini th { background:var(--blue); color:#fff; padding:8px; text-align:left; }
+  table.mini td { border:1px solid #d9e2ec; padding:8px; vertical-align:top; }
+  table.mini tr:nth-child(even) td { background:var(--light); }
+  .tier { border-radius:8px; padding:14px; margin:10px 0; border:1px solid #d9e2ec; }
+  .tier .tt { font-weight:bold; font-size:1.05em; margin-bottom:4px; }
+  .tier.t1 { border-left:6px solid var(--blue); }
+  .tier.t2 { border-left:6px solid var(--amber); }
+  .tier.t3 { border-left:6px solid var(--red); }
+  footer { text-align:center; color:var(--gray); font-size:.8em; padding:20px 0 30px; }
+  .hidden { display:none !important; }
+</style>
+</head>
+<body>
+<header class="bar">
+  <div class="co">WKO INC.</div>
+  <div class="sub">Forklift Refresher Training &mdash; WAC 296-863</div>
+</header>
+<div class="langbar hidden" id="langBar">
+  <button id="btnEN" onclick="setLang('en')">English</button>
+  <button id="btnES" onclick="setLang('es')">Español</button>
+</div>
+<div class="wrap">
+  <div class="progress" id="progWrap"><div id="progBar"></div></div>
+  <div id="app"></div>
+</div>
+<footer id="ftr">WKO Inc. &middot; Carson, WA &middot; WAC 296-863 &middot; Module v1.0 (2026)</footer>
+<script>
+"use strict";
+var FORM_URL = "https://forms.cloud.microsoft/r/YHYEJNbAMt";
+var MODULE_VERSION = "v1.0";
+var CODE_PREFIX = "LT26-";
+var PASS_PCT = 80;
+
+/* ------------ Language packs ------------ */
+var STR = {
+en: {
+  basedOn: "Based on chapter 296-863 WAC, Forklifts and Other Powered Industrial Trucks. Questions? Contact the Safety Manager.",
+  introH: "Welcome — Forklift Refresher Training",
+  introP1: "This refresher reviews the rules every WKO Inc. forklift operator must follow: pre-shift inspection, load handling and stability, safe travel around people and equipment, loading trucks and railcars, fueling, and parking. It is the classroom part of your refresher. Your supervisor will also watch you operate and sign your practical evaluation — you are not finished until both are done.",
+  introP2: "The training takes about 15–20 minutes. You must score 80% or better on the final quiz to receive credit. You may retake the quiz if needed.",
+  nameLabel: "Enter your full name to begin:",
+  namePh: "First and last name",
+  startBtn: "Start Training",
+  continueBtn: "Continue",
+  checkBtn: "Check Answer",
+  kcOk: "Correct — well done.",
+  kcBad: "Not quite — the correct answer is highlighted. Review it, then continue.",
+  secLabel: "Section",
+  ofLabel: "of",
+  sections: [
+    { h:"1. Why a Refresher — and When It Is Required", body:
+      "<p>Washington requires refresher training for a forklift operator when any of these happen (WAC 296-863-60010):</p>"+
+      "<ul><li>You are involved in an <b>accident or near miss</b></li>"+
+      "<li>You are seen <b>operating unsafely</b></li>"+
+      "<li>An evaluation shows you are <b>not operating safely</b></li>"+
+      "<li>You are assigned to a <b>different type of truck</b>, or your truck is modified</li>"+
+      "<li><b>Conditions in the workplace change</b> in a way that could affect safe operation</li></ul>"+
+      "<p>Your operating skills must also be <b>evaluated at least once every 3 years</b>, and after any refresher training (WAC 296-863-60015).</p>"+
+      "<div class=\"notice\"><b>Two parts:</b> this online module covers the knowledge. Your supervisor or trainer then watches you operate your truck and records your practical evaluation on the TS Task Training sheet for forklifts. Both are required.</div>",
+      kc:{ q:"Which of these requires forklift refresher training?", opts:["Changing your lunch break","Being involved in a near miss","Getting a new hard hat","Working overtime"], a:1 } },
+
+    { h:"2. Pre-Shift Inspection", body:
+      "<p>Inspect your forklift <b>every day before you put it into service</b>, following the manufacturer’s instructions and your pre-shift inspection form (WAC 296-863-30010). Check at least:</p>"+
+      "<ul><li>Tires, forks, chains, and mast — cracks, bends, wear, damage</li>"+
+      "<li>Hydraulic, fuel, and oil leaks</li>"+
+      "<li>Brakes, parking brake, and steering</li>"+
+      "<li>Horn, lights, and backup alarm</li>"+
+      "<li>Seatbelt and overhead guard</li>"+
+      "<li>Propane tank, hose, and fittings, or fuel cap and lines</li></ul>"+
+      "<div class=\"danger\"><b>Remove the truck from service immediately</b> and report it if you find a fuel leak, an exhaust giving off sparks or flames, a part that is running hotter than normal, or any condition that makes it unsafe (WAC 296-863-30005). Do not operate it until it is repaired.</div>",
+      kc:{ q:"During your pre-shift check you smell propane and find a leaking fitting. What do you do?", opts:["Finish the shift and report it later","Tighten it yourself and keep working","Remove the truck from service and report it — do not operate it until it is repaired","Open the windows and keep going"], a:2 } },
+
+    { h:"3. Capacity, Stability, and Load Handling", body:
+      "<p>Every forklift has a <b>capacity (data) plate</b>. It shows the most the truck can safely lift at a stated load center. Never exceed it. A truck with an attachment must be operated as a <b>partially loaded truck</b>, even when it carries no load (WAC 296-863-40015).</p>"+
+      "<p>A forklift balances like a seesaw over its front wheels. Raising a load, tilting forward, turning fast, or braking hard moves the combined center of gravity — and can tip the truck.</p>"+
+      "<p><b>When you pick up a load:</b></p>"+
+      "<ul><li>Put the forks under the load <b>as far as possible</b></li>"+
+      "<li><b>Tilt the mast back</b> carefully to stabilize the load</li>"+
+      "<li>Do not tilt forward with the load raised — except to pick up or set down a load on a stack</li>"+
+      "<li>Check lumber loads before lifting: banding intact, stickers in place, load square and stable</li>"+
+      "<li>Travel with the load <b>only as high as needed</b> to clear the ground</li></ul>",
+      kc:{ q:"Where do you find the most your forklift can safely lift?", opts:["On the truck’s capacity (data) plate","From another operator","It is the same for every forklift","By lifting until the back wheels come up"], a:0 } },
+
+    { h:"4. Traveling Safely — Visibility, Ramps, and People", body:
+      "<p><b>Drive under control at all times</b> (WAC 296-863-40010):</p>"+
+      "<ul><li>Obey workplace speed limits; slow down on wet or slippery surfaces and when turning</li>"+
+      "<li>Keep about <b>3 truck lengths</b> behind the truck ahead; don’t pass at intersections or blind spots</li>"+
+      "<li><b>Look in the direction you are traveling</b>. If the load blocks your forward view, <b>travel in reverse</b></li>"+
+      "<li><b>Slow down and sound the horn</b> at cross aisles and anywhere your view is blocked</li>"+
+      "<li>On slopes of more than 10%, keep the <b>load upslope</b> — and never turn on a ramp</li>"+
+      "<li>Cross railroad tracks diagonally when you can; park at least <b>8 feet 6 inches</b> from the center of a track</li></ul>"+
+      "<p><b>Protect people</b> (WAC 296-863-40005):</p>"+
+      "<ul><li><b>Wear your seatbelt</b></li>"+
+      "<li>No riders, no stunt driving or horseplay</li>"+
+      "<li>No one under raised forks, between the mast uprights, or in the path of the truck</li>"+
+      "<li>Never drive toward a person standing in front of a wall, bench, or other fixed object</li>"+
+      "<li>Keep fire aisles, stairways, and fire equipment clear</li></ul>",
+      kc:{ q:"A tall load blocks your view in front. How do you travel?", opts:["Forward, slowly","Forward with the load raised high so you can see under it","In reverse, looking in the direction of travel","With a coworker riding on the forks to guide you"], a:2 } },
+
+    { h:"5. Loading Trucks, Railcars, and Dockboards", body:
+      "<p>Before driving onto a <b>highway truck or trailer</b> (WAC 296-863-40050):</p>"+
+      "<ul><li>Check the trailer floor for breaks or weak spots</li>"+
+      "<li>Make sure the <b>brakes are set and the wheels are chocked</b>, or the trailer is secured to the dock by a dock lock</li></ul>"+
+      "<p>Before loading or unloading a <b>railcar</b> (WAC 296-863-40045):</p>"+
+      "<ul><li>Check the railcar floor</li>"+
+      "<li>Make sure the railcar <b>brakes are set and wheel stops are in place</b> while you load and while a dockboard is in position</li>"+
+      "<li>Only open or close railcar doors with the approved door device, with a full view and people kept clear</li></ul>"+
+      "<p><b>Dockboards (bridge plates)</b> (WAC 296-863-40040): secure them before driving on, never exceed their rated capacity, and drive over them slowly.</p>",
+      kc:{ q:"Before you drive into a highway trailer to load it, you must make sure…", opts:["The radio is on","The trailer brakes are set and the wheels are chocked (or a dock lock is engaged), and the floor is sound","The truck driver is in the cab","The trailer doors are half closed"], a:1 } },
+
+    { h:"6. Fueling, Parking, and Carbon Monoxide", body:
+      "<p><b>Fueling</b> (WAC 296-863-30025, -30030):</p>"+
+      "<ul><li><b>Shut the engine off</b> before fueling or changing a propane cylinder. No smoking or open flames</li>"+
+      "<li>Wear gloves and eye protection when changing a propane cylinder — liquid propane can freeze-burn skin</li>"+
+      "<li>Check connections for leaks before starting</li>"+
+      "<li>With gasoline or diesel: avoid spills, put the cap back on, and let spills be cleaned up before restarting</li>"+
+      "<li>Don’t park propane trucks near heat, open flames, or other ignition sources</li></ul>"+
+      "<p><b>Parking</b> (WAC 296-863-40020). Whenever you get off the truck: <b>lower the forks fully, put the controls in neutral, and set the brake</b>. If the truck will be <b>unattended</b> — you are more than 25 feet away or can’t see it — also <b>shut off the power</b>, and <b>block the wheels</b> if it is on an incline.</p>"+
+      "<p><b>Carbon monoxide.</b> Engine exhaust builds up indoors. Headache, dizziness, or nausea while operating inside are warning signs — get to fresh air and tell your supervisor.</p>"+
+      "<div class=\"danger\"><b>Report every accident and near miss</b> to your supervisor right away, even if nothing was damaged. In an emergency, call <span class=\"phone\">911</span> first.</div>",
+      kc:{ q:"You are walking away from your forklift and will be out of sight of it. What must you do?", opts:["Leave it running so it’s ready","Lower the forks only","Put it in neutral only","Lower the forks fully, put the controls in neutral, shut off the power, and set the brake — and block the wheels on an incline"], a:3 } }
+  ],
+  quizH: "Final Quiz",
+  quizIntro: "Answer all 10 questions. You need 8 correct (80%) to pass. Take your time — you can review your answers before submitting.",
+  submitBtn: "Submit Quiz",
+  answerAll: "Please answer every question before submitting.",
+  quiz: [
+    { q:"Forklift refresher training is required when…", opts:["Five years have passed","You have an accident or near miss, are seen operating unsafely, or are assigned a different type of truck","You change shifts","You get a new supervisor"], a:1 },
+    { q:"At minimum, how often must your forklift operating performance be evaluated?", opts:["Only when you are hired","Every 5 years","At least once every 3 years, and after any refresher training","Never, once you are certified"], a:2 },
+    { q:"When must you inspect your forklift?", opts:["Daily, before it is put into service","Once a week","Only when something sounds wrong","Only mechanics inspect forklifts"], a:0 },
+    { q:"Your pre-shift check finds a fuel leak. You should…", opts:["Use the truck carefully until the end of the shift","Wrap the leak with tape","Tell a coworker and keep working","Remove the truck from service and report it — do not operate it until it is repaired"], a:3 },
+    { q:"The most your forklift can safely lift is shown…", opts:["On the side of the mast in chalk","On the truck’s capacity (data) plate","In the parking lot","Nowhere — use your judgment"], a:1 },
+    { q:"A load blocks your forward view. You should…", opts:["Drive forward slowly","Raise the load high to see under it","Travel in reverse, looking in the direction of travel","Have someone ride on the truck to guide you"], a:2 },
+    { q:"Driving a loaded forklift on a slope steeper than 10%, keep the load…", opts:["Upslope (pointing uphill)","Downslope (pointing downhill)","Raised high for visibility","Tilted forward"], a:0 },
+    { q:"As you approach a cross aisle or blind corner, you should…", opts:["Speed up to clear it quickly","Flash your lights only","Slow down and sound the horn","Stop and shut off the engine"], a:2 },
+    { q:"Your forklift is unattended when you are more than 25 feet away or can’t see it. Before leaving it unattended, you must…", opts:["Leave it running with the forks raised","Raise the forks and set the brake","Put it in neutral only","Fully lower the forks, neutralize the controls, shut off the power, and set the brake — blocking the wheels on an incline"], a:3 },
+    { q:"Before driving into a highway trailer to load it, make sure…", opts:["The trailer doors are half closed","The trailer brakes are set and the wheels are chocked (or a dock lock is engaged), and the floor is sound","The truck engine is running","Your horn works"], a:1 }
+  ],
+  passH:"Congratulations — You Passed!",
+  passSub:"Certificate of Completion",
+  passModule:"Forklift Refresher — Employee Training " + MODULE_VERSION,
+  scoreLabel:"Score",
+  dateLabel:"Date",
+  codeLabel:"Your completion code",
+  passInstr:"<b>Last step — record your completion:</b> tap the button below and submit the completion form. Enter your name, select <b>\"Forklift Refresher / Repaso de Montacargas\"</b> from the module list, and enter the completion code shown above. Your training is not on record until you submit the form. Then see your supervisor for your practical evaluation.",
+  recordBtn:"Record My Completion",
+  failH:"Not Yet — Keep Going",
+  failMsg:"You scored below 80%. Review the material — especially pre-shift inspection, load handling, travel rules, and parking — and try again. There is no limit on attempts.",
+  reviewBtn:"Review the Material",
+  retakeBtn:"Retake the Quiz",
+  yourScore:"Your score"
+},
+es: {
+  basedOn: "Basado en el capítulo 296-863 WAC, Montacargas y Otros Vehículos Industriales Motorizados. ¿Preguntas? Contacte al Gerente de Seguridad.",
+  introH: "Bienvenido — Capacitación de Repaso de Montacargas",
+  introP1: "Este repaso cubre las reglas que todo operador de montacargas de WKO Inc. debe seguir: inspección antes del turno, manejo de cargas y estabilidad, manejo seguro cerca de personas y equipo, carga de camiones y vagones de tren, abastecimiento de combustible y estacionamiento. Esta es la parte teórica de su repaso. Su supervisor también lo observará operar y firmará su evaluación práctica — no ha terminado hasta completar ambas partes.",
+  introP2: "La capacitación dura unos 15–20 minutos. Debe obtener 80% o más en el examen final para recibir crédito. Puede repetir el examen si es necesario.",
+  nameLabel: "Escriba su nombre completo para comenzar:",
+  namePh: "Nombre y apellido",
+  startBtn: "Comenzar la Capacitación",
+  continueBtn: "Continuar",
+  checkBtn: "Revisar Respuesta",
+  kcOk: "Correcto — bien hecho.",
+  kcBad: "No exactamente — la respuesta correcta está resaltada. Revísela y continúe.",
+  secLabel: "Sección",
+  ofLabel: "de",
+  sections: [
+    { h:"1. Por Qué un Repaso — y Cuándo es Obligatorio", body:
+      "<p>Washington exige capacitación de repaso para un operador de montacargas cuando ocurre cualquiera de estas situaciones (WAC 296-863-60010):</p>"+
+      "<ul><li>Usted tiene un <b>accidente o un casi accidente</b></li>"+
+      "<li>Lo ven <b>operando de manera insegura</b></li>"+
+      "<li>Una evaluación muestra que <b>no está operando de forma segura</b></li>"+
+      "<li>Lo asignan a un <b>tipo diferente de montacargas</b>, o su montacargas es modificado</li>"+
+      "<li><b>Cambian las condiciones del lugar de trabajo</b> de una manera que puede afectar la operación segura</li></ul>"+
+      "<p>Su manera de operar también debe <b>evaluarse por lo menos una vez cada 3 años</b>, y después de cualquier capacitación de repaso (WAC 296-863-60015).</p>"+
+      "<div class=\"notice\"><b>Dos partes:</b> este módulo en línea cubre los conocimientos. Después, su supervisor o capacitador lo observa operar su montacargas y registra su evaluación práctica en la hoja de Capacitación por Tarea (TS) para montacargas. Ambas son obligatorias.</div>",
+      kc:{ q:"¿Cuál de estas situaciones exige capacitación de repaso de montacargas?", opts:["Cambiar su hora de almuerzo","Tener un casi accidente","Recibir un casco nuevo","Trabajar horas extra"], a:1 } },
+
+    { h:"2. Inspección Antes del Turno", body:
+      "<p>Inspeccione su montacargas <b>todos los días antes de ponerlo en servicio</b>, siguiendo las instrucciones del fabricante y su formulario de inspección antes del turno (WAC 296-863-30010). Revise por lo menos:</p>"+
+      "<ul><li>Llantas, horquillas, cadenas y mástil — grietas, dobleces, desgaste, daños</li>"+
+      "<li>Fugas hidráulicas, de combustible y de aceite</li>"+
+      "<li>Frenos, freno de estacionamiento y dirección</li>"+
+      "<li>Claxon, luces y alarma de reversa</li>"+
+      "<li>Cinturón de seguridad y protección superior</li>"+
+      "<li>Tanque de propano, manguera y conexiones, o tapón y líneas de combustible</li></ul>"+
+      "<div class=\"danger\"><b>Saque el montacargas de servicio de inmediato</b> y repórtelo si encuentra una fuga de combustible, un escape que suelta chispas o llamas, una pieza más caliente de lo normal, o cualquier condición que lo haga inseguro (WAC 296-863-30005). No lo opere hasta que lo reparen.</div>",
+      kc:{ q:"Durante su revisión antes del turno huele a propano y encuentra una conexión con fuga. ¿Qué hace?", opts:["Termina el turno y lo reporta después","Lo aprieta usted mismo y sigue trabajando","Saca el montacargas de servicio y lo reporta — no lo opera hasta que lo reparen","Abre las ventanas y sigue"], a:2 } },
+
+    { h:"3. Capacidad, Estabilidad y Manejo de Cargas", body:
+      "<p>Todo montacargas tiene una <b>placa de capacidad (placa de datos)</b>. Indica lo máximo que puede levantar con seguridad a un centro de carga dado. Nunca lo exceda. Un montacargas con un aditamento debe operarse como un <b>montacargas parcialmente cargado</b>, aunque no lleve carga (WAC 296-863-40015).</p>"+
+      "<p>Un montacargas se equilibra como un sube y baja sobre sus llantas delanteras. Levantar una carga, inclinar hacia adelante, dar vueltas rápido o frenar fuerte mueve el centro de gravedad — y puede voltear el montacargas.</p>"+
+      "<p><b>Al levantar una carga:</b></p>"+
+      "<ul><li>Meta las horquillas bajo la carga <b>lo más que se pueda</b></li>"+
+      "<li><b>Incline el mástil hacia atrás</b> con cuidado para estabilizar la carga</li>"+
+      "<li>No incline hacia adelante con la carga levantada — excepto para levantar o colocar una carga en una pila</li>"+
+      "<li>Revise las cargas de madera antes de levantarlas: flejes completos, separadores (stickers) en su lugar, carga derecha y estable</li>"+
+      "<li>Viaje con la carga <b>solo a la altura necesaria</b> para librar el suelo</li></ul>",
+      kc:{ q:"¿Dónde encuentra lo máximo que su montacargas puede levantar con seguridad?", opts:["En la placa de capacidad (placa de datos) del montacargas","Preguntándole a otro operador","Es igual para todos los montacargas","Levantando hasta que se alcen las llantas traseras"], a:0 } },
+
+    { h:"4. Manejo Seguro — Visibilidad, Rampas y Personas", body:
+      "<p><b>Maneje siempre con control</b> (WAC 296-863-40010):</p>"+
+      "<ul><li>Respete los límites de velocidad; baje la velocidad en superficies mojadas o resbalosas y al dar vuelta</li>"+
+      "<li>Mantenga unos <b>3 largos de montacargas</b> detrás del que va adelante; no rebase en cruces ni puntos ciegos</li>"+
+      "<li><b>Mire hacia donde va</b>. Si la carga le tapa la vista hacia adelante, <b>maneje en reversa</b></li>"+
+      "<li><b>Baje la velocidad y toque el claxon</b> en los cruces de pasillos y donde no pueda ver</li>"+
+      "<li>En pendientes de más de 10%, mantenga la <b>carga cuesta arriba</b> — y nunca dé vuelta en una rampa</li>"+
+      "<li>Cruce las vías del tren en diagonal cuando pueda; estaciónese por lo menos a <b>8 pies 6 pulgadas</b> del centro de la vía</li></ul>"+
+      "<p><b>Proteja a las personas</b> (WAC 296-863-40005):</p>"+
+      "<ul><li><b>Use su cinturón de seguridad</b></li>"+
+      "<li>Nada de pasajeros, acrobacias ni juegos</li>"+
+      "<li>Nadie debajo de horquillas levantadas, entre los rieles del mástil ni en el camino del montacargas</li>"+
+      "<li>Nunca maneje hacia una persona que está frente a una pared, banco u otro objeto fijo</li>"+
+      "<li>Mantenga libres los pasillos de incendio, las escaleras y el equipo contra incendios</li></ul>",
+      kc:{ q:"Una carga alta le tapa la vista hacia adelante. ¿Cómo maneja?", opts:["Hacia adelante, despacio","Hacia adelante con la carga muy alta para ver por debajo","En reversa, mirando hacia donde va","Con un compañero sobre las horquillas para guiarlo"], a:2 } },
+
+    { h:"5. Carga de Camiones, Vagones de Tren y Rampas de Carga", body:
+      "<p>Antes de entrar a un <b>camión o tráiler de carretera</b> (WAC 296-863-40050):</p>"+
+      "<ul><li>Revise que el piso del tráiler no tenga roturas ni partes débiles</li>"+
+      "<li>Asegúrese de que los <b>frenos estén puestos y las llantas calzadas</b>, o que el tráiler esté asegurado al andén con un seguro de andén</li></ul>"+
+      "<p>Antes de cargar o descargar un <b>vagón de tren</b> (WAC 296-863-40045):</p>"+
+      "<ul><li>Revise el piso del vagón</li>"+
+      "<li>Asegúrese de que los <b>frenos del vagón estén puestos y los topes de rueda colocados</b> mientras carga y mientras haya una rampa puesta</li>"+
+      "<li>Solo abra o cierre las puertas del vagón con el dispositivo aprobado, con vista completa y sin personas cerca</li></ul>"+
+      "<p><b>Rampas de carga (planchas puente)</b> (WAC 296-863-40040): asegúrelas antes de pasar, nunca exceda su capacidad y pase sobre ellas despacio.</p>",
+      kc:{ q:"Antes de entrar a un tráiler de carretera para cargarlo, debe asegurarse de que…", opts:["El radio esté prendido","Los frenos del tráiler estén puestos y las llantas calzadas (o el seguro de andén puesto), y el piso esté firme","El chofer esté en la cabina","Las puertas del tráiler estén medio cerradas"], a:1 } },
+
+    { h:"6. Combustible, Estacionamiento y Monóxido de Carbono", body:
+      "<p><b>Combustible</b> (WAC 296-863-30025, -30030):</p>"+
+      "<ul><li><b>Apague el motor</b> antes de cargar combustible o cambiar un cilindro de propano. No fume ni use llamas abiertas</li>"+
+      "<li>Use guantes y protección para los ojos al cambiar un cilindro de propano — el propano líquido puede quemar la piel por congelación</li>"+
+      "<li>Revise que las conexiones no tengan fugas antes de arrancar</li>"+
+      "<li>Con gasolina o diésel: evite derrames, vuelva a poner el tapón y deje que se limpie cualquier derrame antes de arrancar</li>"+
+      "<li>No estacione montacargas de propano cerca del calor, llamas abiertas u otras fuentes de ignición</li></ul>"+
+      "<p><b>Estacionamiento</b> (WAC 296-863-40020). Siempre que se baje del montacargas: <b>baje las horquillas por completo, ponga los controles en neutral y ponga el freno</b>. Si el montacargas queda <b>desatendido</b> — usted está a más de 25 pies o no lo puede ver — además <b>apague el motor</b>, y <b>calce las llantas</b> si está en una pendiente.</p>"+
+      "<p><b>Monóxido de carbono.</b> El escape del motor se acumula en espacios cerrados. Dolor de cabeza, mareo o náuseas mientras opera adentro son señales de alerta — salga al aire libre y avise a su supervisor.</p>"+
+      "<div class=\"danger\"><b>Reporte todo accidente y casi accidente</b> a su supervisor de inmediato, aunque no haya daños. En una emergencia, llame primero al <span class=\"phone\">911</span>.</div>",
+      kc:{ q:"Se va a alejar de su montacargas y no lo va a poder ver. ¿Qué debe hacer?", opts:["Dejarlo prendido para que esté listo","Solo bajar las horquillas","Solo ponerlo en neutral","Bajar las horquillas por completo, poner los controles en neutral, apagar el motor y poner el freno — y calzar las llantas en una pendiente"], a:3 } }
+  ],
+  quizH: "Examen Final",
+  quizIntro: "Conteste las 10 preguntas. Necesita 8 correctas (80%) para aprobar. Tómese su tiempo — puede revisar sus respuestas antes de enviar.",
+  submitBtn: "Enviar Examen",
+  answerAll: "Por favor conteste todas las preguntas antes de enviar.",
+  quiz: [
+    { q:"La capacitación de repaso de montacargas es obligatoria cuando…", opts:["Han pasado cinco años","Tiene un accidente o casi accidente, lo ven operando de forma insegura, o lo asignan a un tipo diferente de montacargas","Cambia de turno","Tiene un supervisor nuevo"], a:1 },
+    { q:"Como mínimo, ¿cada cuánto se debe evaluar su manera de operar el montacargas?", opts:["Solo cuando lo contratan","Cada 5 años","Por lo menos una vez cada 3 años, y después de cualquier capacitación de repaso","Nunca, una vez certificado"], a:2 },
+    { q:"¿Cuándo debe inspeccionar su montacargas?", opts:["Todos los días, antes de ponerlo en servicio","Una vez por semana","Solo cuando algo suena mal","Solo los mecánicos inspeccionan montacargas"], a:0 },
+    { q:"Su revisión antes del turno encuentra una fuga de combustible. Usted debe…", opts:["Usar el montacargas con cuidado hasta el final del turno","Envolver la fuga con cinta","Decirle a un compañero y seguir trabajando","Sacar el montacargas de servicio y reportarlo — no operarlo hasta que lo reparen"], a:3 },
+    { q:"Lo máximo que su montacargas puede levantar con seguridad aparece…", opts:["Escrito con gis en el mástil","En la placa de capacidad (placa de datos) del montacargas","En el estacionamiento","En ningún lado — use su criterio"], a:1 },
+    { q:"Una carga le tapa la vista hacia adelante. Usted debe…", opts:["Manejar hacia adelante despacio","Levantar la carga para ver por debajo","Manejar en reversa, mirando hacia donde va","Pedir que alguien vaya sobre el montacargas para guiarlo"], a:2 },
+    { q:"Al manejar un montacargas cargado en una pendiente de más de 10%, mantenga la carga…", opts:["Cuesta arriba (apuntando hacia arriba)","Cuesta abajo (apuntando hacia abajo)","Muy alta para ver mejor","Inclinada hacia adelante"], a:0 },
+    { q:"Al acercarse a un cruce de pasillos o una esquina ciega, usted debe…", opts:["Acelerar para pasar rápido","Solo prender las luces","Bajar la velocidad y tocar el claxon","Detenerse y apagar el motor"], a:2 },
+    { q:"Su montacargas está desatendido cuando usted está a más de 25 pies o no lo puede ver. Antes de dejarlo desatendido, debe…", opts:["Dejarlo prendido con las horquillas arriba","Subir las horquillas y poner el freno","Solo ponerlo en neutral","Bajar las horquillas por completo, poner los controles en neutral, apagar el motor y poner el freno — calzando las llantas en una pendiente"], a:3 },
+    { q:"Antes de entrar a un tráiler de carretera para cargarlo, asegúrese de que…", opts:["Las puertas del tráiler estén medio cerradas","Los frenos del tráiler estén puestos y las llantas calzadas (o el seguro de andén puesto), y el piso esté firme","El motor del camión esté prendido","Su claxon funcione"], a:1 }
+  ],
+  passH:"¡Felicidades — Aprobó!",
+  passSub:"Certificado de Finalización",
+  passModule:"Repaso de Montacargas — Capacitación para Empleados " + MODULE_VERSION,
+  scoreLabel:"Puntaje",
+  dateLabel:"Fecha",
+  codeLabel:"Su código de finalización",
+  passInstr:"<b>Último paso — registre su finalización:</b> toque el botón de abajo y envíe el formulario de finalización. Escriba su nombre, seleccione <b>\"Forklift Refresher / Repaso de Montacargas\"</b> de la lista de módulos, y escriba el código de finalización que aparece arriba. Su capacitación no queda registrada hasta que envíe el formulario. Después, vea a su supervisor para su evaluación práctica.",
+  recordBtn:"Registrar Mi Finalización",
+  failH:"Todavía No — Siga Adelante",
+  failMsg:"Obtuvo menos de 80%. Revise el material — especialmente la inspección antes del turno, el manejo de cargas, las reglas de manejo y el estacionamiento — e inténtelo de nuevo. No hay límite de intentos.",
+  reviewBtn:"Revisar el Material",
+  retakeBtn:"Repetir el Examen",
+  yourScore:"Su puntaje"
+}
+};
+
+var ANSWER_KEY = STR.en.quiz.map(function(q){ return q.a; });
+
+/* ------------ State ------------ */
+var state = { lang:null, screen:"lang", section:0, name:"", kcDone:{}, quizAnswers:{}, lastScore:null, code:null };
+
+/* ------------ Helpers ------------ */
+function T(){ return STR[state.lang]; }
+function $(id){ return document.getElementById(id); }
+function esc(s){ var d=document.createElement("div"); d.appendChild(document.createTextNode(s)); return d.innerHTML; }
+
+function generateCode(){
+  var chars="BCDFGHJKMNPQRSTVWXYZ23456789", out="";
+  for(var i=0;i<5;i++){ out+=chars.charAt(Math.floor(Math.random()*chars.length)); }
+  return CODE_PREFIX+out;
+}
+function gradeQuiz(answers){
+  var correct=0;
+  for(var i=0;i<ANSWER_KEY.length;i++){ if(answers[i]===ANSWER_KEY[i]) correct++; }
+  var pct=Math.round(correct/ANSWER_KEY.length*100);
+  return { correct:correct, total:ANSWER_KEY.length, pct:pct, pass: pct>=PASS_PCT };
+}
+
+/* ------------ Rendering ------------ */
+function setLang(l){
+  state.lang=l;
+  if(state.screen==="lang") state.screen="intro";
+  $("langBar").className="langbar";
+  $("btnEN").className = l==="en"?"active":"";
+  $("btnES").className = l==="es"?"active":"";
+  render();
+}
+function progress(){
+  if(state.screen==="lang"){ $("progBar").style.width="0%"; return; }
+  var total = T().sections.length + 2;
+  var pos = state.screen==="intro"?0 : state.screen==="quiz"?total-1 : state.screen==="pass"||state.screen==="fail"?total : state.section+1;
+  $("progBar").style.width = Math.round(pos/total*100)+"%";
+}
+function renderLang(){
+  $("app").innerHTML =
+    '<div class="card splash">'+
+    '<div class="co">WKO INC.</div>'+
+    '<div class="ti-en">Forklift Refresher Training</div>'+
+    '<div class="ti-es">Capacitación de Repaso de Montacargas</div>'+
+    '<div class="choose">Choose your language / Elija su idioma:</div>'+
+    '<div class="langbtns">'+
+    '<button id="langBtnEN">English</button>'+
+    '<button id="langBtnES">Español</button>'+
+    '</div></div>';
+  $("langBtnEN").addEventListener("click", function(){ setLang("en"); });
+  $("langBtnES").addEventListener("click", function(){ setLang("es"); });
+}
+function render(){
+  progress();
+  if(state.screen==="lang") renderLang();
+  else if(state.screen==="intro") renderIntro();
+  else if(state.screen==="section") renderSection();
+  else if(state.screen==="quiz") renderQuiz();
+  else if(state.screen==="pass") renderPass();
+  else if(state.screen==="fail") renderFail();
+}
+function renderIntro(){
+  var t=T();
+  $("app").innerHTML =
+    '<div class="card"><h1>'+t.introH+'</h1><p>'+t.introP1+'</p><p>'+t.introP2+'</p>'+
+    '<h2>'+t.nameLabel+'</h2>'+
+    '<input type="text" id="nameInput" placeholder="'+t.namePh+'" value="'+esc(state.name)+'" autocomplete="name">'+
+    '<br><button class="btn" id="startBtn" disabled>'+t.startBtn+'</button>'+
+    '<p style="color:var(--gray);font-size:.85em;margin-top:16px">'+t.basedOn+'</p></div>';
+  var inp=$("nameInput"), btn=$("startBtn");
+  function gate(){ state.name=inp.value.trim(); btn.disabled = state.name.length<2; }
+  inp.addEventListener("input", gate); gate();
+  btn.addEventListener("click", function(){ if(state.name.length>=2){ state.screen="section"; state.section=0; render(); window.scrollTo(0,0);} });
+}
+function renderSection(){
+  var t=T(), s=t.sections[state.section];
+  var html = '<div class="card"><div class="qnum">'+t.secLabel+' '+(state.section+1)+' '+t.ofLabel+' '+t.sections.length+'</div><h1>'+s.h+'</h1>'+s.body;
+  var kcPassed = !!state.kcDone[state.section];
+  if(s.kc){
+    html += '<div class="kc"><div class="kct">✔ '+s.kc.q+'</div>';
+    for(var i=0;i<s.kc.opts.length;i++){
+      html += '<label class="opt" id="kcOpt'+i+'"><input type="radio" name="kc" value="'+i+'"'+(kcPassed?' disabled':'')+'>'+s.kc.opts[i]+'</label>';
+    }
+    html += '<div class="fb" id="kcFb"></div>';
+    if(!kcPassed) html += '<button class="btn secondary" id="kcCheck">'+t.checkBtn+'</button>';
+    html += '</div>';
+  }
+  html += '<br><button class="btn" id="contBtn"'+((s.kc&&!kcPassed)?' disabled':'')+'>'+t.continueBtn+'</button></div>';
+  $("app").innerHTML = html;
+  if(s.kc && !kcPassed){
+    $("kcCheck").addEventListener("click", function(){
+      var sel=document.querySelector('input[name="kc"]:checked');
+      if(!sel) return;
+      var v=parseInt(sel.value,10), fb=$("kcFb");
+      if(v===s.kc.a){
+        state.kcDone[state.section]=true;
+        $("kcOpt"+v).className="opt correct";
+        fb.className="fb ok"; fb.textContent=t.kcOk;
+        $("contBtn").disabled=false; $("kcCheck").disabled=true;
+      } else {
+        $("kcOpt"+v).className="opt wrong";
+        $("kcOpt"+s.kc.a).className="opt correct";
+        fb.className="fb bad"; fb.textContent=t.kcBad;
+        state.kcDone[state.section]=true;
+        $("contBtn").disabled=false; $("kcCheck").disabled=true;
+      }
+    });
+  }
+  $("contBtn").addEventListener("click", function(){
+    if(state.section < t.sections.length-1){ state.section++; } else { state.screen="quiz"; }
+    render(); window.scrollTo(0,0);
+  });
+}
+function renderQuiz(){
+  var t=T();
+  var html='<div class="card"><h1>'+t.quizH+'</h1><p>'+t.quizIntro+'</p>';
+  for(var i=0;i<t.quiz.length;i++){
+    var q=t.quiz[i];
+    html+='<div class="quizq"><div class="qt">'+(i+1)+'. '+q.q+'</div>';
+    for(var j=0;j<q.opts.length;j++){
+      var checked = state.quizAnswers[i]===j ? ' checked' : '';
+      html+='<label class="opt"><input type="radio" name="q'+i+'" value="'+j+'"'+checked+'>'+q.opts[j]+'</label>';
+    }
+    html+='</div>';
+  }
+  html+='<div class="fb bad" id="quizWarn" style="display:none">'+t.answerAll+'</div>';
+  html+='<button class="btn" id="quizSubmit">'+t.submitBtn+'</button></div>';
+  $("app").innerHTML=html;
+  var radios=document.querySelectorAll('#app input[type=radio]');
+  for(var r=0;r<radios.length;r++){
+    radios[r].addEventListener("change", function(e){
+      var name=e.target.name, idx=parseInt(name.substring(1),10);
+      state.quizAnswers[idx]=parseInt(e.target.value,10);
+    });
+  }
+  $("quizSubmit").addEventListener("click", function(){
+    var answers=[];
+    for(var i=0;i<t.quiz.length;i++){
+      if(typeof state.quizAnswers[i]==="undefined"){ $("quizWarn").style.display="block"; return; }
+      answers.push(state.quizAnswers[i]);
+    }
+    var res=gradeQuiz(answers);
+    state.lastScore=res;
+    if(res.pass){ state.code=generateCode(); state.screen="pass"; }
+    else { state.screen="fail"; }
+    render(); window.scrollTo(0,0);
+  });
+}
+function fmtDate(){
+  var d=new Date();
+  var m=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+  var mes=["ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic"];
+  return state.lang==="es" ? d.getDate()+" "+mes[d.getMonth()]+" "+d.getFullYear() : m[d.getMonth()]+" "+d.getDate()+", "+d.getFullYear();
+}
+function renderPass(){
+  var t=T(), r=state.lastScore;
+  $("app").innerHTML =
+    '<div class="card"><p class="passmsg">'+t.passH+'</p></div>'+
+    '<div class="cert" id="certBox">'+
+      '<div>'+t.passSub+'</div>'+
+      '<div class="big" id="certName">'+esc(state.name)+'</div>'+
+      '<div>'+t.passModule+'</div>'+
+      '<div style="margin:8px 0">'+t.scoreLabel+': <b>'+r.correct+'/'+r.total+' ('+r.pct+'%)</b> &nbsp;·&nbsp; '+t.dateLabel+': <b id="certDate">'+fmtDate()+'</b></div>'+
+      '<div>'+t.codeLabel+':</div>'+
+      '<div class="code" id="certCode">'+state.code+'</div>'+
+    '</div>'+
+    '<div class="card"><p>'+t.passInstr+'</p>'+
+    '<a class="btn" id="recordLink" href="'+FORM_URL+'" target="_blank" rel="noopener">'+t.recordBtn+'</a></div>';
+}
+function renderFail(){
+  var t=T(), r=state.lastScore;
+  $("app").innerHTML =
+    '<div class="card" id="failBox"><p class="failmsg">'+t.failH+'</p>'+
+    '<p>'+t.yourScore+': <b>'+r.correct+'/'+r.total+' ('+r.pct+'%)</b></p>'+
+    '<p>'+t.failMsg+'</p>'+
+    '<button class="btn secondary" id="reviewBtn">'+t.reviewBtn+'</button> '+
+    '<button class="btn" id="retakeBtn">'+t.retakeBtn+'</button></div>';
+  $("reviewBtn").addEventListener("click", function(){ state.quizAnswers={}; state.screen="section"; state.section=0; render(); window.scrollTo(0,0); });
+  $("retakeBtn").addEventListener("click", function(){ state.quizAnswers={}; state.screen="quiz"; render(); window.scrollTo(0,0); });
+}
+
+/* ------------ Test hooks ------------ */
+window.APP = { STR:STR, state:state, gradeQuiz:gradeQuiz, generateCode:generateCode, ANSWER_KEY:ANSWER_KEY, FORM_URL:FORM_URL, PASS_PCT:PASS_PCT, MODULE_VERSION:MODULE_VERSION, CODE_PREFIX:CODE_PREFIX, setLang:setLang, render:render };
+window.setLang = setLang;
+
+render();
+</script>
+</body>
+</html>
